@@ -4,7 +4,7 @@ For more information, review the Working Group Charter (*coming soon*).
 
 ## Mission
 
-The Workflow Working Group advances the Agentic AI Foundation’s mission by establishing a shared workflow model and common terminology for agentic AI systems, producing and extending open specifications and projects, interoperability guidelines, and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
+The Workflows and Process Integration Working Group advances the Agentic AI Foundation’s mission by establishing a shared workflow model and common terminology for agentic AI systems, producing and extending open specifications and projects, interoperability guidelines, and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
 
 ## Chairs
 
