@@ -5,32 +5,35 @@
 ### 1. Working Group Name
 
 - **Working Group Name:** Workflows and Process Integration
-- **Short Name / Acronym:** [WG Acronym]
+- **Short Name / Acronym:** [W&PI]
 - **Date Approved:** [YYYY-MM-DD]
 - **Last Updated:** [YYYY-MM-DD]
-- **Homepage / Repo (if applicable):** [URL]
-- **Primary Contact (Chair/Lead):** Yaron Schneider, yaron@diagrid.io
+- **Homepage / Repo:** https://github.com/aaif/wg-workflows-and-process-integration
+- **Primary Contact (Chair):** Yaron Schneider, yaron@diagrid.io
 
 ### 2. Purpose and Mission
 
 #### Mission Statement
 
-The Workflows and Process Integration Working Group advances the Agentic AI Foundation’s mission by establishing a shared workflow model and common terminology for agentic AI systems, producing and extending open specifications and projects, interoperability guidelines, and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
+The Workflows and Process Integration Working Group advances the Agentic AI Foundation's mission by establishing a shared workflow model and common terminology for agentic AI systems, producing and extending open specifications and projects, interoperability guidelines, and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
 
 #### Why this Working Group exists
 
 This Working Group was formed to address:
 
-- [Problem/need #1]
-- [Problem/need #2]
-- [Problem/need #3]
+- How do we define common workflow primitives (tasks, tool calls, branching, handoffs) that work across agent frameworks and runtimes?
+- How do we standardize the way agents coordinate with external systems, tools, and human reviewers within multi-step workflows?
+- How do we ensure agent workflow definitions are portable across different frameworks and execution environments, avoiding vendor lock-in?
+- How do we enable adoption of agent workflows that require stateful replayability and reliable failure recovery?
+- How do we establish production-ready operational patterns for running agent workflows at scale?
 
 #### Alignment to Foundation Goals
 
 The work of this WG supports:
 
-- [Foundation strategic pillar or goal #1]
-- [Foundation strategic pillar or goal #2]
+- Support the primary imperative that agentic AI requires complex, multi-step interaction by defining how workflows and agents orchestrate each other, including existing systems and human reviewers across organizational boundaries.
+- Lower enterprise adoption barriers by establishing common patterns for workflow execution, failure recovery, human-in-the-loop coordination, and production operations.
+- Advance agentic AI technologies by producing vendor-neutral workflow specifications and reference architectures that enable interoperability across frameworks and execution environments.
 
 > **Context:** The Agentic AI Foundation is hosted within Linux Foundation and operates with community governance patterns similar in spirit to Cloud Native Computing Foundation and PyTorch Foundation.
 
@@ -38,89 +41,129 @@ The work of this WG supports:
 
 #### In Scope (what the WG will do)
 
-- [In-scope item #1]
-- [In-scope item #2]
-- [In-scope item #3]
+**A. Agent Workflow Models and Semantics**
+- Common terminology and primitives for agent workflows (tasks, tool calls, branching, sub-agents, retries)
+- Standard representation of agent workflow structures across frameworks
+- Execution semantics for agent workflows (step ordering, parallelism, conditional paths)
+- Agent handoff semantics between agents and sub-agents
+- *Motivation:* Industry adoption challenges across agent frameworks
+
+**B. Long-Running and Stateful Agent Execution**
+- Patterns for workflows that run for minutes, hours, or days
+- Handling partial completion and resuming interrupted agent workflows
+- Workflow state persistence models
+- Handling retries, idempotency, and failure recovery in agent workflows
+- Workflow-level audit logs and systems of record (execution history, step outcomes, decision points) — distinct from runtime observability signals such as traces and metrics, which are handled by the Observability Working Group
+- *Motivation:* Enterprise adoption challenges with long-running AI agents
+
+**C. Tool Invocation and External System Coordination**
+- Standard workflow patterns for agent interaction with external systems
+- Workflow coordination between agents and tools (APIs, CLIs, services)
+- Handling multi-step tool execution within workflows
+- Consistency patterns when agent workflows interact with external stateful systems
+- *Motivation:* Enterprise workflow orchestration challenges
+
+**D. Human-in-the-Loop Workflow Patterns**
+- Workflow patterns for human approvals and interventions
+- Interruptible workflows that pause for human review
+- Escalation and fallback workflows when agent execution cannot proceed autonomously
+- Design patterns for combining autonomous and human-driven steps
+- *Motivation:* Enterprise agent adoption requirements
+
+**E. Workflow Portability and Interoperability**
+- Portable workflow descriptions across agent runtimes
+- Workflow interchange formats
+- Agent handoff between different frameworks or execution environments
+- Compatibility guidelines for workflow portability
+- *Motivation:* Multi-framework enterprise environments
+
+**F. Operational Patterns for Production Agent Workflows**
+- Reference architectures for running agent workflows in production systems
+- Failure handling patterns and workflow lifecycle management
+- Best practices for scaling large numbers of concurrent agent workflows
+- *Motivation:* Enterprise operational challenges with agent systems
 
 #### Out of Scope (what the WG will not do)
 
-- [Out-of-scope item #1]
-- [Out-of-scope item #2]
+- Model training, LLM architecture, and model development are outside the scope of this working group.
+- Prompt engineering methodologies and prompt optimization techniques are deferred to other technical groups.
+- Security, privacy, and attack surface analysis are handled by the Security Working Group.
+- Observability, tracing, debugging, and telemetry for agent systems are handled by the Observability Working Group.
+- Ethics, governance frameworks, and regulatory considerations belong to the Governance & Risk Working Group.
+- Evaluation of model reasoning quality and accuracy belongs to the Accuracy and Reliability Working Group.
 
 #### Assumptions and Dependencies
 
-- **Assumptions:** [e.g., "Upstream projects will provide X interface"]
-- **Dependencies:** [other WGs/projects/standards bodies]
+- **Assumptions:** Agent frameworks and runtimes will continue to evolve independently; this WG produces standards and patterns that layer on top of existing execution environments rather than replacing them.
+- **Dependencies:** This WG has interactions with the Reliability & Accuracy Working Group (reliability expectations of agentic workflows), the Observability Working Group (tracing and telemetry for workflow runs), and the Identity & Trust Working Group (agent identity and delegation within workflows).
 
 ### 4. Goals, Deliverables, and Success Criteria
 
-#### 12-Month Goals (recommended: 3–6)
+#### 12-Month Goals
 
-- [Goal #1]
-- [Goal #2]
-- [Goal #3]
+- Define a taxonomy of common workflow terms and primitives used across agent frameworks
+- Identify and document critical use cases for agent workflows across enterprise and consumer contexts
+- Produce a workflow reference architecture for agent workflow execution
 
 #### Planned Deliverables
 
-For each deliverable, define owner, format, and target date.
-
-- **[Deliverable Name]** — Owner: [Role/Name], Format: [spec/code/report], Target: [YYYY-MM-DD]
-- **[Deliverable Name]** — Owner: [Role/Name], Format: [spec/code/report], Target: [YYYY-MM-DD]
+- **Workflow Taxonomy** — Owner: [TBD], Format: report, Target: [TBD]
+- **Critical Use Cases** — Owner: [TBD], Format: report, Target: [TBD]
+- **Workflow Reference Architecture** — Owner: [TBD], Format: report, Target: [TBD]
 
 #### Definition of Done (DoD)
 
 A deliverable is considered complete when:
 
-- [Criteria #1, e.g., reviewed/approved via WG process]
-- [Criteria #2, e.g., published in repo/site]
-- [Criteria #3, e.g., reference implementation or tests available]
+- Presented to the broader WG membership, with feedback incorporated or explicitly dispositioned
+- Reviewed and approved via the WG consensus process with no unresolved objections
+- Published in the WG repository in its final form
 
-#### Success Metrics (KPIs) (pick a small set)
+#### Success Metrics (KPIs)
 
-- **Adoption:** [e.g., number of downstream projects implementing spec]
-- **Quality:** [e.g., passing conformance suite, security review completed]
-- **Community:** [e.g., active contributors, meeting attendance, issue throughput]
-- **Timeliness:** [e.g., % milestones met]
+- **Timeliness:** Deliverable targets and milestones met
+- **Community:** Active contributors, meeting attendance, issue throughput
+- **Adoption:** Number of downstream projects or frameworks referencing WG specifications
 
 ### 5. Working Methods
 
 #### Operating Model
 
-- [Consensus-driven / chair-led consensus / voting as fallback]
-- Work tracked in: [GitHub org/repo, issue tracker]
-- Primary artifacts: [specs, reference implementations, guidance docs, test suites]
+- Consensus-driven with chair-led facilitation; voting as fallback
+- Work tracked in: [GitHub repository](https://github.com/aaif/wg-workflows-and-process-integration)
+- Primary artifacts: specifications, reference architectures, guidance docs, design pattern catalogs
 
 #### Meetings
 
-- **Cadence:** [weekly/biweekly/monthly]
-- **Duration:** [30/60/90 minutes]
-- **Time Zone Considerations:** [e.g., alternating times]
-- **Open Meetings:** [Yes/No] (default: Yes)
-- **Minutes/Notes:** [where notes are stored]
-- **Recordings:** [policy and storage location, if any]
+- **Cadence:** Every other week; Thursday 8:00am PT
+- **Duration:** 60 minutes
+- **Time Zone Considerations:** None
+- **Open Meetings:** Working Groups are only open to AAIF members at this time. Participants must be invited to join.
+- **Minutes/Notes:** Google Drive (shared with WG members upon joining)
+- **Recordings:** Available via [LFX OpenProfile](https://openprofile.dev/). Create a Linux Foundation (LFX) account to access meetings, AI summaries, recordings, and more.
+- **Zoom:** Meeting link shared with WG members upon joining
 
 #### Communication Channels
 
-- **Async:** [mailing list/forum/Slack/Matrix]
-- **Sync:** [Zoom/Meet]
-- **Announcements:** [mailing list/tag]
+- **Async:** [Mailing list](mailto:wg-workflows-process-integration@lists.aaif.io), Private Discord channel (link shared with WG members upon joining)
+- **Sync:** Zoom (see meeting link above)
+- **Announcements:** Mailing list
 
 ### 6. Membership and Participation
 
 #### Who can participate
 
-Participation is open to all individuals and organizations consistent with foundation policies.
+Working Groups are currently open to AAIF members only. Participants must be invited to join. If someone from your organization would like to participate, please have them sign up through the foundation.
 
-#### Member Roles (customize as needed)
+#### Member Roles
 
-- **Participants:** anyone attending meetings or contributing asynchronously.
-- **Contributors:** individuals making substantive contributions (issues, PRs, docs, reviews).
-- **Maintainers/Approvers (optional):** individuals with approval rights in repositories.
+- **Contributors:** anyone attending meetings or contributing asynchronously.
+- **Maintainers/Approvers:** individuals with approval rights in repositories.
 - **Chairs/Co-Chairs:** individuals responsible for operations and facilitation.
 
 #### Joining
 
-To join, a participant should: [e.g., join mailing list + attend 2 meetings + sign CLA/DCO if required].
+To join, a participant should: join the mailing list, sign the CLA/DCO if required, and request an invitation to the Working Group.
 
 #### Expectations
 
@@ -133,21 +176,22 @@ To join, a participant should: [e.g., join mailing list + attend 2 meetings + si
 #### Leadership Structure
 
 - **Chair(s):** Yaron Schneider
-- **Co-Chair(s) (optional):** Adam Seligman
+- **Co-Chair(s):** Adam Seligman
+- **Program Manager:** [TBD]
 
 #### Selection and Term
 
-- **Chairs are selected by:** [election]
-- **Term Length:** [e.g., 12 months]
-- **Renewal:** [allowed/not allowed, max consecutive terms]
-- **Removal/Resignation:** [process]
+- **Chairs are selected by:** Election
+- **Term Length:** 12 months
+- **Renewal:** Allowed
+- **Removal/Resignation:** [TBD]
 
 #### Decision Process
 
 - **Default method:** rough consensus documented in issues/meeting notes.
 - **When consensus cannot be reached:**
-  - **Escalation path:** [e.g., TC / Foundation Governing Board]
-  - **Fallback vote rules (if used):** quorum [%], threshold [simple majority/supermajority], voting eligibility [contributors/maintainers].
+  - **Escalation path:** TC / Foundation Governing Board
+  - **Fallback vote rules (if used):** quorum 50%, threshold simple majority, voting eligibility: contributors and maintainers.
 
 #### Quorum (if voting is used)
 
@@ -157,18 +201,19 @@ Quorum is met when 50% eligible voters are present or 50% have responded asynchr
 
 #### Internal Coordination
 
-- **Liaison(s) to other WGs:** [Names/roles]
-- **Shared deliverables/dependencies:** [list]
+- **Liaison(s) to other WGs:** [TBD]
+- **Shared deliverables/dependencies:**
+  - Reliability & Accuracy Working Group: reliability expectations for agent workflows
+  - Observability Working Group: tracing, telemetry, and debugging for agent workflows
+  - Identity & Trust Working Group: agent identity, delegation, and authorization within workflows
 
 #### External Coordination (optional)
 
-- **Standards bodies / industry groups:** [names]
-- **Upstream/downstream projects:** [names]
-- **Policy for external statements:** [who can speak on behalf of WG]
+- **Standards bodies / industry groups:** [TBD]
+- **Upstream/downstream projects:** [TBD]
+- **Policy for external statements:** [TBD]
 
 ### 9. Intellectual Property, Licensing, and Compliance
-
-> Use language consistent with foundation policies; customize only if you have explicit approval.
 
 #### Licensing
 
@@ -177,7 +222,7 @@ Quorum is met when 50% eligible voters are present or 50% have responded asynchr
 
 #### Contribution Requirements
 
-Contributions must comply with: [DCO/CLA policy], repository contribution guidelines, and review requirements.
+Contributions must comply with: DCO/CLA policy, repository contribution guidelines, and review requirements.
 
 #### Antitrust and Competition Law
 
@@ -188,55 +233,29 @@ Contributions must comply with: [DCO/CLA policy], repository contribution guidel
 
 This WG adheres to the Linux Foundation Project's Code of Conduct.
 
-### 10. Security, Safety, and Responsible AI (Agentic AI-Specific)
-
-#### Security Practices
-
-- **Threat modeling expectations:** [required/optional]
-- **Vulnerability disclosure process:** [link or description]
-- **Security review gates for releases:** [e.g., dependency scanning, SAST, SBOM]
-
-#### Agentic Safety and Risk Management
-
-- **Safety considerations relevant to this WG:** [e.g., tool access control, prompt injection defenses, autonomy bounds]
-- **Required practices (if any):** [e.g., evaluation harnesses, red teaming, abuse case documentation]
-- **Data handling expectations:** [e.g., avoid sensitive data in issues/logs]
-
-#### Privacy
-
-- **Guidance for handling personal data:** [policy link/summary]
-- **Logging/telemetry guidelines:** [what is acceptable]
-
-### 11. Deliverable Lifecycle and Publication
+### 10. Deliverable Lifecycle and Publication
 
 #### Release Cadence
 
-- **Expected cadence:** [quarterly/biannual/annual/as needed]
-- **Versioning scheme:** [SemVer/date-based/spec versioning]
+- **Expected cadence:** As needed, with quarterly progress reviews
+- **Versioning scheme:** SemVer for specifications, date-based for reports and guidance documents
 
 #### Review and Approval
 
-- **Required reviewers:** [roles]
-- **Approval mechanism:** [LGTM count, maintainer approval, chair sign-off]
+Chair or co-chair sign-off required.
 
 #### Archival / Deprecation
 
-- **Deprecation policy:** [how and when]
-- **Sunset criteria:** [e.g., no activity for N months, goals achieved]
+- **Deprecation policy:** Deliverables may be deprecated by WG consensus with a minimum 30-day notice period
+- **Sunset criteria:** No active maintenance or community interest for 6 months
 
-### 12. Resources and Budget (Optional)
-
-- **Expected infrastructure needs:** [CI, hosting, domains]
-- **Funding requests (if any):** [events, audits, tooling]
-- **Sponsor engagement model (if applicable):** [brief description]
-
-### 13. Amendments
+### 11. Amendments
 
 This charter may be amended by:
 
-[consensus/vote] of the Working Group, with [notice period] and documentation in [repo/location], and subject to [TOC/board] approval if required.
+Consensus of the Working Group, with a minimum 14-day notice period and documentation in the [WG repository](https://github.com/aaif/wg-workflows-and-process-integration), and subject to TOC/board approval if required.
 
-### 14. Ratification
+### 12. Ratification
 
 By approving this charter, the Working Group commits to operating transparently, in the open, and in alignment with foundation policies.
 
@@ -248,7 +267,7 @@ By approving this charter, the Working Group commits to operating transparently,
 
 ## Optional Appendix A: Role Descriptions
 
-### Chair
+### Chair / Co-Chair
 
 Runs meetings, sets agendas, ensures notes, drives milestones, represents WG in cross-WG coordination.
 
