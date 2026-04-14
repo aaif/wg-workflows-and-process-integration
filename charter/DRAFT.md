@@ -10,6 +10,7 @@
 - **Last Updated:** [YYYY-MM-DD]
 - **Homepage / Repo:** https://github.com/aaif/wg-workflows-and-process-integration
 - **Primary Contact (Chair):** Yaron Schneider, yaron@diagrid.io
+- **Secondary Contact (Co-Chair):** Adam Seligman, adam@workato.com
 
 ### 2. Purpose and Mission
 
