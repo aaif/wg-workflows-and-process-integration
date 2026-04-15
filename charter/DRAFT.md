@@ -109,15 +109,16 @@ The work of this WG supports:
 #### Planned Deliverables
 
 - **Workflow Taxonomy** — Owner: [TBD], Format: report, Target: [TBD]
-- **Critical Use Cases** — Owner: [TBD], Format: report, Target: [TBD]
+- **Workflow Best Practices** — Owner: [TBD], Format: report, Target: [TBD]
 - **Workflow Reference Architecture** — Owner: [TBD], Format: report, Target: [TBD]
+- **Horizontal Use Cases Landscape** — Owner: [TBD], Format: report, Target: [TBD]
 
 #### Definition of Done (DoD)
 
 A deliverable is considered complete when:
 
 - Presented to the broader WG membership, with feedback incorporated or explicitly dispositioned
-- Reviewed and approved via the WG consensus process with no unresolved objections
+- Reviewed and approved via a WG super majority vote with no unresolved objections
 - Published in the WG repository in its final form
 
 #### Success Metrics (KPIs)
@@ -132,7 +133,8 @@ A deliverable is considered complete when:
 
 - Consensus-driven with chair-led facilitation; voting as fallback
 - Work tracked in: [GitHub repository](https://github.com/aaif/wg-workflows-and-process-integration)
-- Primary artifacts: specifications, reference architectures, guidance docs, design pattern catalogs
+- Primary artifacts: best practice guides, reference architectures, whitepapers, design pattern catalogs
+- Secondary stretch-goal artifacts: Specifications
 
 #### Meetings
 
@@ -158,8 +160,7 @@ Working Groups are currently open to AAIF members only. Participants must be inv
 
 #### Member Roles
 
-- **Contributors:** anyone attending meetings or contributing asynchronously.
-- **Maintainers/Approvers:** individuals with approval rights in repositories.
+- **Contributors:** any WG member attending meetings or contributing asynchronously.
 - **Chairs/Co-Chairs:** individuals responsible for operations and facilitation.
 
 #### Joining
@@ -184,15 +185,15 @@ To join, a participant should: join the mailing list, sign the CLA/DCO if requir
 
 - **Chairs are selected by:** Election
 - **Term Length:** 12 months
-- **Renewal:** Allowed
-- **Removal/Resignation:** [TBD]
+- **Renewal:** Allowed, maximum of 2 consecutive terms. Positions carry on to next term automatically if no one else is contending.
+- **Removal:** Super majority vote
 
 #### Decision Process
 
 - **Default method:** rough consensus documented in issues/meeting notes.
 - **When consensus cannot be reached:**
+  - **Vote rules (if used):** quorum 50%, threshold simple or super majority, voting eligibility: Platinum and Gold members.
   - **Escalation path:** TC / Foundation Governing Board
-  - **Fallback vote rules (if used):** quorum 50%, threshold simple majority, voting eligibility: contributors and maintainers.
 
 #### Quorum (if voting is used)
 
@@ -221,10 +222,6 @@ Quorum is met when 50% eligible voters are present or 50% have responded asynchr
 - **Code contributions:** [e.g., Apache-2.0/MIT] (or "per repository license")
 - **Documentation/specs:** [e.g., CC-BY-4.0] (or "per repository license")
 
-#### Contribution Requirements
-
-Contributions must comply with: DCO/CLA policy, repository contribution guidelines, and review requirements.
-
 #### Antitrust and Competition Law
 
 - Meetings and communications must follow the foundation's antitrust guidelines.
@@ -247,14 +244,14 @@ Chair or co-chair sign-off required.
 
 #### Archival / Deprecation
 
-- **Deprecation policy:** Deliverables may be deprecated by WG consensus with a minimum 30-day notice period
+- **Deprecation policy:** Deliverables may be deprecated by a WG super majority vote with a minimum 30-day notice period
 - **Sunset criteria:** No active maintenance or community interest for 6 months
 
 ### 11. Amendments
 
 This charter may be amended by:
 
-Consensus of the Working Group, with a minimum 14-day notice period and documentation in the [WG repository](https://github.com/aaif/wg-workflows-and-process-integration), and subject to TOC/board approval if required.
+Super majority vote of the Working Group and documentation in the [WG repository](https://github.com/aaif/wg-workflows-and-process-integration). Subject to TOC/board approval if required.
 
 ### 12. Ratification
 
@@ -271,10 +268,6 @@ By approving this charter, the Working Group commits to operating transparently,
 ### Chair / Co-Chair
 
 Runs meetings, sets agendas, ensures notes, drives milestones, represents WG in cross-WG coordination.
-
-### Maintainer/Approver
-
-Responsible for repository health, reviews/merges, release readiness, and technical direction.
 
 ### Contributor
 
