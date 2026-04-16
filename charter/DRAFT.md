@@ -43,7 +43,7 @@ The work of this WG supports:
 #### In Scope (what the WG will do)
 
 **A. Agent Workflow Models and Semantics**
-- Common terminology and primitives for agent workflows (tasks, tool calls, branching, sub-agents, retries)
+- Common terminology and primitives for agent workflows (tasks, tool calls, branching, sub-agents, retries etc.)
 - Standard representation of agent workflow structures across frameworks
 - Execution semantics for agent workflows (step ordering, parallelism, conditional paths)
 - Agent handoff semantics between agents and sub-agents
@@ -81,7 +81,7 @@ The work of this WG supports:
 **F. Operational Patterns for Production Agent Workflows**
 - Reference architectures for running agent workflows in production systems
 - Failure handling patterns and workflow lifecycle management
-- Best practices for scaling large numbers of concurrent agent workflows
+- Best practices for operating and scaling differnet agentic workflows (deterministic, probablistic, etc.)
 - *Motivation:* Enterprise operational challenges with agent systems
 
 #### Out of Scope (what the WG will not do)
@@ -103,7 +103,7 @@ The work of this WG supports:
 #### 12-Month Goals
 
 - Define a taxonomy of common workflow terms and primitives used across agent frameworks
-- Identify and document critical use cases for agent workflows across enterprise and consumer contexts
+- Identify and document a prioritized list of use cases for agent workflows across enterprise and consumer contexts
 - Produce a workflow reference architecture for agent workflow execution
 
 #### Planned Deliverables
@@ -124,8 +124,8 @@ A deliverable is considered complete when:
 #### Success Metrics (KPIs)
 
 - **Timeliness:** Deliverable targets and milestones met
-- **Community:** Active contributors, meeting attendance, issue throughput
-- **Adoption:** Number of downstream projects or frameworks referencing WG specifications
+- **Community:** Active contributors, meeting attendance
+- **Adoption:** Number of downstream projects or frameworks referencing and providing attributions to WG deliverables
 
 ### 5. Working Methods
 
