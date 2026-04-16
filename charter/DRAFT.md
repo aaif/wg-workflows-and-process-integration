@@ -36,8 +36,6 @@ The work of this WG supports:
 - Lower enterprise adoption barriers by establishing common patterns for workflow execution, failure recovery, human-in-the-loop coordination, and production operations.
 - Advance agentic AI technologies by producing vendor-neutral workflow specifications and reference architectures that enable interoperability across frameworks and execution environments.
 
-> **Context:** The Agentic AI Foundation is hosted within Linux Foundation and operates with community governance patterns similar in spirit to Cloud Native Computing Foundation and PyTorch Foundation.
-
 ### 3. Scope
 
 #### In Scope (what the WG will do)
