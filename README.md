@@ -1,6 +1,6 @@
 # Workflows and Process Integration Working Group
 
-For more information, review the Working Group Charter (*coming soon*).
+For more information, review the [Working Group Charter](./charter/DRAFT.md).
 
 ## Mission
 
