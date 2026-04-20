@@ -122,8 +122,8 @@ A deliverable is considered complete when:
 #### Success Metrics (KPIs)
 
 - **Timeliness:** Deliverable targets and milestones met
-- **Community:** Active contributors, meeting attendance
-- **Adoption:** Number of downstream projects or frameworks referencing and providing attributions to WG deliverables
+- **Community:** Active contributors, meeting attendance, participation from 5+ member organizations
+- **Adoption:** 5+ references and/or attributions from end-user companies, downstream projects or frameworks
 
 ### 5. Working Methods
 
