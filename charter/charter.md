@@ -38,7 +38,7 @@ The work of this WG supports:
 
 ### 3. Scope
 
-#### In Scope (what the WG will do)
+#### In Scope
 
 **A. Agent Workflow Models and Semantics**
 - Common terminology and primitives for agent workflows (tasks, tool calls, branching, sub-agents, retries etc.)
