@@ -16,7 +16,7 @@
 
 #### Mission Statement
 
-The Workflows and Process Integration Working Group advances the Agentic AI Foundation's mission by establishing a shared workflow model and common terminology for agentic AI systems, producing and extending open specifications and projects, interoperability guidelines, and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
+The Workflows and Process Integration Working Group advances the Agentic AI Foundation’s mission by establishing a shared workflow model and common terminology for agentic AI systems, extending open specifications and projects, producing interoperability guidelines and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
 
 #### Why this Working Group exists
 
@@ -33,7 +33,7 @@ This Working Group was formed to address:
 The work of this WG supports:
 
 - Support the primary imperative that agentic AI requires complex, multi-step interaction by defining how workflows and agents orchestrate each other, including existing systems and human reviewers across organizational boundaries.
-- Lower enterprise adoption barriers by establishing common patterns for workflow execution, failure recovery, human-in-the-loop coordination, and production operations.
+- Lower enterprise adoption barriers by establishing common patterns and terminology for workflow execution, failure recovery, human-in-the-loop coordination, and production operations.
 - Advance agentic AI technologies by producing vendor-neutral workflow specifications and reference architectures that enable interoperability across frameworks and execution environments.
 
 ### 3. Scope
@@ -98,7 +98,7 @@ The work of this WG supports:
 
 ### 4. Goals, Deliverables, and Success Criteria
 
-#### 12-Month Goals
+#### 6-Month Goals
 
 - Define a taxonomy of common workflow terms and primitives used across agent frameworks
 - Identify and document a prioritized list of use cases for agent workflows across enterprise and consumer contexts
@@ -106,10 +106,10 @@ The work of this WG supports:
 
 #### Planned Deliverables
 
-- **Workflow Taxonomy** — Owner: [TBD], Format: report, Target: [TBD]
-- **Workflow Best Practices** — Owner: [TBD], Format: report, Target: [TBD]
-- **Workflow Reference Architecture** — Owner: [TBD], Format: report, Target: [TBD]
-- **Horizontal Use Cases Landscape** — Owner: [TBD], Format: report, Target: [TBD]
+- **Workflow Taxonomy** — Owner: WG, Format: document, Target: 06.01.2026
+- **Workflow Best Practices** — Owner: WG, Format: document, Target: 07.01.2026
+- **Workflow Reference Architecture** — Owner: WG, report: document, Target: 08.01.2026
+- **Horizontal Use Cases Landscape** — Owner: WG, Format: report, Target: 07.01.2026
 
 #### Definition of Done (DoD)
 
