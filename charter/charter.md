@@ -45,7 +45,7 @@ The work of this WG supports:
 - Standard representation of agent workflow structures across frameworks
 - Execution semantics for agent workflows (step ordering, parallelism, conditional paths)
 - Agent handoff semantics between agents and sub-agents
-- *Motivation:* Industry adoption challenges across agent frameworks
+- *Motivation:* Industry adoption challenges across agent frameworks due to misalignment on key definitions and lack of knowledge in translating deterministic workflow models to non-deterministic models used by autonomous agents
 
 **B. Long-Running and Stateful Agent Execution**
 - Patterns for workflows that run for minutes, hours, or days
@@ -53,35 +53,35 @@ The work of this WG supports:
 - Workflow state persistence models
 - Handling retries, idempotency, and failure recovery in agent workflows
 - Workflow-level audit logs and systems of record (execution history, step outcomes, decision points) — distinct from runtime observability signals such as traces and metrics, which are handled by the Observability Working Group
-- *Motivation:* Enterprise adoption challenges with long-running AI agents
+- *Motivation:* Enterprise adoption challenges with long-running AI agents that are sensitive to data loss. Lack of controls and systems to deal with interruptions in agent workflows that can cause loss of state, context and progress
 
 **C. Tool Invocation and External System Coordination**
 - Standard workflow patterns for agent interaction with external systems
 - Workflow coordination between agents and tools (APIs, CLIs, services)
 - Handling multi-step tool execution within workflows
 - Consistency patterns when agent workflows interact with external stateful systems
-- *Motivation:* Enterprise workflow orchestration challenges
+- *Motivation:* Enterprise workflow orchestration challenges related to connecting multiple workflows into a single, coherent execution model that can be governed centrally and run reliably
 
 **D. Human-in-the-Loop Workflow Patterns**
 - Workflow patterns for human approvals and interventions
 - Interruptible workflows that pause for human review
 - Escalation and fallback workflows when agent execution cannot proceed autonomously
 - Design patterns for combining autonomous and human-driven steps
-- *Motivation:* Enterprise agent adoption requirements
+- *Motivation:* Enterprise agent adoption requirements for gatekeeping agentic operations with human review and approvals
 
 **E. Workflow Portability and Interoperability**
 - Portable workflow descriptions across agent runtimes
 - Workflow interchange formats
 - Agent handoff between different frameworks or execution environments
 - Compatibility guidelines for workflow portability
-- *Motivation:* Multi-framework enterprise environments
+- *Motivation:* Enterprise environments will use multiple frameworks and need a standard way to communicate and share state across multiple technology stacks
 
 **F. Operational Patterns for Production Agent Workflows**
 - Reference architectures for running agent workflows in production systems
 - Failure handling patterns and workflow lifecycle management
 - Best practices for operating and scaling differnet agentic workflows (deterministic, probablistic, etc.)
-- *Motivation:* Enterprise operational challenges with agent systems
-
+- *Motivation:* Enable platform and infrastructure teams to run workflows at their desired scale and understand how to create reusable patterns for workflow deployments across the organization
+  
 #### Out of Scope (what the WG will not do)
 
 - Model training, LLM architecture, and model development are outside the scope of this working group.
@@ -98,7 +98,7 @@ The work of this WG supports:
 
 ### 4. Goals, Deliverables, and Success Criteria
 
-#### 6-Month Goals
+#### 3-Month Goals
 
 - Define a taxonomy of common workflow terms and primitives used across agent frameworks
 - Identify and document a prioritized list of use cases for agent workflows across enterprise and consumer contexts
