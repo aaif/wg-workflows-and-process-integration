@@ -6,8 +6,8 @@
 
 - **Working Group Name:** Workflows and Process Integration
 - **Short Name / Acronym:** [W&PI]
-- **Date Approved:** [YYYY-MM-DD]
-- **Last Updated:** [YYYY-MM-DD]
+- **Date Approved:** 2026-05-13
+- **Last Updated:** 2026-05-13
 - **Homepage / Repo:** https://github.com/aaif/wg-workflows-and-process-integration
 - **Primary Contact (Chair):** Yaron Schneider, yaron@diagrid.io
 - **Secondary Contact (Co-Chair):** Adam Seligman, adam@workato.com
