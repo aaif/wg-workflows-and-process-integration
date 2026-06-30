@@ -20,8 +20,8 @@ RA files reference catalog blocks — they don't redefine them.
 ## How we work
 
 - Async first. Discord = ideas; Google Doc = proposals; GitHub = artifacts.
-- Promote a Doc item to a PR once it has an owner.
-- Discussion on the PR. Every artifact has one owner.
+- Contributions happen through PRs: fork the repo, propose changes, discuss on the PR, and merge when ready.
+- Keep artifacts easy to maintain by making ownership clear where useful.
 - Abstraction = components + relationships, not implementation. Properties, not mechanisms.
 
 ## Contribute
