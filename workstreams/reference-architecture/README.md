@@ -19,7 +19,7 @@ RA files reference catalog blocks — they don't redefine them.
 
 ## How we work
 
-- Async first. Google Doc = scratchpad; GitHub = artifacts.
+- Async first. Discord = ideas; Google Doc = proposals; GitHub = artifacts.
 - Promote a Doc item to a PR once it has an owner.
 - Discussion on the PR. Every artifact has one owner.
 - Abstraction = components + relationships, not implementation. Properties, not mechanisms.
