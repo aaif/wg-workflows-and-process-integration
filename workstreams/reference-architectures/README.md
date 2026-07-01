@@ -1,4 +1,4 @@
-# Reference Architecture Workstream
+# Reference Architectures Workstream
 
 Workflows & Process Integration WG · Agentic AI Foundation
 
