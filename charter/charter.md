@@ -7,7 +7,7 @@
 - **Working Group Name:** Workflows and Process Integration
 - **Short Name / Acronym:** [W&PI]
 - **Date Approved:** 2026-05-13
-- **Last Updated:** 2026-05-13
+- **Last Updated:** 2026-07-23
 - **Homepage / Repo:** https://github.com/aaif/wg-workflows-and-process-integration
 - **Primary Contact (Chair):** Yaron Schneider, yaron@diagrid.io
 - **Secondary Contact (Co-Chair):** Adam Seligman, adam@workato.com
@@ -139,7 +139,7 @@ A deliverable is considered complete when:
 - **Cadence:** Every other week; Thursday 8:00am PT
 - **Duration:** 60 minutes
 - **Time Zone Considerations:** None
-- **Open Meetings:** Working Groups are only open to AAIF members at this time. Participants must be invited to join.
+- **Open Meetings:** Participation is open to all individuals and organizations consistent with AAIF and Linux Foundation policies.
 - **Minutes/Notes:** Google Drive (shared with WG members upon joining)
 - **Recordings:** Available via [LFX OpenProfile](https://openprofile.dev/). Create a Linux Foundation (LFX) account to access meetings, AI summaries, recordings, and more.
 - **Zoom:** Meeting link shared with WG members upon joining
@@ -154,7 +154,7 @@ A deliverable is considered complete when:
 
 #### Who can participate
 
-Working Groups are currently open to AAIF members only. Participants must be invited to join. If someone from your organization would like to participate, please have them sign up through the foundation.
+Participation is open to all individuals and organizations consistent with AAIF and Linux Foundation policies.
 
 #### Member Roles
 
@@ -249,15 +249,14 @@ Chair or co-chair sign-off required.
 
 This charter may be amended by:
 
-Super majority vote of the Working Group and documentation in the [WG repository](https://github.com/aaif/wg-workflows-and-process-integration). Subject to TOC/board approval if required.
+Super majority vote of the Working Group and documentation in the [WG repository](https://github.com/aaif/wg-workflows-and-process-integration). Subject to TC/board approval if required.
 
 ### 12. Ratification
 
 By approving this charter, the Working Group commits to operating transparently, in the open, and in alignment with foundation policies.
 
-- **Approved By:** [TOC / Governing Board / Steering Committee]
-- **Date:** [YYYY-MM-DD]
-- **Signatories (optional):** [Names/Titles]
+- **Approved By:** [TC]
+- **Date:** 2026-05-13
 
 ---
 
