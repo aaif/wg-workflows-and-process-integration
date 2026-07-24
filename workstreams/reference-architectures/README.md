@@ -4,22 +4,52 @@ Workflows & Process Integration WG · Agentic AI Foundation
 
 ## What this workstream is for
 
-Produce the workflow reference architecture for agent workflow execution.
+Produce a catalog of reference architectures and reusable patterns for agent
+workflow execution.
 
-Start with two generic reference architectures:
+This contribution proposes organizing reference architectures around the
+**job a practitioner needs the system to perform**, rather than treating agent
+count as the top-level architecture. "Single-agent" and "multi-agent" remain
+useful structural characteristics, but they do not by themselves say what the
+workflow is built to accomplish or which guarantees it provides.
 
-- **single-agent workflow**
-- **multi-agent workflow**
+The proposed model is recorded explicitly in
+[the job-oriented architecture decision note](decisions/job-oriented-architecture-model.md)
+for working group review.
 
-Scenarios validate and illustrate the reference architectures. If a scenario does not fit either generic architecture, that is a signal that a new reference architecture may be needed.
+### Architectures and patterns
+
+- A **reference architecture** is a complete composition: the reusable
+  patterns, required capabilities, boundaries, relationships, guarantees, and
+  exit states for a recognizable practitioner job. Its name should complete
+  the sentence, "we're building a ___."
+- A **pattern** solves one recurring sub-problem and can be adopted
+  independently or composed into multiple architectures. It owns its own
+  invariants and failure modes.
+- A **scenario** tests whether an architecture fits a real use case and makes
+  its behavior concrete. A scenario is validation material, not a separate
+  architecture.
+
+The first worked architecture is a
+[single-agent process with human approval](architectures/single-agent-human-approval.md).
+It composes the
+[proposal/execution split](patterns/proposal-execution-split.md),
+[human approval gate](patterns/human-approval-gate.md), and
+[durable wait](patterns/durable-wait.md) patterns.
 
 ## Guidelines
 
-The RA should act as a checklist: a user brings a use case, walks through the right questions, and lands on a pattern.
+A reference architecture should act as a routing checklist: a practitioner
+brings a use case and determines whether the architecture fits, whether a
+nearby variant fits, or whether an individual pattern is sufficient.
 
-Include determinism hints: where to use cheap deterministic steps, and where LLM reasoning is worth the cost.
+Include guidance for choosing deterministic and model-driven steps: identify
+where conventional workflow logic provides predictable, testable behavior and
+where open-ended reasoning benefits from an LLM.
 
-Start with single-agent workflow first. Treat deterministic and ReAct-style internals as equal implementation choices inside the boundary.
+Start with the smallest job-oriented architecture that exercises the
+workstream's core concerns. Treat deterministic and ReAct-style internals as
+equal implementation choices inside the agent boundary.
 
 Keep the architecture at the component and relationship level.
 
@@ -31,11 +61,17 @@ Use cases and scenarios validate the architectures; they are not separate refere
 ```text
 workstreams/reference-architectures/
 ├── README.md
-├── ra/
-│   ├── ra-single-agent.md
-│   └── ra-multi-agent.md
+├── architectures/           # complete architectures: what you'd say you're building
+│   ├── TEMPLATE.md
+│   └── single-agent-human-approval.md
+├── patterns/                # independently adoptable pattern entries
+│   ├── TEMPLATE.md
+│   ├── durable-wait.md
+│   ├── human-approval-gate.md
+│   └── proposal-execution-split.md
 ├── decisions/
-│   └── TEMPLATE.md
+│   ├── TEMPLATE.md
+│   └── job-oriented-architecture-model.md
 └── docs/
     └── *.md
 ```
