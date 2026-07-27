@@ -1,0 +1,171 @@
+# Workflow Design Specification (WDS) — gated multi-stage delivery pipeline.
+#
+# Sourced from a use-case-landscape contribution (SDLC category, "Gated
+# multi-stage delivery pipeline"). This is the GATED end of a deliberate pair; its
+# twin is autonomous-maintenance-run.wera.yaml. Same class of work (an agent doing
+# software delivery), opposite amount of human-in-the-loop.
+#
+# Trial purpose: show that WERA's coordinate + authority allocation place this at a
+# different point from the "night shift" run using the SAME vocabulary — the
+# difference lands on control_flow_authority, assurance, and the sign-off overlay,
+# not on a different framework. Validates against ../workflow-descriptor.schema.json.
+
+wera_version: v2-descriptor-driven
+
+workflow:
+  id: gated-delivery-pipeline
+  name: Gated Multi-Stage Delivery Pipeline
+  owner: Delivery / Release Engineering
+  intended_outcome: >
+    Take a delivery request through ordered stages — requirements, design, build,
+    review, QA, sign-off, deploy, retro — producing a deployed change plus a
+    per-stage artifact and gate record. The workflow runs itself between gates but
+    stops at defined authority boundaries where a named human must sign off before
+    the next stage proceeds.
+  authoritative_decision_owner: >
+    Named human approvers at each authority-boundary gate; the workflow owns
+    sequencing between gates.
+  run_boundary:
+    start: A delivery request is accepted into the pipeline.
+    terminal_outcomes:
+      - COMPLETED                 # deployed with all gate sign-offs recorded
+      - COMPLETED_WITH_LIMITATION # shipped on a shorter track for a small change
+      - REJECTED                  # a sign-off gate rejected the change
+      - ESCALATED                 # a stage raised an issue beyond its authority
+      - FAILED_TECHNICAL          # build/deploy infrastructure failure
+      - CANCELLED                 # request withdrawn before completion
+
+intake:
+  inputs:
+    sources: [delivery request, source repository]
+    schemas: [delivery-request, stage-artifact]
+    data_classification: [source-code, internal]
+    untrusted_content: false
+  nondeterminism:
+    required: true
+    smallest_semantic_task: >
+      Within a stage (e.g. produce a design, write code, review a diff), decide the
+      content of that stage's artifact. Stage ordering and gates are fixed.
+    reason_rules_insufficient: >
+      The content of design/build/review artifacts is generative and cannot be
+      rule-produced, but which stage runs next and where humans gate is fixed in
+      advance.
+  requested_authority:
+    may_select_branch: true          # short-track vs full-track by change size
+    may_select_tool: true            # within a stage
+    may_propose_write: true          # produces artifacts and deploy proposals
+    may_execute_write: false         # deploy only after sign-off authorises it
+    may_delegate_goal: true          # fans build/review to specialist workers
+  assurance:
+    deterministic_verification: partial  # per-language verification per stage
+    human_review: true
+    human_approval: true                 # sign-off at authority boundaries
+    abstention_allowed: false
+  side_effects:
+    level: EF3                       # deploy is a transactional write to an environment
+    reversible: true                 # via rollback / redeploy
+    idempotent: "yes"
+    compensation_available: true     # rollback is the compensation
+  operations:
+    target_readiness: RT3            # business-critical delivery path
+    impact: IM3
+    latency_objective: hours to days across stages and human gates
+    per_run_budget: per-stage compute and model budgets
+    provenance_required: true
+
+design:
+  coordinates:
+    nondeterminism: ND6              # generative within stages; plan is fixed
+    control_flow_authority: workflow # the pipeline owns stage sequencing
+    actor_topology: multi_agent      # specialist workers per stage, fanned build/review
+    flow_shape: FS7                  # long-running with waits at gates
+    durability: DUR4                 # replayable execution history across gates
+    effect_level: EF3                # deploy is transactional
+    assurance: AS5                   # multi-party sign-off at authority boundaries
+    impact: IM3                      # serious if a bad change ships
+  authority_allocation:
+    control_flow: Workflow engine owns the stage/gate sequence
+    decision: Agents decide stage content; named humans decide each gate
+    action_authorisation: Deploy authorised only by the sign-off gate, bound to a version
+    execution: Specialist agents per stage; deterministic deploy adapter for the effect
+    state: Workflow system of record with per-stage artifacts and gate records
+  primitive_graph:
+    nodes:
+      - { id: n1,  primitive: TRG, label: Accept delivery request }
+      - { id: n2,  primitive: INP, label: Bind request; select track by change size }
+      - { id: n3,  primitive: DBR, label: Short track vs full track branch }
+      - { id: n4,  primitive: DLG, label: Delegate stage goals (requirements/design) }
+      - { id: n5,  primitive: GEN, label: Produce stage artifact }
+      - { id: n6,  primitive: PAR, label: Fan out build and review }
+      - { id: n7,  primitive: DVL, label: Per-language verification / QA gate }
+      - { id: n8,  primitive: CHK, label: Persist stage artifact + gate record }
+      - { id: n9,  primitive: WAI, label: Await human sign-off at authority boundary }
+      - { id: n10, primitive: APR, label: Named approver signs off exact version }
+      - { id: n11, primitive: POL, label: Authorise deploy for the signed-off version }
+      - { id: n12, primitive: IDM, label: Idempotency key for the deploy }
+      - { id: n13, primitive: TXN, label: Deploy change (transactional effect) }
+      - { id: n14, primitive: CMP, label: Rollback path if postcondition fails }
+      - { id: n15, primitive: EVH, label: Record accepted transitions + retro }
+      - { id: n16, primitive: FSK, label: Terminal outcome }
+    edges:
+      - { from: n1,  to: n2 }
+      - { from: n2,  to: n3 }
+      - { from: n3,  to: n4 }
+      - { from: n4,  to: n5 }
+      - { from: n5,  to: n6 }
+      - { from: n6,  to: n7 }
+      - { from: n7,  to: n8 }
+      - { from: n8,  to: n9 }
+      - { from: n9,  to: n10 }
+      - { from: n10, to: n5,  condition: more stages remain }
+      - { from: n10, to: n11, condition: final gate signed off }
+      - { from: n10, to: n16, condition: rejected -> REJECTED }
+      - { from: n11, to: n12 }
+      - { from: n12, to: n13 }
+      - { from: n13, to: n15, condition: postcondition ok }
+      - { from: n13, to: n14, condition: postcondition failed }
+      - { from: n14, to: n16, condition: compensated -> ESCALATED }
+      - { from: n15, to: n16 }
+  effects:
+    - name: deploy-change
+      level: EF3
+      idempotency_key: request-id + signed-version-digest + environment
+      authoriser: Named approver at the sign-off gate (INV-013 exact version)
+      executor: Deterministic deploy adapter with environment-scoped credentials
+  selected_profile: EP1
+  selected_pattern: WP07
+  embedded_patterns: [WP00, WP01, WP08]
+  lifecycle_envelope: WP08
+  overlays: [OV-01, OV-02, OV-05, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03, XB-04]
+  runtime_components: [RC-01, RC-02, RC-03, RC-05, RC-06, RC-07, RC-08, RC-09, RC-10]
+  readiness_tier: RT3
+  conformance_target: CL3
+
+recommendation:
+  deterministic_baseline: >
+    Stage ordering, gates, per-language verification, and the deploy adapter are all
+    deterministic (WP00). Only the CONTENT of each stage's artifact is generative.
+  agent_justification: >
+    Agents produce generative stage artifacts (design, code, review) under fixed
+    sequencing; they never own the flow and never authorise the deploy. Human
+    sign-off at each authority boundary carries assurance (WP07, OV-01).
+  selection_explanation: >
+    Control-flow stays with the workflow, so despite ND6 generative content this is
+    EP1 with a strong human-supervised-action pattern (WP07) at every boundary, not
+    an agent-directed profile. EF3 deploy pulls in transactional controls and OV-02;
+    AS5 multi-party sign-off drives OV-01 and binds approval to an exact version
+    (INV-013); DUR4 replayable history and OV-07 give the paper trail; OV-05
+    compensation covers rollback.
+  alternatives_rejected:
+    - "EP4 (agent-directed) — rejected: the pipeline, not an agent, owns stage
+      sequencing and gates; this is the deliberate contrast with the night-shift run."
+    - "AS2-only (deterministic gate) — insufficient; a business-critical deploy needs
+      human sign-off at authority boundaries, not just a green check."
+    - "EF2 classification — rejected: a production deploy is transactional (EF3), not a
+      reversible sandbox write."
+    - "Omitting OV-05 — rejected: an EF3 deploy needs an explicit compensation
+      (rollback) path."
+  mandatory_primitives: [DBR, DLG, GEN, PAR, DVL, WAI, APR, POL, IDM, TXN, CMP, EVH]
+  required_views: [VW-01, VW-02, VW-05, VW-07, VW-08, VW-09, VW-11]
+  exceptions: []

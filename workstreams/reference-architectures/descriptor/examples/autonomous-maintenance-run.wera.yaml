@@ -1,0 +1,177 @@
+# Workflow Design Specification (WDS) — "night shift" autonomous maintenance run.
+#
+# Sourced from a use-case-landscape contribution (SDLC category, "Autonomous
+# maintenance run"). This is the AUTONOMOUS end of a deliberate pair; its twin is
+# gated-delivery-pipeline.wera.yaml. Same class of work, opposite HITL amount.
+#
+# Trial purpose: does WERA's coordinate cleanly separate an autonomous,
+# deterministic-gate-driven loop from a human-sign-off pipeline WITHOUT inventing
+# new architectural concepts? Validates against ../workflow-descriptor.schema.json.
+
+wera_version: v2-descriptor-driven
+
+workflow:
+  id: autonomous-maintenance-run
+  name: Autonomous Maintenance Run ("night shift")
+  owner: Platform / Developer Productivity
+  intended_outcome: >
+    For each bounded maintenance task (dependency bump, lint/type fix, spec/doc
+    drift), produce a change that makes a deterministic gate (CI + contract/eval
+    checks) go green in an isolated sandbox, and open a pull request for that
+    change. The run never merges and never touches production; a green gate plus
+    an open PR is the success state.
+  authoritative_decision_owner: >
+    The deterministic gate decides pass/fail on the success path; a human owner
+    decides only on escalation (repeated failure or an out-of-scope change).
+  run_boundary:
+    start: >
+      A scheduled tick or a triage-labelled backlog item assigns one bounded task
+      to the run.
+    terminal_outcomes:
+      - COMPLETED            # gate green, PR opened for the exact change
+      - ABSTAINED            # task judged out of allowed scope; nothing attempted
+      - ESCALATED            # repeated failure or over-scope handed to a human
+      - FAILED_BUDGET        # token / iteration / wall-clock budget exhausted
+      - FAILED_TECHNICAL     # sandbox or gate infrastructure failure
+
+intake:
+  inputs:
+    sources: [issue tracker backlog, scheduler]
+    schemas: [maintenance-task]
+    data_classification: [source-code, internal]
+    untrusted_content: true          # issue text / dependency changelogs are untrusted
+  nondeterminism:
+    required: true
+    smallest_semantic_task: >
+      Decide the sequence of edits and tool calls that will make the gate pass for
+      one bounded task, iterating on the gate's feedback.
+    reason_rules_insufficient: >
+      The edit path for an arbitrary lint/type/dependency failure cannot be
+      pre-scripted; the agent must plan and adapt against gate output. The gate
+      itself stays deterministic.
+  requested_authority:
+    may_select_branch: true
+    may_select_tool: true
+    may_propose_write: true          # opens a PR (a proposal to merge)
+    may_execute_write: false         # never merges, never deploys
+    may_delegate_goal: true          # scheduler delegates the task goal to the agent
+  assurance:
+    deterministic_verification: full # the CI + contract gate is the arbiter
+    human_review: false              # no human on the success path
+    human_approval: false            # PR merge is out of run scope
+    abstention_allowed: true
+  side_effects:
+    level: EF2                       # opening a PR / writing in a sandbox is reversible
+    reversible: true
+    idempotent: "yes"                # one PR per task identity; re-runs reconcile
+    compensation_available: true     # close the PR / discard the sandbox
+  operations:
+    target_readiness: RT2
+    impact: IM2
+    latency_objective: minutes to hours per task, unattended
+    per_run_budget: bounded iterations, tokens, and wall-clock per task
+    provenance_required: true
+
+design:
+  coordinates:
+    nondeterminism: ND6              # agent determines the plan of edits/tools
+    control_flow_authority: agent    # the agent owns the run toward a green gate
+    actor_topology: single_agent     # DP-01: one bounded agent per task, not a swarm
+    flow_shape: FS4                  # convergence loop against the gate
+    durability: DUR3                 # resumable across CI waits and restarts
+    effect_level: EF2                # PR / sandbox writes are reversible
+    assurance: AS2                   # deterministic postcondition (the gate)
+    impact: IM2                      # a green-but-wrong fix is material, correctable
+  authority_allocation:
+    control_flow: Agent, inside a workflow-imposed envelope (scope, budget, gate)
+    decision: Agent chooses edits and tools; the gate decides pass/fail
+    action_authorisation: Envelope pre-authorises sandbox writes and PR creation only
+    execution: Single agent in an ephemeral per-task sandbox with scoped credentials
+    state: Workflow/orchestrator is the authoritative record; agent memory is scratch
+  primitive_graph:
+    nodes:
+      - { id: n1,  primitive: TRG, label: Scheduled tick or backlog item }
+      - { id: n2,  primitive: INP, label: "Bind task and envelope (scope, budget, gate)" }
+      - { id: n3,  primitive: POL, label: "Is task within allowed change scope?" }
+      - { id: n4,  primitive: DLG, label: Delegate bounded goal to the agent }
+      - { id: n5,  primitive: PLN, label: Plan edits for this task }
+      - { id: n6,  primitive: TSL, label: Select tools / edit actions }
+      - { id: n7,  primitive: TRW, label: Apply change in isolated sandbox }
+      - { id: n8,  primitive: DVL, label: Run deterministic gate (CI + contract) }
+      - { id: n9,  primitive: LOP, label: Bounded repair loop on gate feedback }
+      - { id: n10, primitive: CST, label: Track iteration / token / time budget }
+      - { id: n11, primitive: CHK, label: Checkpoint attempt and gate result }
+      - { id: n12, primitive: IDM, label: Idempotency key = task identity (one PR) }
+      - { id: n13, primitive: TRW, label: Open pull request for the green change }
+      - { id: n14, primitive: EVH, label: Record run history and provenance }
+      - { id: n15, primitive: FSK, label: Terminal outcome }
+    edges:
+      - { from: n1,  to: n2 }
+      - { from: n2,  to: n3 }
+      - { from: n3,  to: n4,  condition: in scope }
+      - { from: n3,  to: n15, condition: out of scope -> ABSTAINED }
+      - { from: n4,  to: n5 }
+      - { from: n5,  to: n6 }
+      - { from: n6,  to: n7 }
+      - { from: n7,  to: n8 }
+      - { from: n8,  to: n12, condition: gate green }
+      - { from: n8,  to: n9,  condition: gate red }
+      - { from: n9,  to: n10 }
+      - { from: n10, to: n5,  condition: budget remains }
+      - { from: n10, to: n15, condition: budget exhausted -> FAILED_BUDGET / ESCALATED }
+      - { from: n9,  to: n11 }
+      - { from: n12, to: n13 }
+      - { from: n13, to: n14 }
+      - { from: n14, to: n15 }
+  effects:
+    - name: open-pull-request
+      level: EF2
+      idempotency_key: task-id + repo + change-digest
+      authoriser: Envelope policy (PR creation only; merge excluded)
+      executor: Git host adapter with scoped write credentials
+  selected_profile: EP4
+  selected_pattern: WP09
+  embedded_patterns: [WP04, WP00]
+  lifecycle_envelope: WP08
+  overlays: [OV-02, OV-06, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03]
+  runtime_components: [RC-01, RC-02, RC-06, RC-07, RC-08, RC-09, RC-10]
+  readiness_tier: RT2
+  conformance_target: CL2
+
+recommendation:
+  deterministic_baseline: >
+    The gate (CI, type checks, contract/eval checks) is fully deterministic and is
+    the only arbiter of success (WP00 baseline embedded as the gate). No model
+    output is trusted without passing it.
+  agent_justification: >
+    The edit path for an arbitrary failure cannot be pre-sequenced, so control-flow
+    is lent to a single bounded agent (EP4, WP09) that plans and iterates. Agency is
+    fenced by an envelope: allowed scope, scoped sandbox credentials, and an
+    explicit budget (DP-09, INV-008, OV-06).
+  selection_explanation: >
+    ND6 plan-level nondeterminism under agent control-flow selects EP4. The
+    iterate-against-a-deterministic-gate shape is WP04 (generate-validate-repair)
+    generalised to tool use, run inside a WP09 bounded region and wrapped by WP08
+    for durability across CI waits. AS2 (the gate) carries assurance instead of a
+    human; EF2 keeps effects to a reversible PR via OV-02; OV-06 bounds the loop.
+  alternatives_rejected:
+    - EP3 (bounded agentic region) — rejected because the agent owns the whole run
+      toward the goal, not a subregion of an engine-owned flow.
+    - "actor_topology multi_agent — the source row tags this inherently multi-agent,
+      but DP-01 places a single bounded agent per task; multi-agent adds no
+      demonstrable assurance here and widens the envelope."
+    - AS3/AS4 (human review/approval) — rejected on the success path by design; the
+      deterministic gate is the arbiter, humans see only escalations.
+    - EF3/EF4 — rejected because the run opens a PR and never merges or deploys.
+  mandatory_primitives: [POL, DLG, DVL, LOP, CST, IDM, CHK, EVH, FSK]
+  required_views: [VW-01, VW-04, VW-05, VW-07, VW-09, VW-12]
+  exceptions:
+    - rule: INV-007 (no self-authorised protected effects)
+      rationale: >
+        The agent opens a PR without a separate authoriser, which is acceptable only
+        because a PR is a reversible proposal (EF2) that cannot merge itself; the
+        merge is a separate, out-of-run human/gate decision.
+      compensating_control: >
+        PR creation is the sole pre-authorised effect in the envelope; merge and
+        deploy are excluded and gated elsewhere.

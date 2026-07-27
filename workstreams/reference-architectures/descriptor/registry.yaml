@@ -148,12 +148,12 @@ patterns:
   - { id: WP01, name: Bounded Model Step, status: mature }
   - { id: WP02, name: Recommend + Deterministic Adjudication, status: mature }
   - { id: WP03, name: Model-Selected Deterministic Branch, status: proposal }
-  - { id: WP04, name: Generate-Validate-Repair, status: proposal }
+  - { id: WP04, name: Generate-Validate-Repair, status: mature }
   - { id: WP05, name: Bounded Plan + Deterministic Execute, status: proposal }
   - { id: WP06, name: Model-Assisted Exception Handling, status: proposal }
   - { id: WP07, name: Human-Supervised Action, status: mature }
   - { id: WP08, name: Durable Workflow Envelope, status: mature }
-  - { id: WP09, name: Bounded Agentic Region, status: proposal }
+  - { id: WP09, name: Bounded Agentic Region, status: mature }
   - { id: WP10, name: Multi-Agent Delegation, status: proposal }
   - { id: WP11, name: Cross-Runtime Handoff, status: proposal }
 
@@ -164,7 +164,7 @@ profiles:
   - { id: EP1, name: Workflow-directed, status: mature }
   - { id: EP2, name: Workflow-directed + model-assisted, status: mature }
   - { id: EP3, name: Workflow with bounded agentic region, status: proposal }
-  - { id: EP4, name: Agent-directed under workflow constraints, status: proposal }
+  - { id: EP4, name: Agent-directed under workflow constraints, status: mature }
   - { id: EP5, name: Human-directed continuation, status: proposal }
   - { id: EP6, name: Event-directed continuation, status: proposal }
   - { id: EP7, name: Cross-agent / cross-runtime handoff, status: proposal }

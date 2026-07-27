@@ -1,6 +1,6 @@
 # EP4 — Agent-directed under workflow constraints
 
-Status: Proposal
+Status: Mature
 
 ## Intent
 
@@ -36,6 +36,20 @@ impact: IM2-IM4
 - Against [EP3](ep3-bounded-agentic-region.md): EP3 confines agency to a subregion while the engine owns the run; EP4 gives the agent the run and confines it with an envelope instead of a sequence.
 - Against [EP2](ep2-workflow-directed-model-assisted.md): a world apart — EP2's model proposes into engine-owned control-flow; EP4's agent *is* the control-flow.
 - Composition: an EP4 run may itself invoke deterministic [EP1](ep1-workflow-directed.md) sub-workflows as tools, and may be launched from within an [EP3](ep3-bounded-agentic-region.md) region that decided its goal warranted full agent direction. Multi-agent structure uses `DLG` and [WP10](../patterns/README.md); budgets use [OV-06](../overlays/workflow-overlays.md).
+
+## Example
+
+The [autonomous maintenance run](../descriptor/examples/autonomous-maintenance-run.wera.yaml)
+("night shift") is an EP4 run: an agent owns control-flow toward a green gate, fenced
+by an envelope (allowed change scope, a scoped sandbox, and an [OV-06](../overlays/workflow-overlays.md)
+budget). Its instructive contrast is the [gated delivery pipeline](../descriptor/examples/gated-delivery-pipeline.wera.yaml),
+which does the *same class of work* but keeps `control_flow_authority: workflow` — the
+engine owns the stage sequence and humans sign off at each boundary, so that twin is
+[EP1](ep1-workflow-directed.md)+[WP07](../patterns/wp07-human-supervised-action.md), **not**
+EP4. The pair is the clearest illustration that the profile turns on *who owns
+control-flow*, not on how much generation happens: both are `ND6`, but only the night
+shift hands the run to the agent. See the [examples index](../examples/README.md) for
+the side-by-side coordinate.
 
 ## Open questions
 

@@ -19,7 +19,9 @@ One descriptor is a single `*.wera.yaml` file with three blocks:
 - **[workflow-descriptor.schema.json](workflow-descriptor.schema.json)** — JSON Schema (draft 2020-12) that every descriptor validates against. All codes are constrained to the registry vocabulary.
 - **[workflow-descriptor.reference.md](workflow-descriptor.reference.md)** — field-by-field human documentation.
 - **[registry.yaml](registry.yaml)** — the entire coded vocabulary as data, so an agent can load WERA as data rather than prose.
-- **[examples/invoice-processing.wera.yaml](examples/invoice-processing.wera.yaml)** — a complete, schema-valid WDS for the worked example.
+- **[examples/invoice-processing.wera.yaml](examples/invoice-processing.wera.yaml)** — a complete, schema-valid WDS for the worked example (model-assisted, least-agentic end).
+- **[examples/autonomous-maintenance-run.wera.yaml](examples/autonomous-maintenance-run.wera.yaml)** — a schema-valid WDS for an agent-directed convergence loop (`EP4`/`WP09`) — the autonomous end.
+- **[examples/gated-delivery-pipeline.wera.yaml](examples/gated-delivery-pipeline.wera.yaml)** — a schema-valid WDS for a human-gated delivery pipeline (`EP1`/`WP07`) — the twin of the run above at the opposite HITL setting.
 
 ## Why it matters
 
