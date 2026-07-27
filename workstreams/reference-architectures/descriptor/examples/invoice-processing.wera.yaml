@@ -1,0 +1,151 @@
+# Workflow Design Specification (WDS) for the invoice-processing example.
+# This is the machine-readable output a human or AI agent produces by
+# following the Workflow Design Method. It validates against
+# ../workflow-descriptor.schema.json.
+
+wera_version: v2-descriptor-driven
+
+workflow:
+  id: invoice-processing-coding
+  name: Invoice Processing and Coding
+  owner: Accounts Payable Platform
+  intended_outcome: >
+    Produce a validated, unposted AP draft linked to the original invoice and
+    evidence, then obtain a final reviewer disposition for that exact draft
+    version. Approval here does not authorise payment.
+  authoritative_decision_owner: AP policy plus authorised AP reviewer
+  run_boundary:
+    start: An invoice submission is accepted into the AP process.
+    terminal_outcomes:
+      - COMPLETED            # exact draft version approved for handoff
+      - REJECTED             # draft or invoice rejected
+      - ABSTAINED            # insufficient confidence; no forced coding
+      - MANUAL_DISPOSITION   # routed to manual handling
+      - FAILED_TECHNICAL     # operator recovery required
+
+intake:
+  inputs:
+    sources: [AP inbox, submission channel]
+    schemas: [canonical-invoice]
+    data_classification: [supplier-PII, financial]
+    untrusted_content: true
+  nondeterminism:
+    required: true
+    smallest_semantic_task: >
+      Select the correct PO line / GL account for residual lines from a bounded,
+      validated candidate set when deterministic matching is ambiguous.
+    reason_rules_insufficient: >
+      Free-text descriptions and supplier variation defeat pure rule matching for
+      a minority of lines; a bounded selection is needed.
+  requested_authority:
+    may_select_branch: false
+    may_select_tool: false
+    may_propose_write: true
+    may_execute_write: false
+    may_delegate_goal: false
+  assurance:
+    deterministic_verification: partial
+    human_review: true
+    human_approval: true
+    abstention_allowed: true
+  side_effects:
+    level: EF2
+    reversible: true
+    idempotent: "yes"
+    compensation_available: true
+  operations:
+    target_readiness: RT2
+    impact: IM2
+    latency_objective: minutes per invoice, excluding human review
+    per_run_budget: bounded model calls per invoice
+    provenance_required: true
+
+design:
+  coordinates:
+    nondeterminism: ND3
+    control_flow_authority: workflow
+    actor_topology: single_agent
+    flow_shape: FS7
+    durability: DUR3
+    effect_level: EF2
+    assurance: AS4
+    impact: IM2
+  authority_allocation:
+    control_flow: Workflow runtime following validated disposition rules
+    decision: AP policy plus human reviewer for final draft acceptance
+    action_authorisation: Policy permits unposted draft; reviewer authorises the exact version
+    execution: Deterministic ERP adapter with constrained credentials
+    state: Workflow system of record, linked to ERP draft identity and version
+  primitive_graph:
+    nodes:
+      - { id: n1, primitive: TRG, label: Accept invoice submission }
+      - { id: n2, primitive: INP, label: Canonicalise input and provenance }
+      - { id: n3, primitive: RET, label: Persist immutable source document }
+      - { id: n4, primitive: AIN, label: Extract invoice fields (proposal) }
+      - { id: n5, primitive: SCH, label: Validate schema and arithmetic }
+      - { id: n6, primitive: RET, label: Read vendor / PO / receipt / GL context }
+      - { id: n7, primitive: BRL, label: Deterministic matching and coding inheritance }
+      - { id: n8, primitive: REC, label: Recommend coding for residual lines }
+      - { id: n9, primitive: DVL, label: Validate candidate / policy / confidence }
+      - { id: n10, primitive: POL, label: Determine permitted disposition }
+      - { id: n11, primitive: IDM, label: Idempotency key for draft }
+      - { id: n12, primitive: TRW, label: Create unposted ERP draft (protected effect) }
+      - { id: n13, primitive: CHK, label: Checkpoint draft version and evidence }
+      - { id: n14, primitive: WAI, label: Await human review }
+      - { id: n15, primitive: APR, label: Reviewer approves exact draft version }
+      - { id: n16, primitive: EVH, label: Record accepted transition }
+      - { id: n17, primitive: FSK, label: Terminal outcome }
+    edges:
+      - { from: n1, to: n2 }
+      - { from: n2, to: n3 }
+      - { from: n3, to: n4 }
+      - { from: n4, to: n5 }
+      - { from: n5, to: n6 }
+      - { from: n6, to: n7 }
+      - { from: n7, to: n8, condition: residual ambiguity }
+      - { from: n7, to: n10, condition: resolved deterministically }
+      - { from: n8, to: n9 }
+      - { from: n9, to: n10 }
+      - { from: n10, to: n11, condition: reviewable draft permitted }
+      - { from: n10, to: n17, condition: reject / hold / manual }
+      - { from: n11, to: n12 }
+      - { from: n12, to: n13 }
+      - { from: n13, to: n14 }
+      - { from: n14, to: n15 }
+      - { from: n15, to: n16 }
+      - { from: n16, to: n17 }
+  effects:
+    - name: create-unposted-erp-draft
+      level: EF2
+      idempotency_key: run-id + source-digest + proposal-version
+      authoriser: AP policy (creation) + reviewer (exact version)
+      executor: ERP adapter (constrained credentials)
+  selected_profile: EP2
+  selected_pattern: WP02
+  embedded_patterns: [WP00, WP01, WP07]
+  lifecycle_envelope: WP08
+  overlays: [OV-01, OV-02, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03, XB-04]
+  runtime_components: [RC-01, RC-02, RC-03, RC-05, RC-06, RC-07, RC-08, RC-10]
+  readiness_tier: RT2
+  conformance_target: CL2
+
+recommendation:
+  deterministic_baseline: >
+    PO lookup, vendor/entity equality, tolerance checks, receipt matching, PO
+    coding inheritance, arithmetic and duplicate detection resolve the normal
+    path with no model involvement (WP00).
+  agent_justification: >
+    Only residual lines with genuine semantic ambiguity reach the model, and only
+    as a bounded selection over a validated candidate set (WP02, DP-01, DP-03).
+  selection_explanation: >
+    ND3 selection under workflow control flow selects WP02; AS4 approval adds
+    WP07 and OV-01; EF2 reversible write adds OV-02; DUR3 resumable wait wraps
+    the run in WP08 with OV-07 execution history.
+  alternatives_rejected:
+    - WP04 generate-validate-repair (no free-form generation needed)
+    - WP09 bounded agentic region (no tool/plan autonomy required)
+    - EF3 classification for the draft (an unposted draft is reversible, so EF2)
+  mandatory_primitives: [AIN, SCH, BRL, REC, DVL, POL, IDM, TRW, APR, CHK, EVH]
+  required_views: [VW-01, VW-05, VW-07, VW-10]
+  exceptions: []

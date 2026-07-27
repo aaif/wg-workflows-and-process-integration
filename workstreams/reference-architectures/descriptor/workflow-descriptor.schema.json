@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aaif.io/wera/workflow-descriptor.schema.json",
+  "title": "WERA Workflow Descriptor",
+  "description": "Machine-readable Workflow Design Specification (WDS). A descriptor captures a workflow as intake (the use case), design (the resolved architecture), and recommendation (rationale). Codes are validated against the WERA registry.",
+  "type": "object",
+  "required": ["wera_version", "workflow", "intake", "design"],
+  "additionalProperties": false,
+  "properties": {
+    "wera_version": { "type": "string", "description": "Registry/schema version this descriptor targets, e.g. v2-descriptor-driven." },
+
+    "workflow": {
+      "type": "object",
+      "required": ["id", "name", "intended_outcome", "run_boundary"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "owner": { "type": "string" },
+        "intended_outcome": { "type": "string" },
+        "authoritative_decision_owner": { "type": "string" },
+        "run_boundary": {
+          "type": "object",
+          "required": ["start", "terminal_outcomes"],
+          "additionalProperties": false,
+          "properties": {
+            "start": { "type": "string", "description": "Condition that starts the run (INV-004)." },
+            "terminal_outcomes": {
+              "type": "array", "minItems": 1,
+              "items": { "$ref": "#/$defs/terminalOutcome" }
+            }
+          }
+        }
+      }
+    },
+
+    "intake": {
+      "type": "object",
+      "description": "The business use case captured before design. Answers to the wizard questions.",
+      "required": ["inputs", "nondeterminism", "side_effects"],
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sources": { "type": "array", "items": { "type": "string" } },
+            "schemas": { "type": "array", "items": { "type": "string" } },
+            "data_classification": { "type": "array", "items": { "type": "string" } },
+            "untrusted_content": { "type": "boolean" }
+          }
+        },
+        "nondeterminism": {
+          "type": "object",
+          "required": ["required"],
+          "additionalProperties": false,
+          "properties": {
+            "required": { "type": "boolean" },
+            "smallest_semantic_task": { "type": "string" },
+            "reason_rules_insufficient": { "type": "string" }
+          }
+        },
+        "requested_authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "may_select_branch": { "type": "boolean" },
+            "may_select_tool": { "type": "boolean" },
+            "may_propose_write": { "type": "boolean" },
+            "may_execute_write": { "type": "boolean" },
+            "may_delegate_goal": { "type": "boolean" }
+          }
+        },
+        "assurance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deterministic_verification": { "enum": ["none", "partial", "full"] },
+            "human_review": { "type": "boolean" },
+            "human_approval": { "type": "boolean" },
+            "abstention_allowed": { "type": "boolean" }
+          }
+        },
+        "side_effects": {
+          "type": "object",
+          "required": ["level"],
+          "additionalProperties": false,
+          "properties": {
+            "level": { "$ref": "#/$defs/effectLevel" },
+            "reversible": { "type": "boolean" },
+            "idempotent": { "enum": ["yes", "no", "unknown"] },
+            "compensation_available": { "type": "boolean" }
+          }
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "target_readiness": { "$ref": "#/$defs/readinessTier" },
+            "impact": { "$ref": "#/$defs/impact" },
+            "latency_objective": { "type": "string" },
+            "throughput_objective": { "type": "string" },
+            "per_run_budget": { "type": "string" },
+            "provenance_required": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "design": {
+      "type": "object",
+      "description": "The resolved architecture.",
+      "required": ["coordinates", "authority_allocation", "primitive_graph", "selected_profile", "selected_pattern"],
+      "additionalProperties": false,
+      "properties": {
+        "coordinates": { "$ref": "#/$defs/coordinates" },
+        "authority_allocation": {
+          "type": "object",
+          "required": ["control_flow", "decision", "action_authorisation", "execution", "state"],
+          "additionalProperties": false,
+          "properties": {
+            "control_flow": { "type": "string" },
+            "decision": { "type": "string" },
+            "action_authorisation": { "type": "string" },
+            "execution": { "type": "string" },
+            "state": { "type": "string" }
+          }
+        },
+        "primitive_graph": {
+          "type": "object",
+          "required": ["nodes"],
+          "additionalProperties": false,
+          "properties": {
+            "nodes": {
+              "type": "array", "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["id", "primitive"],
+                "additionalProperties": false,
+                "properties": {
+                  "id": { "type": "string" },
+                  "primitive": { "$ref": "#/$defs/primitive" },
+                  "label": { "type": "string" }
+                }
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["from", "to"],
+                "additionalProperties": false,
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "condition": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "level"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "level": { "$ref": "#/$defs/effectLevel" },
+              "idempotency_key": { "type": "string" },
+              "authoriser": { "type": "string" },
+              "executor": { "type": "string" }
+            }
+          }
+        },
+        "selected_profile": { "$ref": "#/$defs/profile" },
+        "selected_pattern": { "$ref": "#/$defs/pattern" },
+        "embedded_patterns": { "type": "array", "items": { "$ref": "#/$defs/pattern" } },
+        "lifecycle_envelope": { "oneOf": [ { "$ref": "#/$defs/pattern" }, { "type": "null" } ] },
+        "overlays": { "type": "array", "items": { "$ref": "#/$defs/overlay" } },
+        "external_boundaries": { "type": "array", "items": { "$ref": "#/$defs/externalBoundary" } },
+        "runtime_components": { "type": "array", "items": { "$ref": "#/$defs/runtimeComponent" } },
+        "readiness_tier": { "$ref": "#/$defs/readinessTier" },
+        "conformance_target": { "$ref": "#/$defs/conformanceLevel" }
+      }
+    },
+
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deterministic_baseline": { "type": "string" },
+        "agent_justification": { "type": "string" },
+        "selection_explanation": { "type": "string" },
+        "alternatives_rejected": { "type": "array", "items": { "type": "string" } },
+        "mandatory_primitives": { "type": "array", "items": { "$ref": "#/$defs/primitive" } },
+        "required_views": { "type": "array", "items": { "type": "string", "pattern": "^VW-[0-9]{2}$" } },
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "rule": { "type": "string" },
+              "rationale": { "type": "string" },
+              "compensating_control": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "coordinates": {
+      "type": "object",
+      "required": ["nondeterminism", "control_flow_authority", "actor_topology", "flow_shape", "durability", "effect_level", "assurance", "impact"],
+      "additionalProperties": false,
+      "properties": {
+        "nondeterminism": { "enum": ["ND0", "ND1", "ND2", "ND3", "ND4", "ND5", "ND6", "ND7", "ND8"] },
+        "control_flow_authority": { "enum": ["workflow", "agent", "human", "event", "external_runtime"] },
+        "actor_topology": { "enum": ["none", "single_agent", "bounded_agentic_region", "multi_agent", "cross_runtime"] },
+        "flow_shape": { "enum": ["FS1", "FS2", "FS3", "FS4", "FS5", "FS6", "FS7", "FS8", "FS9"] },
+        "durability": { "enum": ["DUR0", "DUR1", "DUR2", "DUR3", "DUR4"] },
+        "effect_level": { "$ref": "#/$defs/effectLevel" },
+        "assurance": { "enum": ["AS0", "AS1", "AS2", "AS3", "AS4", "AS5"] },
+        "impact": { "$ref": "#/$defs/impact" }
+      }
+    },
+    "effectLevel": { "enum": ["EF0", "EF1", "EF2", "EF3", "EF4"] },
+    "impact": { "enum": ["IM0", "IM1", "IM2", "IM3", "IM4"] },
+    "readinessTier": { "enum": ["RT0", "RT1", "RT2", "RT3", "RT4"] },
+    "conformanceLevel": { "enum": ["CL0", "CL1", "CL2", "CL3"] },
+    "profile": { "enum": ["EP1", "EP2", "EP3", "EP4", "EP5", "EP6", "EP7"] },
+    "pattern": { "enum": ["WP00", "WP01", "WP02", "WP03", "WP04", "WP05", "WP06", "WP07", "WP08", "WP09", "WP10", "WP11"] },
+    "overlay": { "enum": ["OV-01", "OV-02", "OV-03", "OV-04", "OV-05", "OV-06", "OV-07"] },
+    "externalBoundary": { "enum": ["XB-01", "XB-02", "XB-03", "XB-04", "XB-05"] },
+    "runtimeComponent": { "type": "string", "pattern": "^RC-[0-9]{2}$" },
+    "primitive": {
+      "enum": [
+        "TRG", "INP", "OUT", "FSK",
+        "DFN", "BRL", "XFM", "SCH",
+        "AIN", "CLS", "GEN", "REC", "PLN", "TSL",
+        "CAS", "RET", "SME", "DME", "INS",
+        "TRO", "TRW", "THI", "TXN",
+        "SEQ", "DBR", "ABR", "PAR", "LOP", "RTY", "WAI", "TMO", "CAN",
+        "DVL", "MVL", "POL", "HRV", "APR", "UNC",
+        "CHK", "IDM", "CBR", "DLQ", "CMP", "RCP",
+        "TRC", "AUD", "EVH", "CST", "FDB",
+        "DLG", "HND"
+      ]
+    },
+    "terminalOutcome": {
+      "enum": [
+        "COMPLETED", "COMPLETED_WITH_LIMITATION", "REJECTED", "ABSTAINED",
+        "ESCALATED", "FAILED_TECHNICAL", "FAILED_SEMANTIC", "FAILED_BUDGET",
+        "CANCELLED", "COMPENSATED", "MANUAL_DISPOSITION"
+      ]
+    }
+  }
+}

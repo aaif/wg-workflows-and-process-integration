@@ -1,0 +1,170 @@
+# WERA selection logic — machine-readable form of wizard-questions.md.
+#
+# An AI agent (or tool) can execute this to turn intake answers into a
+# coordinate + profile + patterns + overlays, then explain the result.
+# Human-readable companion: wizard-questions.md.
+#
+# Status: Mature
+
+selection_version: v2-descriptor-driven
+
+# Each question sets coordinate axes and/or triggers codes.
+# 'sets' assigns an axis value; 'triggers' adds a pattern/overlay/boundary;
+# 'short_circuit' ends selection early when the condition holds.
+questions:
+  - id: Q01
+    text: Is nondeterminism necessary?
+    answers:
+      yes:      { sets: { nondeterminism: ND0 }, triggers: [WP00, EP1], short_circuit: true }
+      partially: { note: identify residual semantic task }
+      no:       { note: continue }
+  - id: Q02
+    text: What is the smallest semantic task?
+    maps_to: nondeterminism
+    answer_map:
+      content: ND1
+      classification: ND2
+      selection: ND3
+      branch: ND4
+      tool: ND5
+      plan: ND6
+      delegation: ND7
+      open_goal: ND8
+  - id: Q03
+    text: Who owns control flow?
+    maps_to: control_flow_authority
+    answer_map: { workflow: workflow, agent: agent, human: human, event: event, external_runtime: external_runtime }
+    profile_hint: { workflow: [EP1, EP2], agent: EP4, human: EP5, event: EP6, external_runtime: EP7 }
+  - id: Q04
+    text: What is the actor topology?
+    maps_to: actor_topology
+    answer_map: { none: none, single_agent: single_agent, bounded_agentic_region: bounded_agentic_region, multi_agent: multi_agent, cross_runtime: cross_runtime }
+    triggers_by_answer: { bounded_agentic_region: [WP09, EP3], multi_agent: [WP10], cross_runtime: [WP11, EP7] }
+  - id: Q05
+    text: Is the decision/branch space closed?
+    answers:
+      closed: { triggers: [WP02, WP03], note: prefer selection per DP-07 }
+      open:   { triggers: [WP04, WP05] }
+  - id: Q06
+    text: Does the model select tools or actions?
+    answers:
+      no: {}
+      workflow_selected: { note: workflow picks tools }
+      agent_selected: { sets: { nondeterminism: ND5 }, triggers: [WP09], note: TSL with allowed-tool set and effect ceiling }
+  - id: Q07
+    text: Can output be verified deterministically?
+    maps_to: assurance
+    answer_map: { full: AS2, partial: AS1, none: AS0 }
+  - id: Q08
+    text: Is abstention acceptable?
+    answers:
+      yes: { note: require UNC on semantic steps }
+      no:  { note: a deterministic or human fallback MUST exist }
+  - id: Q09
+    text: Is human review or approval required?
+    maps_to: assurance
+    answer_map: { none: AS0, review: AS3, approval: AS4, multi_party: AS5 }
+    triggers_by_answer: { approval: [OV-01, WP07], multi_party: [OV-01, WP07] }
+  - id: Q10
+    text: What is the flow shape?
+    maps_to: flow_shape
+    answer_map: { single: FS1, linear: FS2, branch: FS3, loop: FS4, parallel: FS5, exception_only: FS6, long_running: FS7, event_driven: FS8, sub_runs: FS9 }
+  - id: Q11
+    text: Must the workflow wait or resume?
+    answers:
+      one_lifetime: { sets: { durability: DUR1 } }
+      waits_or_outlives_restart: { sets: { durability: DUR2 }, triggers: [OV-04, WP08] }
+  - id: Q12
+    text: Is replayable execution history required?
+    answers:
+      yes: { sets: { durability: DUR4 }, triggers: [OV-07] }
+      no: {}
+  - id: Q13
+    text: What state is authoritative?
+    note: name the single system of record (INV-002); confirms EVH/CHK target
+  - id: Q14
+    text: What is the highest effect level?
+    maps_to: effect_level
+    answer_map: { none: EF0, read: EF1, reversible_write: EF2, transactional: EF3, high_impact: EF4 }
+    triggers_when: { min: EF2, add: [OV-02] }
+  - id: Q15
+    text: Is the effect idempotent or compensable?
+    answers:
+      idempotent: { note: apply IDM }
+      compensable: { triggers: [OV-05] }
+      neither: { note: escalate controls; likely AS4+ and EF4 handling }
+  - id: Q16
+    text: Does the workflow process untrusted content?
+    answers:
+      yes: { triggers: [XB-01], note: input controls before any semantic step (INV-018) }
+      no: {}
+  - id: Q17
+    text: Which external boundaries are touched?
+    maps_to: external_boundaries
+    allowed: [XB-01, XB-02, XB-03, XB-04, XB-05]
+  - id: Q18
+    text: What is the impact of a wrong result or action?
+    maps_to: impact
+    answer_map: { negligible: IM0, minor: IM1, material: IM2, serious: IM3, severe: IM4 }
+  - id: Q19
+    text: What readiness tier is required?
+    maps_to: readiness_tier
+    answer_map: { experiment: RT0, pilot: RT1, production: RT2, business_critical: RT3, regulated: RT4 }
+    constraint: readiness_tier floor equals impact mapping from Q18
+  - id: Q20
+    text: Is source and decision lineage required?
+    answers:
+      yes: { note: AUD + EVH on decisions and effects; relates to XB-04 }
+      no: {}
+  - id: Q21
+    text: Is any goal delegated to an agent or sub-run?
+    answers:
+      yes: { triggers: [DLG, OV-06, WP09], note: bounded delegation contract (INV-008) }
+      no: {}
+  - id: Q22
+    text: Does control cross an agent or runtime boundary?
+    answers:
+      yes: { triggers: [HND, WP11, EP7], sets: { actor_topology: cross_runtime } }
+      no: {}
+
+# Primary-pattern selection: first matching rule wins (top to bottom).
+primary_pattern_algorithm:
+  - if: { nondeterminism: ND0 }
+    then: { primary_pattern: WP00, profile: EP1 }
+  - if: { actor_topology: cross_runtime }
+    then: { primary_pattern: WP11, profile: EP7 }
+  - if: { actor_topology: multi_agent }
+    then: { primary_pattern: WP10, profile: EP4 }
+  - if: { actor_topology: bounded_agentic_region }
+    then: { primary_pattern: WP09, profile: EP3 }
+  - if: { nondeterminism: ND6 }
+    then: { primary_pattern: WP05, profile: EP4 }
+  - if: { nondeterminism: ND4 }
+    then: { primary_pattern: WP03, profile: EP2 }
+  - if: { nondeterminism: ND3 }
+    then: { primary_pattern: WP02, profile: EP2 }
+  - if: { nondeterminism: [ND1, ND2] }
+    then: { primary_pattern: WP01, profile: EP2 }
+  - default: { primary_pattern: WP01, profile: EP2 }
+
+# Envelopes and gates attach on top of the primary pattern.
+modifiers:
+  - if: { durability_min: DUR2 }
+    add_pattern: WP08
+  - if: { assurance_min: AS4 }
+    add_pattern: WP07
+    add_overlay: OV-01
+  - if: { effect_level_min: EF2 }
+    add_overlay: OV-02
+
+# The output an agent should produce.
+output_shape:
+  coordinates: { nondeterminism: _, control_flow_authority: _, actor_topology: _, flow_shape: _, durability: _, effect_level: _, assurance: _, impact: _ }
+  profile: EP#
+  primary_pattern: WP##
+  embedded_patterns: []
+  overlays: []
+  external_boundaries: []
+  readiness_tier: RT#
+  conformance_target: CL#
+  rationale: { deterministic_baseline: _, agent_justification: _, alternatives_rejected: [] }

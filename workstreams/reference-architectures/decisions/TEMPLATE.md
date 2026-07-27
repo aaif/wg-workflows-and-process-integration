@@ -1,17 +1,34 @@
-# Decision Log Template
+# ADR NNNN: <Title>
+
+## Status
+
+Proposed | Accepted | Superseded by ADR-XXXX
 
 ## Date
 
-TODO
+YYYY-MM-DD
+
+## Context
+
+What problem or force prompted this decision? What constraints apply (charter, prior art, other WGs)?
+
+## Options considered
+
+- **Option A** — description; pros/cons.
+- **Option B** — description; pros/cons.
 
 ## Decision
 
-TODO
+The choice made, stated plainly.
 
 ## Rationale
 
-TODO
+Why this option over the alternatives.
+
+## Consequences
+
+What becomes easier, harder, or newly required as a result. Include follow-up work.
 
 ## Follow-up
 
-TODO
+Open items or later decisions this one implies.

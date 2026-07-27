@@ -1,0 +1,264 @@
+# WERA Registry — the coded vocabulary as machine-readable data.
+#
+# This file lets an AI agent (or tooling) load the reference architecture as
+# data instead of prose. Every code used anywhere in the repository MUST appear
+# here (INV-017). Human-readable definitions live in the linked documents; this
+# file is the canonical index of codes and their essential fields.
+#
+# Status: Mature for foundations/model/patterns/profiles/overlays/readiness axes;
+# some pattern and profile entries are Proposal-level (noted per entry).
+
+registry_version: v2-descriptor-driven
+short_name: WERA
+title: Workflow Execution Reference Architecture
+
+# ---------------------------------------------------------------------------
+# 1. Design principles (guidance) — foundations/design-principles.md
+# ---------------------------------------------------------------------------
+design_principles:
+  - { id: DP-01, name: Least-agentic composition }
+  - { id: DP-02, name: Deterministic baseline first }
+  - { id: DP-03, name: Smallest semantic task }
+  - { id: DP-04, name: Explicit authority allocation }
+  - { id: DP-05, name: Proposals validated before state }
+  - { id: DP-06, name: Protect effects proportionally }
+  - { id: DP-07, name: Prefer closed sets over open generation }
+  - { id: DP-08, name: Make waits and durability explicit }
+  - { id: DP-09, name: Bound every dynamic region }
+  - { id: DP-10, name: Reuse patterns; justify novelty }
+  - { id: DP-11, name: Reference cross-WG concerns, do not redefine }
+  - { id: DP-12, name: Design for both readers }
+
+# ---------------------------------------------------------------------------
+# 2. Architecture invariants (rules) — foundations/architecture-invariants.md
+# ---------------------------------------------------------------------------
+invariants:
+  - { id: INV-001, name: Declared nondeterminism }
+  - { id: INV-002, name: Authoritative state owner }
+  - { id: INV-003, name: Accepted transitions only }
+  - { id: INV-004, name: Run boundary is explicit }
+  - { id: INV-005, name: Distinguishable outcomes }
+  - { id: INV-006, name: Five authorities allocated }
+  - { id: INV-007, name: No self-authorised protected effects }
+  - { id: INV-008, name: Bounded delegation }
+  - { id: INV-009, name: Proposals are not effects }
+  - { id: INV-010, name: Constrained execution credentials }
+  - { id: INV-011, name: Duplicate protection }
+  - { id: INV-012, name: Versioned digest-linked effects }
+  - { id: INV-013, name: Approval binds to an exact version }
+  - { id: INV-014, name: Explicit approval outcomes }
+  - { id: INV-015, name: Cross-WG concerns referenced not redefined }
+  - { id: INV-016, name: Implementation neutrality }
+  - { id: INV-017, name: Coded and machine-readable }
+  - { id: INV-018, name: Untrusted input is contained }
+
+# ---------------------------------------------------------------------------
+# 3. Classification axes — model/classification.md
+#    A workflow-run "coordinate" is one value per axis.
+# ---------------------------------------------------------------------------
+classification_axes:
+  nondeterminism:
+    type: ordinal
+    doc: model/classification.md
+    values: [ND0, ND1, ND2, ND3, ND4, ND5, ND6, ND7, ND8]
+  control_flow_authority:
+    type: enum
+    values: [workflow, agent, human, event, external_runtime]
+  actor_topology:
+    type: enum
+    values: [none, single_agent, bounded_agentic_region, multi_agent, cross_runtime]
+  flow_shape:
+    type: ordinal
+    values: [FS1, FS2, FS3, FS4, FS5, FS6, FS7, FS8, FS9]
+  durability:
+    type: ordinal
+    values: [DUR0, DUR1, DUR2, DUR3, DUR4]
+  effect_level:
+    type: ordinal
+    values: [EF0, EF1, EF2, EF3, EF4]
+  assurance:
+    type: ordinal
+    values: [AS0, AS1, AS2, AS3, AS4, AS5]
+  impact:
+    type: ordinal
+    values: [IM0, IM1, IM2, IM3, IM4]
+
+# ---------------------------------------------------------------------------
+# 4. Primitives — model/primitive-catalog.md
+#    Three-letter capability mnemonics, grouped by category.
+#    (Populated in Phase 2.)
+# ---------------------------------------------------------------------------
+primitives:
+  entry_exit: [TRG, INP, OUT, FSK]
+  deterministic_processing: [DFN, BRL, XFM, SCH]
+  semantic: [AIN, CLS, GEN, REC, PLN, TSL]
+  context: [CAS, RET, SME, DME, INS]
+  action: [TRO, TRW, THI, TXN]
+  control_flow: [SEQ, DBR, ABR, PAR, LOP, RTY, WAI, TMO, CAN]
+  assurance: [DVL, MVL, POL, HRV, APR, UNC]
+  reliability: [CHK, IDM, CBR, DLQ, CMP, RCP]
+  observability_evaluation: [TRC, AUD, EVH, CST, FDB]
+  delegation: [DLG, HND]   # added for agentic / multi-agent / cross-runtime
+
+# ---------------------------------------------------------------------------
+# 5. Runtime components — model/runtime-components.md  (Phase 2)
+# ---------------------------------------------------------------------------
+runtime_components:
+  - { id: RC-01, name: Workflow runtime }
+  - { id: RC-02, name: State store / system of record }
+  - { id: RC-03, name: Policy decision point }
+  - { id: RC-04, name: Task worker }
+  - { id: RC-05, name: Human-task service }
+  - { id: RC-06, name: Tool / capability gateway }
+  - { id: RC-07, name: Effect executor / adapter }
+  - { id: RC-08, name: Model / agent runtime }
+  - { id: RC-09, name: Event and timer service }
+  - { id: RC-10, name: Execution-history / audit store }
+
+# ---------------------------------------------------------------------------
+# 6. Composition rules — model/composition-rules.md  (Phase 2)
+# ---------------------------------------------------------------------------
+composition_rules:
+  - { id: CR-001, name: Deterministic baseline documented }
+  - { id: CR-002, name: Semantic output validated before use }
+  - { id: CR-003, name: No effect without authorisation }
+  - { id: CR-004, name: Effect proposer is not sole authoriser }
+  - { id: CR-005, name: Writes carry idempotency }
+  - { id: CR-006, name: Retries only on classified failures }
+  - { id: CR-007, name: Waits are durable }
+  - { id: CR-008, name: Parallel needs a join }
+  - { id: CR-009, name: Loops are bounded }
+  - { id: CR-010, name: Delegation is bounded }
+  - { id: CR-011, name: Handoff carries a portable envelope }
+  - { id: CR-012, name: Human approval binds a version }
+  - { id: CR-013, name: Untrusted input is gated }
+  - { id: CR-014, name: One system of record }
+  - { id: CR-015, name: Terminal outcome required }
+  - { id: CR-016, name: Effect level matches controls }
+  - { id: CR-017, name: Cross-WG concerns via boundaries }
+  - { id: CR-018, name: Budgets on dynamic regions }
+  - { id: CR-019, name: Abstention available to semantic steps }
+  - { id: CR-020, name: Every relied-upon concept is coded }
+
+# ---------------------------------------------------------------------------
+# 7. Patterns — patterns/*  (Phase 3)
+# ---------------------------------------------------------------------------
+patterns:
+  - { id: WP00, name: Deterministic Baseline, status: mature }
+  - { id: WP01, name: Bounded Model Step, status: mature }
+  - { id: WP02, name: Recommend + Deterministic Adjudication, status: mature }
+  - { id: WP03, name: Model-Selected Deterministic Branch, status: proposal }
+  - { id: WP04, name: Generate-Validate-Repair, status: proposal }
+  - { id: WP05, name: Bounded Plan + Deterministic Execute, status: proposal }
+  - { id: WP06, name: Model-Assisted Exception Handling, status: proposal }
+  - { id: WP07, name: Human-Supervised Action, status: mature }
+  - { id: WP08, name: Durable Workflow Envelope, status: mature }
+  - { id: WP09, name: Bounded Agentic Region, status: proposal }
+  - { id: WP10, name: Multi-Agent Delegation, status: proposal }
+  - { id: WP11, name: Cross-Runtime Handoff, status: proposal }
+
+# ---------------------------------------------------------------------------
+# 8. Execution profiles — profiles/*  (Phase 3)
+# ---------------------------------------------------------------------------
+profiles:
+  - { id: EP1, name: Workflow-directed, status: mature }
+  - { id: EP2, name: Workflow-directed + model-assisted, status: mature }
+  - { id: EP3, name: Workflow with bounded agentic region, status: proposal }
+  - { id: EP4, name: Agent-directed under workflow constraints, status: proposal }
+  - { id: EP5, name: Human-directed continuation, status: proposal }
+  - { id: EP6, name: Event-directed continuation, status: proposal }
+  - { id: EP7, name: Cross-agent / cross-runtime handoff, status: proposal }
+
+# ---------------------------------------------------------------------------
+# 9. Overlays (workflow-owned) — overlays/workflow-overlays.md  (Phase 4)
+# ---------------------------------------------------------------------------
+overlays:
+  - { id: OV-01, name: Human approval, status: mature }
+  - { id: OV-02, name: Protected effect, status: mature }
+  - { id: OV-03, name: Idempotency and reconciliation, status: proposal }
+  - { id: OV-04, name: Durable wait, status: proposal }
+  - { id: OV-05, name: Compensation, status: proposal }
+  - { id: OV-06, name: Budget and quota, status: proposal }
+  - { id: OV-07, name: Execution history as system of record, status: mature }
+
+# ---------------------------------------------------------------------------
+# 10. External boundaries (other WGs) — overlays/external-boundaries.md
+# ---------------------------------------------------------------------------
+external_boundaries:
+  - { id: XB-01, name: Security and privacy, owner: Security & Privacy WG }
+  - { id: XB-02, name: Identity and delegation, owner: Identity & Trust WG }
+  - { id: XB-03, name: Observability signals, owner: Observability & Traceability WG }
+  - { id: XB-04, name: Governance and risk, owner: Governance Risk & Regulatory WG }
+  - { id: XB-05, name: Accuracy and evaluation, owner: Accuracy & Reliability WG }
+
+# ---------------------------------------------------------------------------
+# 11. Readiness / conformance — readiness/*  (Phase 4)
+# ---------------------------------------------------------------------------
+readiness_tiers:
+  - { id: RT0, name: Experiment }
+  - { id: RT1, name: Controlled pilot }
+  - { id: RT2, name: Production }
+  - { id: RT3, name: Business critical }
+  - { id: RT4, name: Regulated or high impact }
+
+conformance_levels:
+  - { id: CL0, name: Documented }
+  - { id: CL1, name: Invariant conforming }
+  - { id: CL2, name: Overlay conforming }
+  - { id: CL3, name: Readiness conforming }
+
+# ---------------------------------------------------------------------------
+# 12. Terminal outcomes — model/classification.md
+# ---------------------------------------------------------------------------
+terminal_outcomes:
+  - COMPLETED
+  - COMPLETED_WITH_LIMITATION
+  - REJECTED
+  - ABSTAINED
+  - ESCALATED
+  - FAILED_TECHNICAL
+  - FAILED_SEMANTIC
+  - FAILED_BUDGET
+  - CANCELLED
+  - COMPENSATED
+  - MANUAL_DISPOSITION
+
+# ---------------------------------------------------------------------------
+# 13. Anti-patterns — model/composition-rules.md  (Phase 2/3)
+# ---------------------------------------------------------------------------
+anti_patterns:
+  - { id: AP-01, name: Agent everywhere }
+  - { id: AP-02, name: Silent whole-process agent }
+  - { id: AP-03, name: Proposal as state }
+  - { id: AP-04, name: Self-approval }
+  - { id: AP-05, name: Blind retry on writes }
+  - { id: AP-06, name: Vague approval }
+  - { id: AP-07, name: Context as record }
+  - { id: AP-08, name: Unbounded plan }
+  - { id: AP-09, name: Open generation where a closed set exists }
+  - { id: AP-10, name: Missing terminal outcome }
+  - { id: AP-11, name: Effect ceiling ignored }
+  - { id: AP-12, name: Cross-WG fork }
+  - { id: AP-13, name: Hidden model in a service }
+  - { id: AP-14, name: Durable wait without durability }
+  - { id: AP-15, name: Parallel without join }
+  - { id: AP-16, name: Unlogged decision }
+  - { id: AP-17, name: Uncoded concept }
+  - { id: AP-18, name: Approval reused across changes }
+
+# ---------------------------------------------------------------------------
+# 14. Required architecture views — playbook/review-checklist.md  (Phase 6)
+# ---------------------------------------------------------------------------
+views:
+  - { id: VW-01, name: Workflow context view }
+  - { id: VW-02, name: Run-boundary and outcome view }
+  - { id: VW-03, name: Primitive graph }
+  - { id: VW-04, name: Coordinate summary }
+  - { id: VW-05, name: Authority allocation matrix }
+  - { id: VW-06, name: State and durability view }
+  - { id: VW-07, name: Effect and protection view }
+  - { id: VW-08, name: Human-task and approval view }
+  - { id: VW-09, name: Reliability and recovery view }
+  - { id: VW-10, name: Tool and capability matrix }
+  - { id: VW-11, name: External-boundary map }
+  - { id: VW-12, name: Dependency and failure view }
