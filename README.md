@@ -6,10 +6,6 @@ For more information, review the [Working Group Charter](./charter/charter.md).
 
 The Workflows and Process Integration Working Group advances the Agentic AI Foundation’s mission by establishing a shared workflow model and common terminology for agentic AI systems, extending open specifications and projects, producing interoperability guidelines and design patterns that allow agent workflows to operate across frameworks, tools, and execution environments.
 
-## Workstreams
-
-- **[Reference Architectures](workstreams/reference-architectures/README.md)** — the Workflow Execution Reference Architecture (WERA): a vendor-neutral, workflow-run-centred architecture spanning deterministic to agent-driven workflows, with a machine-readable workflow descriptor. Start at [START-HERE](workstreams/reference-architectures/START-HERE.md).
-
 ## Chairs
 
 * **Chair: Yaron Schneider [@yaron2](https://github.com/yaron2)** - Diagrid
