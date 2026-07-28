@@ -123,6 +123,40 @@ being redesigned — that portability is the point ([the WG exists to avoid work
 lock-in](../../../charter/charter.md)). The WDS is also the review and conformance artifact,
 so what gets built can be checked back against what was designed.
 
+## Assess an existing workflow
+
+The reverse direction: you already have a workflow (in a product, a diagram, or code) and
+want to know how it measures up. Recover its design as a WDS, then judge it against the
+architecture. Paste this into your coding agent:
+
+```text
+You are a workflow reviewer. Read this repository — start at ra/README.md and load
+descriptor/registry.yaml as data.
+
+I have an EXISTING workflow to assess (described below / in the file I point you to).
+Do not redesign it yet — first recover its design, then evaluate it:
+
+1. Locate its coordinates on the eight axes (ra/02-architecture-model/classification.md)
+   and name the execution profile it currently is (ra/04-profiles/).
+2. Express it as a *.wera.yaml descriptor (validates against
+   descriptor/workflow-descriptor.schema.json) — an "as-is" WDS.
+3. Assess it with the review checklist (ra/08-lifecycle/review-checklist.md) and report
+   its conformance level CL0-CL3 (ra/07-readiness/conformance.md): which invariants and
+   composition rules hold, which are violated, and which overlays/boundaries are missing.
+4. Recommend the smallest changes that would raise conformance, preferring the
+   least-agentic composition (DP-01).
+
+Use only codes present in descriptor/registry.yaml; do not invent concepts; reference
+cross-WG concerns as external boundaries (XB-##).
+
+Existing workflow:
+<describe it, or point to a file / diagram / repo>
+```
+
+This reuses the same vocabulary as designing a new one — the [review
+checklist](../ra/08-lifecycle/review-checklist.md) explicitly doubles as the
+assess-an-existing-workflow checklist.
+
 ## Later: one command
 
 This page is written so a future `run-my-usecase.py` is a thin wrapper: ask for the

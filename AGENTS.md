@@ -14,10 +14,12 @@ three paths:
 ```
    How would you like to start?
 
-   1) Give me the quick tour   — what this is & why (visual, ~2 min)
-   2) Run the live demo        — watch a real use case become a
-                                 Workflow Design Specification (WDS)
-   3) Design my own workflow   — I already have a use case in mind
+   1) Give me the quick tour       — what this is & why (visual, ~2 min)
+   2) Run the live demo            — watch a real use case become a
+                                     Workflow Design Specification (WDS)
+   3) Design my own workflow       — I already have a use case in mind
+   4) Evaluate my existing workflow — check one I already have against the
+                                     architecture
 ```
 
 - **Choice 1** → run the **visual tour** below.
@@ -25,8 +27,11 @@ three paths:
   prepared seed.
 - **Choice 3** → go straight to the recipe (the "real instructions" link at the bottom)
   with the person's own use case.
+- **Choice 4** → go to the **"Assess an existing workflow"** section of the recipe: recover
+  the workflow's design as an as-is WDS and score it against the invariants and conformance
+  levels.
 
-Returning users will usually pick 2 or 3 — let them skip the tour entirely.
+Returning users will usually pick 2, 3, or 4 — let them skip the tour entirely.
 
 ### Running the tour (choice 1)
 
