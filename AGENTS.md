@@ -76,15 +76,23 @@ task using the recipe linked at the bottom.
 
 ### Panel 2 — The problem it solves
 
-> "Everyone builds AI workflows in a different tool, a different way. Hard to review, hard
-> to move, easy to make unsafe."
+> "Everyone builds agentic workflows in a different tool, a different way, with no shared
+> design step. So they're hard to review, hard to move, and easy to get wrong — and teams
+> often reach for an autonomous agent where plain deterministic steps would be cheaper and
+> safer."
 
 ```
-   today, every workflow is a snowflake:
+   today, every agentic workflow is a snowflake:
 
-   use case ─▶ ??? ─▶ some tool          ← no shared design step
-   use case ─▶ ??? ─▶ another tool       ← can't compare or review
-   use case ─▶ ??? ─▶ yet another tool   ← locked in, hard to move
+   use case ─▶ ??? ─▶ some tool          ← no shared design, can't review or compare
+   use case ─▶ ??? ─▶ another tool       ← locked to one framework / vendor
+   use case ─▶ ??? ─▶ yet another tool   ← no replay or recovery when it fails
+
+   common pain points:
+     • an agent used where simple rules would do  → needless cost & risk
+     • no failure recovery / replay for long runs → silent drops, stuck runs
+     • unclear human-in-the-loop & who's accountable
+     • hard to observe, audit, or make production-ready
 ```
 
 *Then pause — offer: "Next, I can show you how this group's reference architecture changes that."*
