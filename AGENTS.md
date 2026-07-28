@@ -8,14 +8,35 @@ instructions live.
 
 ## How to behave in an interactive session
 
-Many people who open this repo are **new to agentic workflows and are visual thinkers**.
-Do **not** paste a wall of text. Instead, run the **visual tour** below: reveal it
-**one panel at a time**, show the ASCII diagram, add one or two plain sentences, then
-**stop and ask if they want the next panel.** Let them build the mental model step by
-step. The diagrams below are ready to copy to the screen — you do not need to open any
-file in `ra/`, `docs/`, or `examples/` to run the tour.
+**First, offer a choice** — don't assume everyone is new. Greet in one line and present
+three paths:
 
-In a non-interactive / automated run, skip the tour and greeting — just do the requested
+```
+   How would you like to start?
+
+   1) Give me the quick tour   — what this is & why (visual, ~2 min)
+   2) Run the live demo        — watch a real use case become a WDS
+   3) Design my own workflow   — I already have a use case in mind
+```
+
+- **Choice 1** → run the **visual tour** below.
+- **Choice 2** → skip to [Panel 6](#panel-6--offer-the-live-demo) and run the demo on the
+  prepared seed.
+- **Choice 3** → go straight to the recipe (the "real instructions" link at the bottom)
+  with the person's own use case.
+
+Returning users will usually pick 2 or 3 — let them skip the tour entirely.
+
+### Running the tour (choice 1)
+
+Many first-time visitors are **new to agentic workflows and are visual thinkers**.
+Do **not** paste a wall of text. Reveal the tour **one panel at a time**: show the ASCII
+diagram, add one or two plain sentences, then **stop and tease what's next** (each panel
+ends with a "Next, I can show you…" line) and wait for the person to continue. Let them
+build the mental model step by step. The diagrams below are ready to copy to the screen —
+you do not need to open any file in `ra/`, `docs/`, or `examples/` to run the tour.
+
+In a non-interactive / automated run, skip the greeting and choice — just do the requested
 task using the recipe linked at the bottom.
 
 ---
@@ -25,19 +46,27 @@ task using the recipe linked at the bottom.
 ### Panel 1 — Who & what
 
 > "This repo belongs to the **AAIF Workflows & Process Integration** working group. We
-> make agentic-AI workflows **portable** — so a workflow isn't locked to one framework,
-> tool, or vendor."
+> define a **shared model and common terminology** for agentic-AI workflows — the
+> primitives, patterns, and design rules for multi-step work. We standardize how agents
+> **coordinate** with each other, with external systems and tools, and with human
+> reviewers. We keep workflow definitions **portable** across frameworks and runtimes, so
+> nothing is locked to one vendor. And we cover what production needs — **stateful
+> replay, failure recovery, and human-in-the-loop** — so these workflows are safe to run
+> at scale."
 
 ```
-        ┌─────────────────────────────────────────────┐
-        │   AAIF · Workflows & Process Integration WG  │
-        │                                              │
-        │   a shared, vendor-neutral way to DESIGN     │
-        │   agentic workflows — before you build them  │
-        └─────────────────────────────────────────────┘
+   ┌──────────────────────────────────────────────────────┐
+   │        AAIF · Workflows & Process Integration WG       │
+   │        vendor-neutral standards for agentic workflows  │
+   ├──────────────────────────────────────────────────────┤
+   │  shared model  │ coordinate  │ portable │ production   │
+   │  & terminology │ agents +    │ across   │ replay,      │
+   │  (primitives,  │ systems +   │ frame-   │ recovery,    │
+   │   patterns)    │ humans      │ works    │ human-in-loop│
+   └──────────────────────────────────────────────────────┘
 ```
 
-*Ask: "Want me to show you the core idea?"*
+*Then pause — offer: "Next, I can show you the core idea. Ready?"*
 
 ### Panel 2 — The problem it solves
 
@@ -52,12 +81,13 @@ task using the recipe linked at the bottom.
    use case ─▶ ??? ─▶ yet another tool   ← locked in, hard to move
 ```
 
-*Ask: "Want to see how WERA changes this?"*
+*Then pause — offer: "Next, I can show you how this group's reference architecture changes that."*
 
 ### Panel 3 — The core idea: the WDS
 
-> "WERA adds one step in the middle: a **Workflow Design Specification (WDS)** — a
-> machine-readable file that says *what the workflow should be and why*. Not the
+> "The group's reference architecture — **WERA**, the Workflow Execution Reference
+> Architecture — adds one step in the middle: a **Workflow Design Specification (WDS)**,
+> a machine-readable file that says *what the workflow should be and why*. Not the
 > implementation — the **design**."
 
 ```
@@ -70,7 +100,7 @@ task using the recipe linked at the bottom.
                           reviewable & portable
 ```
 
-*Ask: "Want to see who writes the WDS, and what you do with it?"*
+*Then pause — offer: "Next, I can show you who writes the WDS and what you do with it."*
 
 ### Panel 4 — Two ways in, one way out
 
@@ -90,7 +120,7 @@ task using the recipe linked at the bottom.
                     design once, build anywhere (no lock-in)
 ```
 
-*Ask: "Want to see the range of workflows this covers?"*
+*Then pause — offer: "Next, I can show you the range of workflows this covers."*
 
 ### Panel 5 — The spectrum (why it's not just "chatbots")
 
@@ -110,7 +140,7 @@ task using the recipe linked at the bottom.
     agentic one that does the job.)
 ```
 
-*Ask: "Want to watch it actually turn a real use case into a WDS, step by step?"*
+*Then pause — offer: "Finally, I can run a live demo — watch it turn a real use case into a WDS, step by step. Want to see it?"*
 
 ### Panel 6 — Offer the live demo
 
