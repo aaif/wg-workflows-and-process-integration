@@ -4,7 +4,7 @@ Status: Mature
 
 ## Why this document exists
 
-These principles define the intended direction of the reference architecture. They are more stable than any individual diagram, pattern, or code, and they are the basis for reviewing future contributions. They are distinct from — and higher than — the [design principles](../foundations/design-principles.md) (`DP-##`, which guide day-to-day design choices) and the [architecture invariants](../foundations/architecture-invariants.md) (`INV-###`, which are testable rules).
+These principles define the intended direction of the reference architecture. They are more stable than any individual diagram, pattern, or code, and they are the basis for reviewing future contributions. They are distinct from — and higher than — the [design principles](../ra/01-foundations/design-principles.md) (`DP-##`, which guide day-to-day design choices) and the [architecture invariants](../ra/01-foundations/architecture-invariants.md) (`INV-###`, which are testable rules).
 
 ## Principles
 

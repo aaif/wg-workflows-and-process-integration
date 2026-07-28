@@ -31,7 +31,7 @@ flowchart TD
 
 The complete, schema-valid Workflow Design Specification is:
 
-**[descriptor/examples/invoice-processing.wera.yaml](../../descriptor/examples/invoice-processing.wera.yaml)**
+**[descriptor/examples/invoice-processing.wera.yaml](invoice-processing.wera.yaml)**
 
 Key resolved values:
 
@@ -48,7 +48,7 @@ Key resolved values:
 
 ## How the effect is protected
 
-Creating the unposted draft follows the [`OV-02`](../../overlays/workflow-overlays.md) six-role separation:
+Creating the unposted draft follows the [`OV-02`](../../ra/06-overlays/workflow-overlays.md) six-role separation:
 
 1. **propose** — deterministic controls assemble the exact payload from the validated coding;
 2. **validate** — `DVL` checks candidate membership, active accounts, dimensions, policy;
@@ -57,7 +57,7 @@ Creating the unposted draft follows the [`OV-02`](../../overlays/workflow-overla
 5. **confirm** — the ERP draft identity/version is linked to the run;
 6. **reconcile** — an ambiguous result triggers `RCP`, never a blind retry.
 
-The recommendation model never calls the ERP directly ([INV-009](../../foundations/architecture-invariants.md), [INV-010](../../foundations/architecture-invariants.md)).
+The recommendation model never calls the ERP directly ([INV-009](../../ra/01-foundations/architecture-invariants.md), [INV-010](../../ra/01-foundations/architecture-invariants.md)).
 
 ## Why this passes conformance
 
@@ -69,4 +69,4 @@ Readiness `RT2` is met by protected effects, a system of record (`RC-10`), recon
 
 ## Detailed views
 
-For depth, see [architecture](architecture.md), [execution](execution.md), [sequence](sequence.md), and [contracts-and-state](contracts-and-state.md).
+For depth, see [architecture](views/architecture.md), [execution](views/execution.md), [sequence](views/sequence.md), and [contracts-and-state](views/contracts-and-state.md).

@@ -4,7 +4,7 @@ Status: Mature worked example
 
 ## Why this example
 
-Invoice processing combines untrusted documents, extraction uncertainty, enterprise reference data, accounting rules, human approval, and an externally visible ERP write. It exercises the minimum architecture needed for a useful model-assisted business workflow **without** requiring autonomous planning — a clean demonstration of [DP-01 least-agentic composition](../../foundations/design-principles.md).
+Invoice processing combines untrusted documents, extraction uncertainty, enterprise reference data, accounting rules, human approval, and an externally visible ERP write. It exercises the minimum architecture needed for a useful model-assisted business workflow **without** requiring autonomous planning — a clean demonstration of [DP-01 least-agentic composition](../../ra/01-foundations/design-principles.md).
 
 ## Read it as a few-shot exemplar
 
@@ -14,15 +14,15 @@ use-case.md   →   rationale.md   →   solution.md
 ```
 
 - **[use-case.md](use-case.md)** — the business problem and requirements (Input).
-- **[rationale.md](rationale.md)** — the six-step [Workflow Design Method](../../playbook/workflow-design-method.md) applied (Reasoning).
-- **[solution.md](solution.md)** — the resulting design, linked to the machine-readable [WDS](../../descriptor/examples/invoice-processing.wera.yaml) (Architecture + Result).
+- **[rationale.md](rationale.md)** — the six-step [Workflow Design Method](../../ra/08-lifecycle/workflow-design-method.md) applied (Reasoning).
+- **[solution.md](solution.md)** — the resulting design, linked to the machine-readable [WDS](invoice-processing.wera.yaml) (Architecture + Result).
 
 ## Detailed views
 
-- [architecture.md](architecture.md) — logical architecture and actor responsibilities.
-- [execution.md](execution.md) — stage-by-stage execution walkthrough.
-- [sequence.md](sequence.md) — sequence diagram.
-- [contracts-and-state.md](contracts-and-state.md) — key contracts and state checkpoints.
+- [architecture.md](views/architecture.md) — logical architecture and actor responsibilities.
+- [execution.md](views/execution.md) — stage-by-stage execution walkthrough.
+- [sequence.md](views/sequence.md) — sequence diagram.
+- [contracts-and-state.md](views/contracts-and-state.md) — key contracts and state checkpoints.
 
 ## At a glance
 

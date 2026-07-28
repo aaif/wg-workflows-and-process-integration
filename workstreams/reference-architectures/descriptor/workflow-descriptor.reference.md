@@ -2,7 +2,7 @@
 
 Status: Mature
 
-Field-by-field documentation for a `*.wera.yaml` descriptor. The authoritative constraints are in [workflow-descriptor.schema.json](workflow-descriptor.schema.json); this document explains intent. Codes resolve against [registry.yaml](registry.yaml) and the [classification axes](../model/classification.md).
+Field-by-field documentation for a `*.wera.yaml` descriptor. The authoritative constraints are in [workflow-descriptor.schema.json](workflow-descriptor.schema.json); this document explains intent. Codes resolve against [registry.yaml](registry.yaml) and the [classification axes][classification].
 
 ## Top level
 
@@ -22,15 +22,15 @@ Field-by-field documentation for a `*.wera.yaml` descriptor. The authoritative c
 | `owner` | no | Accountable team. |
 | `intended_outcome` | yes | The business/operational result pursued. |
 | `authoritative_decision_owner` | no | Who owns the authoritative decision. |
-| `run_boundary.start` | yes | Start condition ([INV-004](../foundations/architecture-invariants.md)). |
-| `run_boundary.terminal_outcomes` | yes | Subset of the closed [terminal-outcome set](../model/classification.md) ([INV-005](../foundations/architecture-invariants.md)). |
+| `run_boundary.start` | yes | Start condition ([INV-004][architecture-invariants]). |
+| `run_boundary.terminal_outcomes` | yes | Subset of the closed [terminal-outcome set][classification] ([INV-005][architecture-invariants]). |
 
 ## `intake`
 
-Captures the answers to the [wizard questions](../selection/wizard-questions.md).
+Captures the answers to the [wizard questions](../ra/05-selection/wizard-questions.md).
 
-- `inputs` — sources, schemas, `data_classification`, and whether `untrusted_content` is present (drives `XB-01`, [INV-018](../foundations/architecture-invariants.md)).
-- `nondeterminism` — whether nondeterminism is `required`, the `smallest_semantic_task`, and `reason_rules_insufficient` ([DP-02](../foundations/design-principles.md), [DP-03](../foundations/design-principles.md)).
+- `inputs` — sources, schemas, `data_classification`, and whether `untrusted_content` is present (drives `XB-01`, [INV-018][architecture-invariants]).
+- `nondeterminism` — whether nondeterminism is `required`, the `smallest_semantic_task`, and `reason_rules_insufficient` ([DP-02][design-principles], [DP-03][design-principles]).
 - `requested_authority` — booleans for branch/tool/write/delegate authority the design may grant.
 - `assurance` — deterministic verification level, human review/approval, abstention.
 - `side_effects` — highest `level` (`EF0`–`EF4`), reversibility, idempotency, compensation.
@@ -40,23 +40,23 @@ Captures the answers to the [wizard questions](../selection/wizard-questions.md)
 
 The resolved architecture; this is what conformance checks read.
 
-- `coordinates` — one value per [classification axis](../model/classification.md) (all eight required).
-- `authority_allocation` — the five authorities, each mapped to a holder ([INV-006](../foundations/architecture-invariants.md)).
-- `primitive_graph` — `nodes` (each a [primitive](../model/primitive-catalog.md) with an id/label) and `edges` (with optional `condition`). This is the machine-readable workflow shape.
-- `effects` — each externally visible effect with its `level`, `idempotency_key`, `authoriser`, `executor` ([INV-010](../foundations/architecture-invariants.md), [INV-012](../foundations/architecture-invariants.md)).
+- `coordinates` — one value per [classification axis][classification] (all eight required).
+- `authority_allocation` — the five authorities, each mapped to a holder ([INV-006][architecture-invariants]).
+- `primitive_graph` — `nodes` (each a [primitive](../ra/02-architecture-model/primitive-catalog.md) with an id/label) and `edges` (with optional `condition`). This is the machine-readable workflow shape.
+- `effects` — each externally visible effect with its `level`, `idempotency_key`, `authoriser`, `executor` ([INV-010][architecture-invariants], [INV-012][architecture-invariants]).
 - `selected_profile` (`EP#`), `selected_pattern` (`WP##`), `embedded_patterns`, `lifecycle_envelope` (often `WP08` or null).
 - `overlays` (`OV-##`), `external_boundaries` (`XB-##`), `runtime_components` (`RC-##`).
 - `readiness_tier` (`RT#`), `conformance_target` (`CL#`).
 
 ## `recommendation`
 
-- `deterministic_baseline` — the rules-only path before nondeterminism ([DP-02](../foundations/design-principles.md)).
-- `agent_justification` — why the model/agent is needed, and how narrowly ([DP-01](../foundations/design-principles.md), [DP-03](../foundations/design-principles.md)).
+- `deterministic_baseline` — the rules-only path before nondeterminism ([DP-02][design-principles]).
+- `agent_justification` — why the model/agent is needed, and how narrowly ([DP-01][design-principles], [DP-03][design-principles]).
 - `selection_explanation` — how the coordinate led to the profile/patterns/overlays.
 - `alternatives_rejected` — patterns/profiles considered and why not chosen.
 - `mandatory_primitives` — primitives the design cannot omit.
-- `required_views` — architecture views (`VW-##`) the [review checklist](../playbook/review-checklist.md) expects.
-- `exceptions` — any rule consciously not met, with rationale and compensating control (see [conformance](../readiness/conformance.md)).
+- `required_views` — architecture views (`VW-##`) the [review checklist](../ra/08-lifecycle/review-checklist.md) expects.
+- `exceptions` — any rule consciously not met, with rationale and compensating control (see [conformance](../ra/07-readiness/conformance.md)).
 
 ## Minimal valid descriptor
 
@@ -100,3 +100,8 @@ design:
   selected_profile: EP1
   selected_pattern: WP00
 ```
+
+<!-- link definitions -->
+[classification]: ../ra/02-architecture-model/classification.md
+[architecture-invariants]: ../ra/01-foundations/architecture-invariants.md
+[design-principles]: ../ra/01-foundations/design-principles.md

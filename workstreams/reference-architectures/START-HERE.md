@@ -19,10 +19,10 @@ The central unit is the **workflow run**: one coordinated execution toward an in
 
 | Audience | Enters through | Wants |
 |---|---|---|
-| Solution / platform architect | [Architecture principles](docs/architecture-principles.md) → [WDM](playbook/workflow-design-method.md) | Design a specific workflow |
-| Workflow reviewer | [Architecture invariants](foundations/architecture-invariants.md) → [Conformance](readiness/conformance.md) | Assess an existing workflow |
-| AI engineer building an assistant | [AI agent instructions](playbook/ai-agent-instructions.md) → [registry.yaml](descriptor/registry.yaml) | Point an agent at the repo |
-| WG contributor | [ROADMAP](ROADMAP.md) → [decisions](decisions/README.md) | See what is unfinished and why |
+| Solution / platform architect | [Architecture principles](docs/architecture-principles.md) → [WDM][workflow-design-method] | Design a specific workflow |
+| Workflow reviewer | [Architecture invariants](ra/01-foundations/architecture-invariants.md) → [Conformance](ra/07-readiness/conformance.md) | Assess an existing workflow |
+| AI engineer building an assistant | [AI agent instructions](ra/08-lifecycle/ai-agent-instructions.md) → [registry.yaml](descriptor/registry.yaml) | Point an agent at the repo |
+| WG contributor | [ROADMAP](ra/09-evolution/roadmap.md) → [decisions](ra/09-evolution/decisions/README.md) | See what is unfinished and why |
 
 ## The two modes
 
@@ -53,13 +53,13 @@ Design workflow for: <use case>
 Requirements: ...
 ```
 
-and expect a quality WDS in return. The agent follows the same [Workflow Design Method](playbook/workflow-design-method.md) a human would.
+and expect a quality WDS in return. The agent follows the same [Workflow Design Method][workflow-design-method] a human would.
 
 ## How to review this proposal
 
 1. **Vision and structure** — is the information architecture useful? ([information architecture](docs/information-architecture.md))
-2. **Foundational concepts** — are workflow run, authority, state, and effects the right centre? ([core concepts](foundations/core-concepts.md))
-3. **The method** — can a new use case be turned into a WDS using only this repository? ([WDM](playbook/workflow-design-method.md))
+2. **Foundational concepts** — are workflow run, authority, state, and effects the right centre? ([core concepts](ra/01-foundations/core-concepts.md))
+3. **The method** — can a new use case be turned into a WDS using only this repository? ([WDM][workflow-design-method])
 4. **Worked example** — does [invoice processing](examples/invoice-processing/README.md) demonstrate it end to end?
 
 ## Document status labels
@@ -67,3 +67,6 @@ and expect a quality WDS in return. The agent follows the same [Workflow Design 
 - **Mature** — developed enough to support the current worked example; still open to WG change.
 - **Proposal** — establishes purpose, scope, candidate structure, and open questions without a complete definition.
 - **Index** — navigation only.
+
+<!-- link definitions -->
+[workflow-design-method]: ra/08-lifecycle/workflow-design-method.md

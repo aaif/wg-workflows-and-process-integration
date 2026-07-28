@@ -38,7 +38,7 @@ If yes, the reference architecture works. If no, the problem is not "20 more pag
 ## Two ways to use this repository
 
 **Human mode** — read in this order:
-[START-HERE](START-HERE.md) → [architecture principles](docs/architecture-principles.md) → [workflow design method](playbook/workflow-design-method.md) → [patterns](patterns/README.md) → [examples](examples/README.md) → design your workflow.
+[START-HERE](START-HERE.md) → [architecture principles](docs/architecture-principles.md) → [workflow design method](ra/08-lifecycle/workflow-design-method.md) → [patterns](ra/03-patterns/README.md) → [examples](examples/README.md) → design your workflow.
 
 **AI mode** — point an agent at the repository with a short instruction:
 
@@ -53,24 +53,30 @@ If you introduce a new concept, explain why existing concepts were insufficient.
 Design workflow for: <use case + requirements>
 ```
 
-The full instruction lives in [playbook/ai-agent-instructions.md](playbook/ai-agent-instructions.md). Everything else the agent needs is in the repository.
+The full instruction lives in [playbook/ai-agent-instructions.md](ra/08-lifecycle/ai-agent-instructions.md). Everything else the agent needs is in the repository.
 
 ## Repository map
 
 | Area | Question it answers |
 |---|---|
-| [`docs/`](docs/) | How do I read and review this repository? |
-| [`foundations/`](foundations/) | What are the scope, concepts, principles, and non-negotiable rules? |
-| [`model/`](model/README.md) | What are the building blocks and how are they classified and combined? |
-| [`patterns/`](patterns/README.md) | What recurring problems have reusable solutions? |
-| [`profiles/`](profiles/README.md) | What coherent whole-run execution styles exist? |
-| [`selection/`](selection/README.md) | How do I choose the right patterns and profile? |
-| [`overlays/`](overlays/README.md) | What cross-cutting controls apply, and what belongs to other WGs? |
-| [`readiness/`](readiness/) | When is a workflow production-ready and conformant? |
+| [`docs/`](docs/README.md) | How do I read and review this repository? |
+| [`ra/`](ra/README.md) | **The knowledgebase** — the reference architecture itself, in nine numbered chapters. |
 | [`descriptor/`](descriptor/README.md) | How is a workflow captured as a machine-readable WDS? |
-| [`playbook/`](playbook/workflow-design-method.md) | How does a human or AI actually design a workflow? |
-| [`examples/`](examples/README.md) | Worked examples that double as few-shot exemplars. |
-| [`decisions/`](decisions/README.md) | Why were the important choices made? |
+| [`examples/`](examples/README.md) | Worked examples (with their WDS outputs) that double as few-shot exemplars. |
+
+Inside [`ra/`](ra/README.md), the nine chapters are:
+
+| Chapter | Question it answers |
+|---|---|
+| [`01-foundations/`](ra/01-foundations/scope-and-boundaries.md) | What are the scope, concepts, principles, and non-negotiable rules? |
+| [`02-architecture-model/`](ra/02-architecture-model/README.md) | What are the building blocks and how are they classified and combined? |
+| [`03-patterns/`](ra/03-patterns/README.md) | What recurring problems have reusable solutions? |
+| [`04-profiles/`](ra/04-profiles/README.md) | What coherent whole-run execution styles exist? |
+| [`05-selection/`](ra/05-selection/README.md) | How do I choose the right patterns and profile? |
+| [`06-overlays/`](ra/06-overlays/README.md) | What cross-cutting controls apply, and what belongs to other WGs? |
+| [`07-readiness/`](ra/07-readiness/readiness-tiers.md) | When is a workflow production-ready and conformant? |
+| [`08-lifecycle/`](ra/08-lifecycle/workflow-design-method.md) | How does a human or AI actually design a workflow? |
+| [`09-evolution/`](ra/09-evolution/roadmap.md) | What is unfinished, and why were the important choices made? |
 
 ## Coded vocabulary
 
@@ -78,13 +84,13 @@ Every concept carries a stable code (design principles `DP-##`, invariants `INV-
 
 ## Status & maturity
 
-This is a proposal snapshot that uses **example-driven maturation**: the full structure exists, but only the concepts and patterns required by the current worked example ([invoice processing](examples/invoice-processing/README.md)) are marked **Mature**. Everything else is an explicit **Proposal** with open questions. See [ROADMAP.md](ROADMAP.md).
+This is a proposal snapshot that uses **example-driven maturation**: the full structure exists, but only the concepts and patterns required by the current worked example ([invoice processing](examples/invoice-processing/README.md)) are marked **Mature**. Everything else is an explicit **Proposal** with open questions. See [ROADMAP.md](ra/09-evolution/roadmap.md).
 
 ## Working style
 
 - Async first: use PR comments to discuss and converge.
 - Fork-first: contributors work in a fork or branch and open PRs to the workstream branch.
-- Keep drafts concise; use decision notes ([decisions/](decisions/README.md)) when a choice needs recording.
+- Keep drafts concise; use decision notes ([decisions/](ra/09-evolution/decisions/README.md)) when a choice needs recording.
 - Use explicit "open questions" instead of blank sections.
 
 ## Links

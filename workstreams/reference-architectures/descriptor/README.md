@@ -10,8 +10,8 @@ One descriptor is a single `*.wera.yaml` file with three blocks:
 
 | Block | Contains | Populated from |
 |---|---|---|
-| `intake` | the business use case (outcome, inputs, nondeterminism justification, requested authority, assurance, side-effects, operations) | the [wizard questions](../selection/wizard-questions.md) |
-| `design` | the resolved architecture (coordinates, five-authority allocation, primitive graph, effects, selected profile + patterns, overlays, boundaries, readiness, conformance target) | [selection logic](../selection/selection-logic.yaml) + review |
+| `intake` | the business use case (outcome, inputs, nondeterminism justification, requested authority, assurance, side-effects, operations) | the [wizard questions](../ra/05-selection/wizard-questions.md) |
+| `design` | the resolved architecture (coordinates, five-authority allocation, primitive graph, effects, selected profile + patterns, overlays, boundaries, readiness, conformance target) | [selection logic](../ra/05-selection/selection-logic.yaml) + review |
 | `recommendation` | rationale, alternatives rejected, mandatory primitives, required views, exceptions | the designer's reasoning |
 
 ## Files here
@@ -19,9 +19,14 @@ One descriptor is a single `*.wera.yaml` file with three blocks:
 - **[workflow-descriptor.schema.json](workflow-descriptor.schema.json)** — JSON Schema (draft 2020-12) that every descriptor validates against. All codes are constrained to the registry vocabulary.
 - **[workflow-descriptor.reference.md](workflow-descriptor.reference.md)** — field-by-field human documentation.
 - **[registry.yaml](registry.yaml)** — the entire coded vocabulary as data, so an agent can load WERA as data rather than prose.
-- **[examples/invoice-processing.wera.yaml](examples/invoice-processing.wera.yaml)** — a complete, schema-valid WDS for the worked example (model-assisted, least-agentic end).
-- **[examples/autonomous-maintenance-run.wera.yaml](examples/autonomous-maintenance-run.wera.yaml)** — a schema-valid WDS for an agent-directed convergence loop (`EP4`/`WP09`) — the autonomous end.
-- **[examples/gated-delivery-pipeline.wera.yaml](examples/gated-delivery-pipeline.wera.yaml)** — a schema-valid WDS for a human-gated delivery pipeline (`EP1`/`WP07`) — the twin of the run above at the opposite HITL setting.
+
+The WDS instances themselves (`*.wera.yaml`) live **with their worked examples**, not here — each output sits next to the use case it answers, in [`examples/`](../examples/README.md):
+
+| WDS | Example | End of the spectrum |
+|---|---|---|
+| [invoice-processing.wera.yaml](../examples/invoice-processing/invoice-processing.wera.yaml) | [invoice processing](../examples/invoice-processing/README.md) | model-assisted, least-agentic (`EP2`/`WP02`) |
+| [autonomous-maintenance-run.wera.yaml](../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml) | [autonomous maintenance run](../examples/autonomous-maintenance-run/README.md) | agent-directed convergence loop (`EP4`/`WP09`) |
+| [gated-delivery-pipeline.wera.yaml](../examples/gated-delivery-pipeline/gated-delivery-pipeline.wera.yaml) | [gated delivery pipeline](../examples/gated-delivery-pipeline/README.md) | human-gated, workflow-directed (`EP1`/`WP07`) |
 
 ## Why it matters
 
@@ -39,15 +44,15 @@ flowchart LR
     WDS --> IMPL[Implementation]
 ```
 
-Because the design is data, three things become mechanical: **authoring** (fill the schema), **checking** ([conformance](../readiness/conformance.md) `CL0`–`CL1` can be validated automatically), and **comparing** (two WDS artifacts for the same use case can be diffed — the heart of the acceptance test).
+Because the design is data, three things become mechanical: **authoring** (fill the schema), **checking** ([conformance](../ra/07-readiness/conformance.md) `CL0`–`CL1` can be validated automatically), and **comparing** (two WDS artifacts for the same use case can be diffed — the heart of the acceptance test).
 
 ## Validating a descriptor
 
 Any JSON-Schema validator works. For example, with a YAML-aware validator:
 
 ```bash
-# using ajv-cli (npm) with a YAML loader, or convert YAML->JSON first
-npx ajv-cli validate -s workflow-descriptor.schema.json -d examples/invoice-processing.wera.yaml
+# from this descriptor/ directory; using ajv-cli (npm) with a YAML loader, or convert YAML->JSON first
+npx ajv-cli validate -s workflow-descriptor.schema.json -d ../examples/invoice-processing/invoice-processing.wera.yaml
 ```
 
 or in Python:
@@ -55,6 +60,6 @@ or in Python:
 ```python
 import json, yaml, jsonschema
 schema = json.load(open("workflow-descriptor.schema.json"))
-doc = yaml.safe_load(open("examples/invoice-processing.wera.yaml"))
+doc = yaml.safe_load(open("../examples/invoice-processing/invoice-processing.wera.yaml"))
 jsonschema.validate(doc, schema)
 ```

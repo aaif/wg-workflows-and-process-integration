@@ -34,20 +34,20 @@ A quality WDS:
 - states the intended outcome and the workflow-run boundary;
 - identifies the deterministic baseline before introducing nondeterminism;
 - allocates the five authority types explicitly;
-- places the workflow on the eight [classification](../model/classification.md) axes (its coordinates);
-- selects a [profile](../profiles/README.md) and reuses [patterns](../patterns/README.md) rather than inventing structure;
-- classifies and protects [effects](../model/classification.md);
-- declares required [overlays](../overlays/README.md) and [external boundaries](../overlays/external-boundaries.md);
-- names a [readiness tier](../readiness/readiness-tiers.md) and [conformance target](../readiness/conformance.md);
+- places the workflow on the eight [classification](../ra/02-architecture-model/classification.md) axes (its coordinates);
+- selects a [profile](../ra/04-profiles/README.md) and reuses [patterns](../ra/03-patterns/README.md) rather than inventing structure;
+- classifies and protects [effects](../ra/02-architecture-model/classification.md);
+- declares required [overlays](../ra/06-overlays/README.md) and [external boundaries](../ra/06-overlays/external-boundaries.md);
+- names a [readiness tier](../ra/07-readiness/readiness-tiers.md) and [conformance target](../ra/07-readiness/conformance.md);
 - validates against the [descriptor schema](../descriptor/workflow-descriptor.schema.json).
 
 ## How to run the test
 
 1. Choose a use case not already covered by an example.
-2. Independently produce a WDS in human mode and in AI mode (see [WDM](../playbook/workflow-design-method.md)).
+2. Independently produce a WDS in human mode and in AI mode (see [WDM](../ra/08-lifecycle/workflow-design-method.md)).
 3. Compare the two WDS artifacts. Differences in wording are fine; differences in profile, authority allocation, protected effects, or conformance target are signals.
 4. Where they diverge or where either mode struggled, record the gap and improve the guidance (method, selection logic, or an exemplar) — not merely the reference prose.
 
 ## Relationship to conformance
 
-The acceptance test measures whether the repository can *produce* a good design. [Conformance](../readiness/conformance.md) (`CL0`–`CL3`) measures whether a given workflow *follows* the architecture. They are complementary: a repository that passes the acceptance test makes conformant designs easy to produce.
+The acceptance test measures whether the repository can *produce* a good design. [Conformance](../ra/07-readiness/conformance.md) (`CL0`–`CL3`) measures whether a given workflow *follows* the architecture. They are complementary: a repository that passes the acceptance test makes conformant designs easy to produce.
