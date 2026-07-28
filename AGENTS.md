@@ -92,16 +92,24 @@ task using the recipe linked at the bottom.
 ### Panel 3 — The core idea: the WDS
 
 > "The group's reference architecture — **WERA**, the Workflow Execution Reference
-> Architecture — adds one step in the middle: a **Workflow Design Specification (WDS)**,
-> a machine-readable file that says *what the workflow should be and why*. Not the
-> implementation — the **design**."
+> Architecture — is a **knowledgebase of vetted patterns and practices** for building
+> agentic workflows. Applying it to your use case produces a **Workflow Design
+> Specification (WDS)**: the *recommended* way to design that workflow — its patterns,
+> control/authority choices, safeguards, and effects — grounded in those best practices,
+> not one person's opinion. It's the **design**, machine-readable, not the
+> implementation."
 
 ```
-   business          ┌──────────────────────┐          build on
-   use case  ──────▶ │  WERA  ──▶  WDS       │ ──────▶  ANY engine
-   (plain words)     │  (the reference       │          / platform
-                     │   architecture)       │
-                     └──────────────────────┘
+   business        ┌──────────────────────────────┐        build on
+   use case ─────▶ │  WERA — knowledgebase of      │ ─────▶ ANY engine
+   (plain words)   │  vetted agentic-workflow      │        / platform
+                   │  patterns & practices         │
+                   │            │                  │
+                   │            ▼                   │
+                   │   WDS = recommended design     │
+                   │   (patterns · authority ·      │
+                   │    safeguards · effects)       │
+                   └──────────────────────────────┘
                         ▲ one shared design,
                           reviewable & portable
 ```
@@ -110,23 +118,26 @@ task using the recipe linked at the bottom.
 
 ### Panel 4 — Two ways in, one way out
 
-> "You can write the WDS by hand after learning the whole architecture — or just ask an
-> agent to produce it. Either way you get the **same kind of artifact**, which you then
-> hand to a coding agent to build."
+> "Two ways to get a WDS. A person can write one after reading this working group's
+> reference-architecture material — the recommended patterns and practices for agentic
+> workflows. Or you skip the reading and just ask an AI agent, which reads that same
+> material for you and produces the WDS. Either way it's the **same kind of artifact**,
+> which you then hand to a coding agent to build."
 
 ```
-   ┌─ human expert ─┐
-   │ (knows the RA) │─┐
-   └────────────────┘ │      ┌───────┐      hand to a        ┌──────────────┐
-                      ├────▶ │  WDS  │ ────▶ coding agent ──▶ │ running       │
-   ┌─ AI agent ─────┐ │      └───────┘       "build this"     │ workflow on   │
-   │ (reads the RA) │─┘        ▲                               │ your engine   │
-   └────────────────┘          │                              └──────────────┘
-                    the WDS is the hand-off point —
-                    design once, build anywhere (no lock-in)
+   ┌─ a person ──────────────┐
+   │ reads the WG's best-    │─┐
+   │ practice material,      │ │   ┌───────┐   hand to a       ┌──────────────┐
+   │ then writes it          │ ├─▶ │  WDS  │ ─▶ coding agent ─▶│ running       │
+   └─────────────────────────┘ │   └───────┘   "build this"    │ workflow on   │
+   ┌─ an AI agent ───────────┐ │     ▲                          │ your engine   │
+   │ reads that same         │─┘     │                          └──────────────┘
+   │ material for you        │       │
+   └─────────────────────────┘  the WDS is the hand-off point —
+                                design once, build anywhere (no lock-in)
 ```
 
-*Then pause — offer: "Next, I can show you the range of workflows this covers."*
+*Then pause — offer: "Next, I can show you the range of agentic workflows this covers."*
 
 ### Panel 5 — The spectrum (why it's not just "chatbots")
 
