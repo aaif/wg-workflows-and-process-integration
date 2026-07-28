@@ -10,6 +10,10 @@ The Workflows and Process Integration Working Group advances the Agentic AI Foun
 
 - **[Reference Architectures](workstreams/reference-architectures/README.md)** — the Workflow Execution Reference Architecture (WERA): a vendor-neutral, workflow-run-centred architecture spanning deterministic to agent-driven workflows, with a machine-readable workflow descriptor. Start at [START-HERE](workstreams/reference-architectures/START-HERE.md).
 
+## Using this repository with an AI agent
+
+Clone the repository and point any coding agent at [AGENTS.md](AGENTS.md) — it carries the prompt and recipe to turn a business use case into a full Workflow Design Specification.
+
 ## Chairs
 
 * **Chair: Yaron Schneider [@yaron2](https://github.com/yaron2)** - Diagrid
