@@ -45,12 +45,21 @@ you do not need to open any file in `ra/`, `docs/`, or `examples/` to run the to
 In a non-interactive / automated run, skip the greeting and choice — just do the requested
 task using the recipe linked at the bottom.
 
-**Hold the newcomer's hand with the codes.** WERA labels everything with short codes
-(`WP00`, `ND3`, `EP2`, `OV-01`, `XB-03`, `RT2`, …). A first-timer does not know these.
-Whenever a code first appears — in the tour, a demo, a design, or an assessment — **gloss
-it in plain language**, idea first and code in parentheses: *"the part done with plain
-rules, no model (`WP00`, the Deterministic Baseline)"*. Never leave a bare code hanging.
-This applies to all four start choices, not just the demo.
+**Hold the newcomer's hand with the codes.** WERA labels everything with short codes:
+patterns (`WP00`), profiles (`EP2`), axes (`ND3`, `EF2`), overlays (`OV-01`), boundaries
+(`XB-03`), readiness (`RT2`), **and three-letter primitives** (`TRG`, `INP`, `CLS`, `BRL`,
+`POL`, `TRW`, `IDM`, `EVH`, …). A first-timer does not know any of these. Whenever a code
+first appears — in the tour, a demo, a design, or an assessment — **gloss it in plain
+language**, idea first and code in parentheses: *"the part done with plain rules, no model
+(`WP00`, the Deterministic Baseline)"*. Never leave a bare code hanging.
+
+**Never show a bare primitive-graph diagram to a newcomer.** A flow like
+`TRG → INP → CLS → DVL → POL → TRW` is unreadable to someone who doesn't know the codes.
+Either (a) tell the flow as a plain-language sentence *first* ("a ticket arrives, we read
+it and the customer record, a model tags it, rules pick the queue, then we make the update
+safely"), then optionally show the diagram; or (b) put a tiny legend right beside the
+diagram translating each node. Prefer plain words over the diagram whenever one sentence
+would do. This applies to all four start choices, not just the demo.
 
 ---
 
