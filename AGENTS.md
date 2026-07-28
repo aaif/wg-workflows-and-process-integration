@@ -15,7 +15,8 @@ three paths:
    How would you like to start?
 
    1) Give me the quick tour   — what this is & why (visual, ~2 min)
-   2) Run the live demo        — watch a real use case become a WDS
+   2) Run the live demo        — watch a real use case become a
+                                 Workflow Design Specification (WDS)
    3) Design my own workflow   — I already have a use case in mind
 ```
 
