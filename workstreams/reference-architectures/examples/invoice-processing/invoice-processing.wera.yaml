@@ -1,7 +1,7 @@
 # Workflow Design Specification (WDS) for the invoice-processing example.
 # This is the machine-readable output a human or AI agent produces by
 # following the Workflow Design Method. It validates against
-# ../workflow-descriptor.schema.json.
+# ../../descriptor/workflow-descriptor.schema.json.
 
 wera_version: v2-descriptor-driven
 

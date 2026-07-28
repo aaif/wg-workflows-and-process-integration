@@ -6,7 +6,7 @@
 #
 # Trial purpose: does WERA's coordinate cleanly separate an autonomous,
 # deterministic-gate-driven loop from a human-sign-off pipeline WITHOUT inventing
-# new architectural concepts? Validates against ../workflow-descriptor.schema.json.
+# new architectural concepts? Validates against ../../descriptor/workflow-descriptor.schema.json.
 
 wera_version: v2-descriptor-driven
 

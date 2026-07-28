@@ -8,7 +8,7 @@
 # Trial purpose: show that WERA's coordinate + authority allocation place this at a
 # different point from the "night shift" run using the SAME vocabulary — the
 # difference lands on control_flow_authority, assurance, and the sign-off overlay,
-# not on a different framework. Validates against ../workflow-descriptor.schema.json.
+# not on a different framework. Validates against ../../descriptor/workflow-descriptor.schema.json.
 
 wera_version: v2-descriptor-driven
 
