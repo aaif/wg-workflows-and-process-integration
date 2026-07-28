@@ -100,6 +100,29 @@ Reviewers apply the [review checklist](../ra/08-lifecycle/review-checklist.md) a
 [conformance levels](../ra/07-readiness/conformance.md) to judge quality beyond schema
 validity.
 
+## After the WDS
+
+A WDS is a **design, not an implementation**. It is the recommended way to build the
+workflow — profile, patterns, authorities, effects, overlays — captured once, so the build
+step is a hand-off rather than a fresh interpretation.
+
+With the WDS in hand you (or a coding agent) build the actual workflow on whatever engine
+or platform you use:
+
+```text
+Here is the Workflow Design Specification for my workflow:
+examples/<FOLDER>/<FOLDER>.wera.yaml (with its solution.md and views/).
+Implement it on <the workflow engine / automation platform we use>, preserving the
+authority allocation, the protected effects, and the human-in-the-loop gates exactly as
+the WDS specifies.
+```
+
+WERA stays **vendor-neutral** on purpose: it says *what* the workflow should be and *why*,
+never which product to build it in. The same WDS can target different engines without
+being redesigned — that portability is the point ([the WG exists to avoid workflow
+lock-in](../../../charter/charter.md)). The WDS is also the review and conformance artifact,
+so what gets built can be checked back against what was designed.
+
 ## Later: one command
 
 This page is written so a future `run-my-usecase.py` is a thin wrapper: ask for the
