@@ -55,6 +55,8 @@ Design workflow for: <use case + requirements>
 
 The full instruction lives in [playbook/ai-agent-instructions.md](ra/08-lifecycle/ai-agent-instructions.md). Everything else the agent needs is in the repository.
 
+**To run a use case end to end** — and get a full solution, not just the WDS — follow [examples/HOW-TO-RUN.md](examples/HOW-TO-RUN.md): copy the template, describe your use case, paste the generic prompt.
+
 ## Repository map
 
 | Area | Question it answers |

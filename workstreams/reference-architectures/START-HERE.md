@@ -55,6 +55,8 @@ Requirements: ...
 
 and expect a quality WDS in return. The agent follows the same [Workflow Design Method][workflow-design-method] a human would.
 
+To produce a **full solution** (not just the WDS) and to see the exact prompt, follow the recipe in [examples/HOW-TO-RUN.md](examples/HOW-TO-RUN.md).
+
 ## How to review this proposal
 
 1. **Vision and structure** — is the information architecture useful? ([information architecture](docs/information-architecture.md))

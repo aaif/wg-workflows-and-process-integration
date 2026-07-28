@@ -41,13 +41,21 @@ Design workflow for:
 
 ## Expected output
 
-A single valid `*.wera.yaml` descriptor with `intake`, `design`, and `recommendation` populated, plus a short natural-language summary that:
+The prompt above yields the core artifact: a single valid `*.wera.yaml` descriptor with
+`intake`, `design`, and `recommendation` populated, plus a short natural-language summary
+that:
 
 - states the deterministic baseline and the residual semantic task;
 - names the chosen profile and patterns and why;
 - lists the overlays and external boundaries triggered;
 - states the readiness tier and conformance target;
 - lists alternatives rejected.
+
+To produce a **full solution** — the WDS plus its human-readable triad and detailed
+views, matching [invoice-processing](../../examples/invoice-processing/README.md) — use
+the folder-parameterised recipe in [examples/HOW-TO-RUN.md](../../examples/HOW-TO-RUN.md),
+which extends this same prompt to point at a use-case folder and ask for the complete file
+set.
 
 ## Self-check before returning
 

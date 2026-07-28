@@ -7,6 +7,13 @@ Examples serve two purposes at once:
 1. they **validate** the architecture by exercising it on a realistic case; and
 2. they are **few-shot exemplars** — a human or AI agent can read them as `Input → Reasoning → Architecture → Result` before designing something new.
 
+## Run your own
+
+To turn a new use case into a full solution — or to reproduce an existing one — follow
+[HOW-TO-RUN.md](HOW-TO-RUN.md): copy [`_template/`](_template/README.md) to
+`examples/<your-usecase>/`, fill in `use-case.md`, and paste the generic prompt into your
+coding agent. `_template/` is scaffolding, not an exemplar.
+
 ## Exemplar shape
 
 Every example follows the same triad, so it reads the same way for both audiences:
@@ -26,7 +33,7 @@ The WDS output sits **in the example folder**, next to the triad, so the deliver
 
 ## Trial exemplars (descriptor-level)
 
-These are schema-valid WDS artifacts produced to test WERA against *new* use cases from the WG use-case landscape. They exercise the **agentic** end of the spectrum that the invoice example deliberately avoids. Each has its own folder and WDS, but no full `use-case`/`rationale`/`solution` triad yet, so they are exemplars rather than complete worked examples.
+These are schema-valid WDS artifacts produced to test WERA against *new* use cases from the WG use-case landscape. They exercise the **agentic** end of the spectrum that the invoice example deliberately avoids. Each has its own folder and WDS, but no full `use-case`/`rationale`/`solution` triad yet, so they are exemplars rather than complete worked examples. Either can be completed to full parity by running the [recipe](HOW-TO-RUN.md#reproduce-or-complete-an-existing-example) against its folder.
 
 They were chosen as a **deliberate autonomy-spectrum pair** — the same class of work (software delivery by an agent) at opposite human-in-the-loop settings — to check that the coordinate separates them using one vocabulary:
 
