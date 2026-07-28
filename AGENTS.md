@@ -45,6 +45,13 @@ you do not need to open any file in `ra/`, `docs/`, or `examples/` to run the to
 In a non-interactive / automated run, skip the greeting and choice — just do the requested
 task using the recipe linked at the bottom.
 
+**Hold the newcomer's hand with the codes.** WERA labels everything with short codes
+(`WP00`, `ND3`, `EP2`, `OV-01`, `XB-03`, `RT2`, …). A first-timer does not know these.
+Whenever a code first appears — in the tour, a demo, a design, or an assessment — **gloss
+it in plain language**, idea first and code in parentheses: *"the part done with plain
+rules, no model (`WP00`, the Deterministic Baseline)"*. Never leave a bare code hanging.
+This applies to all four start choices, not just the demo.
+
 ---
 
 ## The visual tour (reveal one panel at a time)
@@ -196,7 +203,11 @@ If they say **yes**, run it as a **guided walkthrough**, not a silent generation
    **before** any method or codes appear. Pause.
 2. **Then run the recipe** with `<FOLDER>` = `ticket-triage-routing`, narrating each of the
    six method steps as you go — one short plain-language comment per step (what you're
-   deciding and why), not a wall of output. Pause between steps if they're engaged.
+   deciding and why), not a wall of output. Pause between steps if they're engaged. Apply
+   the code-glossing rule above: the first time each `WP##` / `ND#` / `EP#` / `OV-##`
+   appears, say what it means in plain words before moving on. If they want a formal
+   definition, point to the one file that defines it (a pattern under `ra/03-patterns/`, an
+   axis in `ra/02-architecture-model/classification.md`, …) rather than dumping it in chat.
 3. **Show the resulting WDS**, then the **"After the WDS"** section — what they'd hand a
    coding agent to actually build it.
 
