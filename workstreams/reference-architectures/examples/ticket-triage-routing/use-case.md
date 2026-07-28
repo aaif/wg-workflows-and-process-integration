@@ -1,13 +1,5 @@
 # Ticket triage & routing — Use Case
 
-Status: Demo seed (input only)
-
-*This is a **prepared demo input** — a real use case from the WG use-case landscape, with
-only `use-case.md` filled in. It exists so anyone can watch WERA turn a use case into a
-full solution: follow [../HOW-TO-RUN.md](../HOW-TO-RUN.md) with `<FOLDER>` =
-`ticket-triage-routing`. The rest of the solution set is intentionally absent until you
-run the recipe.*
-
 ## Business problem
 
 On support-ticket creation, we want an agent to classify the ticket's intent and

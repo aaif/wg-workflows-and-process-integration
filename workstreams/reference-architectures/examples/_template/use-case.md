@@ -1,12 +1,5 @@
 # <Use-case name> — Use Case
 
-Status: Draft input
-
-*This is the **Input** to the design: the business problem, exactly as a stakeholder might
-hand it over. Fill in every section below — this file is the only thing you must write by
-hand. Everything else in the full solution is produced from it by following
-[HOW-TO-RUN.md](../HOW-TO-RUN.md). Delete these italic hints as you go.*
-
 ## Business problem
 
 *What is the outcome someone wants, in plain business language? Who receives the result,

@@ -14,6 +14,11 @@ To turn a new use case into a full solution — or to reproduce an existing one 
 `examples/<your-usecase>/`, fill in `use-case.md`, and paste the generic prompt into your
 coding agent. `_template/` is scaffolding, not an exemplar.
 
+The [`ticket-triage-routing/`](ticket-triage-routing/use-case.md) folder is a **prepared
+demo seed**: a real use case from the WG landscape with only `use-case.md` filled in, so
+anyone can watch the recipe produce a full solution from scratch. Run the recipe with
+`<FOLDER>` = `ticket-triage-routing` to complete it.
+
 ## Exemplar shape
 
 Every example follows the same triad, so it reads the same way for both audiences:

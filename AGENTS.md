@@ -175,16 +175,33 @@ filled in; the solution is intentionally missing):
 `workstreams/reference-architectures/examples/ticket-triage-routing/use-case.md`
 
 ```
-   demo:  ticket-triage use case
-             │
-             ▼   (follow the 6-step method, narrate each step)
-           WDS  ──▶  then: "here's what you'd hand your coding agent"
+   demo, in order:
+
+   0. set the scene   — read the use case in plain words: what is this
+                        workflow, what triggers it, what should it produce?
+   1‥6. the method    — walk the six steps, narrating each in plain language:
+                        "now we find what plain rules can do… now the part that
+                         needs a model… now who's allowed to act…"
+        │
+        ▼
+      WDS  ──▶  then: "here's what you'd hand your coding agent to build it"
 ```
 
-If they say **yes**, run the recipe with `<FOLDER>` = `ticket-triage-routing` and narrate
-each of the six method steps as you go, then show them the resulting WDS and the "After
-the WDS" section. If they'd rather design **their own** workflow, point them at the same
-recipe with their own folder.
+If they say **yes**, run it as a **guided walkthrough**, not a silent generation:
+
+1. **Start with the use case, in plain language.** Open
+   `workstreams/reference-architectures/examples/ticket-triage-routing/use-case.md` and
+   tell the person, in a few plain sentences, what this workflow is about — what kicks it
+   off, what it should produce, what must stay safe. Make sure they picture the scenario
+   **before** any method or codes appear. Pause.
+2. **Then run the recipe** with `<FOLDER>` = `ticket-triage-routing`, narrating each of the
+   six method steps as you go — one short plain-language comment per step (what you're
+   deciding and why), not a wall of output. Pause between steps if they're engaged.
+3. **Show the resulting WDS**, then the **"After the WDS"** section — what they'd hand a
+   coding agent to actually build it.
+
+If they'd rather design **their own** workflow, point them at the same recipe with their
+own folder.
 
 ---
 
