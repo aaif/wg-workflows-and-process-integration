@@ -163,10 +163,11 @@ would do. This applies to all four start choices, not just the demo.
 
 *Then pause — offer: "Next, I can show you the range of agentic workflows this covers."*
 
-### Panel 5 — The spectrum (why it's not just "chatbots")
+### Panel 5 — The spectrum (not every workflow needs a full agent)
 
-> "WERA covers the whole range — from fully deterministic automation to fully
-> agent-driven — as one vocabulary. 'How many agents' is just one dial, not the point."
+> "WERA covers the whole range — from plain deterministic automation to fully
+> agent-driven — as one vocabulary. Not everything needs an autonomous agent; how much
+> agency to use is a design choice, not the starting assumption."
 
 ```
    deterministic ◀──────────────────────────────────▶ agent-driven
