@@ -39,10 +39,10 @@ impact: IM2-IM4
 
 ## Example
 
-The [autonomous maintenance run](../../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml)
+The [autonomous maintenance run](../../examples/autonomous-maintenance-run/use-case.md)
 ("night shift") is an EP4 run: an agent owns control-flow toward a green gate, fenced
 by an envelope (allowed change scope, a scoped sandbox, and an [OV-06][workflow-overlays]
-budget). Its instructive contrast is the [gated delivery pipeline](../../examples/gated-delivery-pipeline/gated-delivery-pipeline.wera.yaml),
+budget). Its instructive contrast is the [gated delivery pipeline](../../examples/gated-delivery-pipeline/use-case.md),
 which does the *same class of work* but keeps `control_flow_authority: workflow` — the
 engine owns the stage sequence and humans sign off at each boundary, so that twin is
 [EP1](ep1-workflow-directed.md)+[WP07](../03-patterns/wp07-human-supervised-action.md), **not**

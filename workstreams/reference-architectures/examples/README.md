@@ -34,21 +34,31 @@ The WDS output sits **in the example folder**, next to the triad, so the deliver
 
 ## Examples
 
-- [Invoice processing and coding](invoice-processing/README.md) — the complete worked example for this snapshot, with the full triad, its [WDS](invoice-processing/invoice-processing.wera.yaml), and detailed views. Profile `EP2`; patterns `WP00`+`WP02`+`WP07` in a `WP08` envelope.
+Each is a complete worked example — full triad, co-located WDS, and detailed views. They sit at different points on the determinism → agency spectrum, so together they show one vocabulary stretched across very different control models.
 
-## Trial exemplars (descriptor-level)
-
-These are schema-valid WDS artifacts produced to test WERA against *new* use cases from the WG use-case landscape. They exercise the **agentic** end of the spectrum that the invoice example deliberately avoids. Each has its own folder and WDS, but no full `use-case`/`rationale`/`solution` triad yet, so they are exemplars rather than complete worked examples. Either can be completed to full parity by running the [recipe](HOW-TO-RUN.md#reproduce-or-complete-an-existing-example) against its folder.
-
-They were chosen as a **deliberate autonomy-spectrum pair** — the same class of work (software delivery by an agent) at opposite human-in-the-loop settings — to check that the coordinate separates them using one vocabulary:
-
-| WDS | Profile · pattern | The distinctive coordinate |
+| Example | Profile · pattern | What makes it distinct |
 |---|---|---|
-| [autonomous-maintenance-run](autonomous-maintenance-run/README.md) | `EP4` · `WP09` (loop `WP04` in a `WP08` envelope) | `control_flow_authority: agent`, `AS2` deterministic gate, `EF2` PR only |
-| [gated-delivery-pipeline](gated-delivery-pipeline/README.md) | `EP1` · `WP07` | `control_flow_authority: workflow`, `AS5` multi-party sign-off, `EF3` deploy |
+| [invoice-processing](invoice-processing/README.md) | `EP2` · `WP02` | Model-assisted, **least-agentic**: the model only recommends a coding from a validated set; a reversible ERP draft (`EF2`) behind a human approval. |
+| [gated-delivery-pipeline](gated-delivery-pipeline/README.md) | `EP2` · `WP07` | Workflow owns the stage sequence; a human **signs off at each authority boundary** before a high-impact deploy (`EF4`). Most governed. |
+| [autonomous-maintenance-run](autonomous-maintenance-run/README.md) | `EP3` · `WP09` | A "night shift": the workflow admits one task, then **delegates a fenced agentic region** that loops against a deterministic gate and opens a PR — no human on the success path. |
+| [autonomous-maintenance-run-agent-directed](autonomous-maintenance-run-agent-directed/README.md) | `EP4` · `WP09` | **Variant** of the run above: the same use case, but the architect asked for **more agency** — the agent owns the whole run, not just a region. See the comparison below. |
 
-Same work; **7 of 8 axes differ**. The autonomy difference lands on *who owns control-flow* and *what carries assurance* — not on a different framework.
+## The autonomy spectrum, one use case
+
+The last two examples are the **same night-shift use case** at two points on the agency axis. The `EP3` version is what the method recommends by default (least-agentic, `DP-01`). The `EP4` version exists because, as the architect, **I asked for a more agent-directed design** — and the RA supported that by shifting a few coordinates and making the trade-off explicit, not by changing frameworks:
+
+| Coordinate | `EP3` (default) | `EP4` (architect asked for more agency) |
+|---|---|---|
+| `control_flow_authority` | `workflow` | **`agent`** — the agent owns the whole run |
+| `assurance` | `AS2` | **`AS3`** — raised to offset less deterministic sequencing |
+| overlays / patterns | — | **`OV-01` + `WP07`** added: mandatory escalation and post-run human review |
+
+Everything else — the reversible PR-only effect (`EF2`), impact (`IM2`), durability (`DUR4`) — stays the same. The extra agency is a **priced choice**: the `EP4` WDS records an explicit `DP-01` override and *tightens* the envelope, budgets, and effect ceiling rather than loosening them. That is the point of the spectrum — how much agency to use is a design decision, and its cost is visible in the coordinate.
+
+## Try it yourself
+
+The [`ticket-triage-routing/`](ticket-triage-routing/use-case.md) folder is a **prepared seed**: a real use case with only `use-case.md` filled in, so you can watch the [recipe](HOW-TO-RUN.md) produce a full solution from scratch. Run it with `<FOLDER>` = `ticket-triage-routing`.
 
 ## Choosing future examples
 
-Future examples should be chosen because they **stress architecture areas not yet covered**, not because they repeat the same control model in a new domain. With the pair above, the bounded-agentic/agent-directed region is now exercised; still open are **fan-out/aggregation** and **cross-runtime handoff** (`WP11`/`EP7`), and giving the two trial exemplars their full triad. See the [roadmap](../ra/09-evolution/roadmap.md).
+Future examples should **stress architecture areas not yet covered**, not repeat a control model in a new domain. Covered now: model-assisted (`EP2`), human-gated (`WP07`), bounded-agentic (`EP3`), and agent-directed (`EP4`). Still open: **fan-out/aggregation** and **cross-runtime handoff** (`WP11`/`EP7`). See the [roadmap](../ra/09-evolution/roadmap.md).

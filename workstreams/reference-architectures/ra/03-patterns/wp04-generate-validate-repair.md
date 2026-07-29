@@ -52,7 +52,7 @@ impact: IM1
   convergence loop of an agent-directed run (see example).
 
 ## Example
-The [autonomous maintenance run](../../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml)
+The [autonomous maintenance run](../../examples/autonomous-maintenance-run/use-case.md)
 is WP04 with the validator generalised to a CI/contract gate: the agent applies a
 change (`GEN`/`TRW`), the gate runs (`DVL`), and on red the bounded loop (`LOP`) feeds
 the gate's output back for another attempt until the gate goes green or the budget

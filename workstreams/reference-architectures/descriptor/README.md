@@ -25,8 +25,11 @@ The WDS instances themselves (`*.wera.yaml`) live **with their worked examples**
 | WDS | Example | End of the spectrum |
 |---|---|---|
 | [invoice-processing.wera.yaml](../examples/invoice-processing/invoice-processing.wera.yaml) | [invoice processing](../examples/invoice-processing/README.md) | model-assisted, least-agentic (`EP2`/`WP02`) |
-| [autonomous-maintenance-run.wera.yaml](../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml) | [autonomous maintenance run](../examples/autonomous-maintenance-run/README.md) | agent-directed convergence loop (`EP4`/`WP09`) |
-| [gated-delivery-pipeline.wera.yaml](../examples/gated-delivery-pipeline/gated-delivery-pipeline.wera.yaml) | [gated delivery pipeline](../examples/gated-delivery-pipeline/README.md) | human-gated, workflow-directed (`EP1`/`WP07`) |
+| [gated-delivery-pipeline.wera.yaml](../examples/gated-delivery-pipeline/gated-delivery-pipeline.wera.yaml) | [gated delivery pipeline](../examples/gated-delivery-pipeline/README.md) | human-gated, high-impact deploy (`EP2`/`WP07`) |
+| [autonomous-maintenance-run.wera.yaml](../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml) | [autonomous maintenance run](../examples/autonomous-maintenance-run/README.md) | bounded agentic region (`EP3`/`WP09`) |
+| [autonomous-maintenance-run-agent-directed.wera.yaml](../examples/autonomous-maintenance-run-agent-directed/autonomous-maintenance-run-agent-directed.wera.yaml) | [agent-directed variant](../examples/autonomous-maintenance-run-agent-directed/README.md) | agent owns the run (`EP4`/`WP09`) |
+
+See the [examples index](../examples/README.md) for how these span the autonomy spectrum, and [HOW-TO-RUN](../examples/HOW-TO-RUN.md) to generate one yourself.
 
 ## Why it matters
 

@@ -51,7 +51,7 @@ impact: IM2
 - Multiple such regions compose into [WP10](wp10-multi-agent-delegation.md).
 
 ## Example
-The [autonomous maintenance run](../../examples/autonomous-maintenance-run/autonomous-maintenance-run.wera.yaml)
+The [autonomous maintenance run](../../examples/autonomous-maintenance-run/use-case.md)
 ("night shift") is a WP09 region: the workflow delegates one bounded maintenance
 task (`DLG`), the agent selects edits and tools (`TSL`) inside an ephemeral sandbox
 with scoped credentials, and the region's result — a change that makes a
