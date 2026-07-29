@@ -40,22 +40,19 @@ If yes, the reference architecture works. If no, the problem is not "20 more pag
 **Human mode** — read in this order:
 [START-HERE](START-HERE.md) → [architecture principles](docs/architecture-principles.md) → [workflow design method](ra/08-lifecycle/workflow-design-method.md) → [patterns](ra/03-patterns/README.md) → [examples](examples/README.md) → design your workflow.
 
-**AI mode** — point an agent at the repository with a short instruction:
+**AI mode** — point a coding agent at [`AGENTS.md`](../../AGENTS.md); it's the entry point. Run the agent in the repo, then either ask for a guided tour, or hand it your use case directly — described inline or as a file you already have:
 
 ```
-You are a workflow architect.
-Read this repository. Follow the Workflow Design Method.
-Produce a Workflow Design Specification for the use case below.
-Do not invent architectural concepts outside the repository.
-Reuse existing patterns whenever possible.
-If you introduce a new concept, explain why existing concepts were insufficient.
-
-Design workflow for: <use case + requirements>
+Read AGENTS.md and give me a guided tour.
+```
+```
+Read AGENTS.md. Here's my use case: <a few sentences>. Design me a solution.
+```
+```
+Read AGENTS.md. My use case is in @path/to/use-case.md. Design me a solution.
 ```
 
-The full instruction lives in [playbook/ai-agent-instructions.md](ra/08-lifecycle/ai-agent-instructions.md). Everything else the agent needs is in the repository.
-
-**To run a use case end to end** — and get a full solution, not just the WDS — follow [examples/HOW-TO-RUN.md](examples/HOW-TO-RUN.md): copy the template, describe your use case, paste the generic prompt.
+The agent produces a full solution (a machine-readable WDS plus its human-readable design). The mechanics live in [examples/HOW-TO-RUN.md](examples/HOW-TO-RUN.md), but you don't need to reference it — `AGENTS.md` routes there for you.
 
 ## Repository map
 

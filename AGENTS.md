@@ -8,8 +8,25 @@ instructions live.
 
 ## How to behave in an interactive session
 
-**First, offer a choice** — don't assume everyone is new. Greet in one line and present
-three paths:
+**First, read what the person already said in this same message.** If they've already told
+you what they want, act on it directly — do **not** show the menu:
+
+- They described a **workflow / use case** (even loosely), or asked you to design/build one
+  → treat their words as the use case and go straight to **"design a workflow"** below.
+  Create the example folder, write its `use-case.md` from what they said (ask only for
+  genuinely missing essentials), and produce the full solution.
+- They pointed at a **use-case file** ("my use case is in ./foo.md") → same, using that
+  file as the input.
+- They asked to **evaluate / assess an existing workflow** → go straight to the
+  **"Assess an existing workflow"** flow.
+- They asked for a **tour / demo / "what is this"**, or gave **no clear intent** → offer the
+  menu below.
+
+So a one-liner like *"read AGENTS.md — here's my use case: <…>, design me a solution"* should
+just produce a design, no menu.
+
+**Otherwise, offer the choice** — don't assume everyone is new. Greet in one line and
+present the paths:
 
 ```
    How would you like to start?
@@ -25,8 +42,8 @@ three paths:
 - **Choice 1** → run the **visual tour** below.
 - **Choice 2** → skip to [Panel 6](#panel-6--offer-the-live-demo) and run the demo on the
   prepared seed.
-- **Choice 3** → go straight to the recipe (the "real instructions" link at the bottom)
-  with the person's own use case.
+- **Choice 3** → "design a workflow": go straight to the recipe (the "real instructions"
+  link at the bottom) with the person's own use case.
 - **Choice 4** → go to the **"Assess an existing workflow"** section of the recipe: recover
   the workflow's design as an as-is WDS and score it against the invariants and conformance
   levels.

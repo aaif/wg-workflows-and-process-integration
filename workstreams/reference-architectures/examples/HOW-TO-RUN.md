@@ -10,12 +10,24 @@ agent and this repository. It is the practical wrapper around the
 
 ## Quickstart
 
+You need one thing before running the agent: a folder under `examples/` containing a
+filled `use-case.md`. Get there one of two ways.
+
+**If you already have a `use-case.md`** (e.g. the prepared
+[`ticket-triage-routing` seed](README.md#try-it-yourself)) — skip straight to step 3 with
+`<FOLDER>` set to that folder's name.
+
+**If you're starting fresh:**
+
 1. **Copy the template.** `examples/_template/` → `examples/<your-usecase>/`
    (short, kebab-case name). Delete the template's `README.md` from the copy.
 2. **Describe the problem.** Fill in `examples/<your-usecase>/use-case.md`. This is the
    only file you write by hand.
+
+Then, either way:
+
 3. **Run the agent.** Paste the prompt below into your coding agent, with `<FOLDER>`
-   replaced by `<your-usecase>`.
+   replaced by your folder name.
 4. **Check it.** Confirm the [done criteria](#what-done-looks-like) below.
 
 ## The prompt
@@ -67,11 +79,9 @@ extended to point at a folder and ask for the full solution set instead of only 
 
 Point `<FOLDER>` at an example that already exists:
 
-- **Complete a trial to full parity** — the SDLC trials
-  [`autonomous-maintenance-run`](autonomous-maintenance-run/README.md) and
-  [`gated-delivery-pipeline`](gated-delivery-pipeline/README.md) currently have only a WDS
-  and a README. Running the prompt with that folder fills in the missing triad and
-  `views/`.
+- **Generate from a seed** — the [`ticket-triage-routing`](ticket-triage-routing/use-case.md)
+  folder ships with only a `use-case.md`. Running the prompt with that folder produces the
+  full solution from scratch — the same path a new user takes.
 - **Regenerate / audit** — run the prompt against any folder and diff the result against
   the committed files. A clean reproduction is exactly the
   [acceptance test](../docs/acceptance-test.md): the same repository, the same use case,
