@@ -106,10 +106,10 @@ The work of this WG supports:
 
 #### Planned Deliverables
 
-- **Workflow Taxonomy** — Owner: WG, Format: document, Target: 06.01.2026
-- **Workflow Best Practices** — Owner: WG, Format: document, Target: 07.01.2026
-- **Workflow Reference Architecture** — Owner: WG, report: document, Target: 08.01.2026
-- **Horizontal Use Cases Landscape** — Owner: WG, Format: report, Target: 07.01.2026
+- **Workflow Taxonomy** — Owner: WG, Format: document, Target: 08.29.2026
+- **Workflow Best Practices** — Owner: WG, Format: document, Target: 10.29.2026
+- **Workflow Reference Architecture** — Owner: WG, report: document, Target: 08.29.2026
+- **Horizontal Use Cases Landscape** — Owner: WG, Format: report, Target: 09.29.2026
 
 #### Definition of Done (DoD)
 
