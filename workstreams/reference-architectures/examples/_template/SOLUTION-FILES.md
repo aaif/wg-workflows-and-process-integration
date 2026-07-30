@@ -10,7 +10,7 @@ write only `use-case.md`; the rest is produced by following [HOW-TO-RUN.md](../H
 |---|---|---|
 | `use-case.md` | **you** (input) | Business problem, requirements, constraints, out-of-scope, success criteria. |
 | `rationale.md` | agent | The six [WDM](../../ra/08-lifecycle/workflow-design-method.md) steps applied — the reasoning from use case to design. |
-| `solution.md` | agent | The design in one picture, the result table, how the effect is protected, and why it passes conformance; links to the WDS. |
+| `solution.md` | agent | The design in one picture (a **color-coded** flowchart — see below), the result table, how the effect is protected, and why it passes conformance; links to the WDS. |
 | `<name>.wera.yaml` | agent | The machine-readable [WDS](../../descriptor/README.md); validates against the [schema](../../descriptor/workflow-descriptor.schema.json). |
 | `views/architecture.md` | agent | Architectural position, scope (in/out), logical architecture, actor responsibilities. |
 | `views/execution.md` | agent | Stage-by-stage walkthrough and the least-agentic path. |
@@ -23,6 +23,11 @@ write only `use-case.md`; the rest is produced by following [HOW-TO-RUN.md](../H
 - All files above exist in the example folder.
 - The `*.wera.yaml` validates against the schema, and every code in it (and in the prose)
   exists in [registry.yaml](../../descriptor/registry.yaml).
+- `solution.md`'s "design in one picture" flowchart is **color-coded by step authority** —
+  every step tagged `:::model` (LLM/agent decides), `:::deterministic` (rules/code), or
+  `:::human` (a person approves), with the `classDef` block and this legend under it:
+  `> 🔴 model/agent step · 🟢 deterministic step · 🟡 human step`. See any committed
+  example's `solution.md` for the exact form.
 - Relative links resolve (the depth matches invoice-processing: `../../ra/…` from the
   folder, `../../../ra/…` from `views/`).
 

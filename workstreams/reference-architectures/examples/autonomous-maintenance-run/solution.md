@@ -10,19 +10,24 @@ A scheduled or eligible backlog task is screened by rules. If admitted, the work
 
 ```mermaid
 flowchart TD
-    A[Schedule or eligible task] --> B[Check eligibility scope and duplicate]
+    A[Schedule or eligible task] --> B[Check eligibility scope and duplicate]:::deterministic
     B -->|not admitted| Z[Record rejected or escalated outcome]
-    B -->|admitted| C[Create fresh isolated sandbox]
-    C --> D[Delegate one bounded repair goal]
-    D --> E[Agent selects allowed diagnostics and edits]
-    E --> F[Run deterministic CI and contract gate]
-    F -->|green and scope-valid| G[Validate result and exact PR intent]
-    G --> H[Open protected pull request]
-    H --> I[Record evidence and complete]
+    B -->|admitted| C[Create fresh isolated sandbox]:::deterministic
+    C --> D[Delegate one bounded repair goal]:::deterministic
+    D --> E[Agent selects allowed diagnostics and edits]:::model
+    E --> F[Run deterministic CI and contract gate]:::deterministic
+    F -->|green and scope-valid| G[Validate result and exact PR intent]:::deterministic
+    G --> H[Open protected pull request]:::deterministic
+    H --> I[Record evidence and complete]:::deterministic
     F -->|red| J{Budget remains and repair permitted?}
     J -->|yes| E
     J -->|no| Z
+    classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+    classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+    classDef human fill:#fff3cd,stroke:#d4a017,color:#000
 ```
+
+> 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
 
 ## Result — the WDS
 

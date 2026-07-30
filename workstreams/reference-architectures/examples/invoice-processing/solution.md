@@ -8,24 +8,29 @@ Status: Mature worked example
 
 ```mermaid
 flowchart TD
-    A[Submission] --> B[Input and attachment controls]
-    B --> C[Immutable source and provenance]
-    C --> D[Extract fields — AIN]
-    D --> E[Schema and arithmetic — SCH]
-    E --> F[Read vendor / PO / receipt / GL — RET]
-    F --> G[Deterministic matching and inheritance — BRL]
+    A[Submission] --> B[Input and attachment controls]:::deterministic
+    B --> C[Immutable source and provenance]:::deterministic
+    C --> D[Extract fields — AIN]:::model
+    D --> E[Schema and arithmetic — SCH]:::deterministic
+    E --> F[Read vendor / PO / receipt / GL — RET]:::deterministic
+    F --> G[Deterministic matching and inheritance — BRL]:::deterministic
     G --> H{Residual ambiguity?}
-    H -->|No| K[Determine disposition — POL]
-    H -->|Yes| I[Recommend coding — REC]
-    I --> J[Validate candidate / policy / confidence — DVL]
+    H -->|No| K[Determine disposition — POL]:::deterministic
+    H -->|Yes| I[Recommend coding — REC]:::model
+    I --> J[Validate candidate / policy / confidence — DVL]:::deterministic
     J --> K
     K -->|Reject or hold| Z[Rejected or manual]
-    K -->|Reviewable| L[Create unposted ERP draft — TRW + IDM]
-    L --> M[Checkpoint and build review package — CHK]
-    M --> N[Await review — WAI]
-    N --> O[Approve exact version — APR]
-    O --> P[Record and hand off — EVH + FSK]
+    K -->|Reviewable| L[Create unposted ERP draft — TRW + IDM]:::deterministic
+    L --> M[Checkpoint and build review package — CHK]:::deterministic
+    M --> N[Await review — WAI]:::deterministic
+    N --> O[Approve exact version — APR]:::human
+    O --> P[Record and hand off — EVH + FSK]:::deterministic
+    classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+    classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+    classDef human fill:#fff3cd,stroke:#d4a017,color:#000
 ```
+
+> 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
 
 ## Result — the WDS
 

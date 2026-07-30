@@ -6,14 +6,19 @@ The agent directs the run toward a deterministic green gate. An external durable
 
 ```mermaid
 flowchart TD
- A[Objective in immutable envelope] --> B[Agent chooses next action]
- B --> C[Allowed diagnostic, edit, gate, or durable wait]
- C --> D[Validate scope, gate correlation, and budgets]
- D -->|green exact change| E[Independent policy admits PR]
- E --> F[PR-only adapter creates one PR]
+ A[Objective in immutable envelope] --> B[Agent chooses next action]:::model
+ B --> C[Allowed diagnostic, edit, gate, or durable wait]:::model
+ C --> D[Validate scope, gate correlation, and budgets]:::deterministic
+ D -->|green exact change| E[Independent policy admits PR]:::deterministic
+ E --> F[PR-only adapter creates one PR]:::deterministic
  D -->|continue allowed| B
- D -->|risk, failure, or exhausted budget| G[Escalate / safe terminal outcome]
+ D -->|risk, failure, or exhausted budget| G[Escalate / safe terminal outcome]:::human
+ classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+ classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+ classDef human fill:#fff3cd,stroke:#d4a017,color:#000
 ```
+
+> 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
 
 ## Result
 

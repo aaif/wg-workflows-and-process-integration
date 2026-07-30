@@ -6,20 +6,25 @@ Status: Designed solution
 
 ```mermaid
 flowchart TD
- A[Delivery request] --> B[Classify short/full track]
- B --> C[Requirements]
- C --> D{Human gate: exact digest}
- D --> E[Design]
- E --> F[Build + review in parallel]
- F --> G[Join + per-language verification]
- G --> H{Human gate: exact candidate}
- H --> I[QA]
- I --> J{Human deploy approval]
- J --> K[Deploy signed digest]
+ A[Delivery request] --> B[Classify short/full track]:::deterministic
+ B --> C[Requirements]:::model
+ C --> D[Human gate: exact digest]:::human
+ D --> E[Design]:::model
+ E --> F[Build + review in parallel]:::model
+ F --> G[Join + per-language verification]:::deterministic
+ G --> H[Human gate: exact candidate]:::human
+ H --> I[QA]:::deterministic
+ I --> J[Human deploy approval]:::human
+ J --> K[Deploy signed digest]:::deterministic
  K --> L{Postcondition}
- L -->|pass| M[Retro + complete]
- L -->|fail| N[Rollback + compensate]
+ L -->|pass| M[Retro + complete]:::deterministic
+ L -->|fail| N[Rollback + compensate]:::deterministic
+ classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+ classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+ classDef human fill:#fff3cd,stroke:#d4a017,color:#000
 ```
+
+> 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
 
 Agents produce bounded artifacts; the workflow owns sequencing, fan-out/join, validation, waits, and all transitions. A named human approves the exact digest before every authority boundary, especially deployment.
 

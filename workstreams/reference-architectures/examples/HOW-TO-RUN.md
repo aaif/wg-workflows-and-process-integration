@@ -62,6 +62,18 @@ Rules:
 - If you must introduce a new concept, explain why existing concepts were insufficient.
 - Reference cross-cutting concerns owned by other WGs as external boundaries (XB-##);
   do not redefine them.
+- In solution.md, COLOR-CODE the "design in one picture" flowchart by step authority so a
+  reviewer sees where the nondeterminism is at a glance. Tag each node with one of
+  :::model (an LLM/agent generates or decides), :::deterministic (plain rules / code /
+  lookup / validation — the WP00 baseline), or :::human (a person acts or approves);
+  branch/terminal nodes may stay unstyled. Include this classDef block verbatim at the
+  end of the flowchart and a one-line legend right under it:
+
+      classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+      classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+      classDef human fill:#fff3cd,stroke:#d4a017,color:#000
+
+  Legend line: > 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
 
 Before returning, self-check against the repository:
 - the *.wera.yaml validates against descriptor/workflow-descriptor.schema.json;
@@ -69,6 +81,7 @@ Before returning, self-check against the repository:
 - applicable invariants and composition rules hold (target at least CL1);
 - no cross-WG concern was redefined locally (INV-015);
 - the least-agentic viable composition was chosen (DP-01);
+- solution.md's flowchart is color-coded with the three authority classes + legend;
 - relative links resolve (../../ra/… from the folder, ../../../ra/… from views/).
 ```
 

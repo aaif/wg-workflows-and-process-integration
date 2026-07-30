@@ -43,6 +43,14 @@ Each is a complete worked example — full triad, co-located WDS, and detailed v
 | [autonomous-maintenance-run](autonomous-maintenance-run/README.md) | `EP3` · `WP09` | A "night shift": the workflow admits one task, then **delegates a fenced agentic region** that loops against a deterministic gate and opens a PR — no human on the success path. |
 | [autonomous-maintenance-run-agent-directed](autonomous-maintenance-run-agent-directed/README.md) | `EP4` · `WP09` | **Variant** of the run above: the same use case, but the architect asked for **more agency** — the agent owns the whole run, not just a region. See the comparison below. |
 
+### Reading the diagrams
+
+Each example's `solution.md` has a "design in one picture" flowchart, **color-coded by who owns each step**, so a reviewer can see where the nondeterminism is at a glance:
+
+> 🔴 **model/agent step** — an LLM or agent generates or decides · 🟢 **deterministic step** — plain rules, code, lookup, or validation · 🟡 **human step** — a person acts or approves
+
+The more red a diagram has, the more agency the design uses — so the `EP3` → `EP4` shift below is visible in the pictures, not just the coordinate. The colouring is redundant with each node's label (the primitive is named), so it stays readable without color too.
+
 ## The autonomy spectrum, one use case
 
 The last two examples are the **same night-shift use case** at two points on the agency axis. The `EP3` version is what the method recommends by default (least-agentic, `DP-01`). The `EP4` version exists because, as the architect, **I asked for a more agent-directed design** — and the RA supported that by shifting a few coordinates and making the trade-off explicit, not by changing frameworks:
