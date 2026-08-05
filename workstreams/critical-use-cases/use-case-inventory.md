@@ -2,7 +2,7 @@
 
 **Agentic AI Foundation · Workflows & Process Integration Working Group · Critical Use Cases Workstream**
 
-This is an inventory of real-world agentic workflows, classified against the dimensions defined in the [Classification Schema](./classification-schema.md) file. This document covers the why, what, and how to contribute additional use case references.
+This is an inventory of real-world agentic workflows, classified against the dimensions defined in the [Classification Schema](./schema-agentic-use-cases.md) file. This document covers the why, what, and how to contribute additional use case references.
 
 ---
 
