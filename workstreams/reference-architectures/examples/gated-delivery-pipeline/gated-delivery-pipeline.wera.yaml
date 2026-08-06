@@ -1,0 +1,153 @@
+# Workflow Design Specification for the gated multi-stage delivery pipeline.
+# Validates against ../../descriptor/workflow-descriptor.schema.json.
+wera_version: v2-descriptor-driven
+workflow:
+  id: gated-multi-stage-delivery-pipeline
+  name: Gated Multi-Stage Delivery Pipeline
+  owner: Software Delivery Platform
+  intended_outcome: Deploy the exact version that passed every required stage gate and named human approval, with a replayable record and rollback path.
+  authoritative_decision_owner: Named human approver at each policy-defined authority boundary
+  run_boundary:
+    start: A delivery request is accepted.
+    terminal_outcomes: [COMPLETED, REJECTED, ESCALATED, CANCELLED, FAILED_TECHNICAL, COMPENSATED]
+intake:
+  inputs:
+    sources: [delivery request, repository, change metadata, policy configuration]
+    schemas: [delivery-request, stage-artifact, gate-record]
+    data_classification: [source-code, delivery-metadata, reviewer-identity]
+    untrusted_content: true
+  nondeterminism:
+    required: true
+    smallest_semantic_task: Produce a bounded requirements, design, implementation, review, or retrospective artifact against the stage contract.
+    reason_rules_insufficient: Requirements and code-review content contain semantic variation that cannot be fully expressed as closed rules.
+  requested_authority:
+    may_select_branch: false
+    may_select_tool: false
+    may_propose_write: true
+    may_execute_write: false
+    may_delegate_goal: false
+  assurance:
+    deterministic_verification: partial
+    human_review: true
+    human_approval: true
+    abstention_allowed: true
+  side_effects:
+    level: EF4
+    reversible: false
+    idempotent: "yes"
+    compensation_available: true
+  operations:
+    target_readiness: RT3
+    impact: IM4
+    latency_objective: hours to days, including human gates
+    per_run_budget: bounded model calls per stage and bounded verification retries
+    provenance_required: true
+design:
+  coordinates:
+    nondeterminism: ND1
+    control_flow_authority: workflow
+    actor_topology: single_agent
+    flow_shape: FS7
+    durability: DUR3
+    effect_level: EF4
+    assurance: AS4
+    impact: IM4
+  authority_allocation:
+    control_flow: Durable workflow runtime following fixed stage and track policy
+    decision: Workflow rules for routing and named human approvers for gate decisions
+    action_authorisation: Named human approver for the exact artifact/version at each authority boundary
+    execution: Constrained build, merge, and deployment adapters released only after approval
+    state: Workflow state store and execution-history store as the authoritative run record
+  primitive_graph:
+    nodes:
+      - {id: n1, primitive: TRG, label: Accept delivery request}
+      - {id: n2, primitive: INP, label: "Bind request, repository, policy, and provenance"}
+      - {id: n3, primitive: BRL, label: Classify change size and select short or full track}
+      - {id: n4, primitive: SEQ, label: Fixed ordered stage controller}
+      - {id: n5, primitive: GEN, label: Produce requirements artifact}
+      - {id: n6, primitive: DVL, label: Validate requirements and per-language checks}
+      - {id: n7, primitive: CHK, label: Checkpoint stage artifact and digest}
+      - {id: n8, primitive: WAI, label: Wait for requirements approval}
+      - {id: n9, primitive: APR, label: Approve exact requirements version}
+      - {id: n10, primitive: GEN, label: Produce design artifact}
+      - {id: n11, primitive: GEN, label: Build implementation and test artifact}
+      - {id: n12, primitive: GEN, label: Review diff and evidence artifact}
+      - {id: n13, primitive: PAR, label: Fan out build and review}
+      - {id: n14, primitive: DVL, label: Join and validate build/review results}
+      - {id: n15, primitive: APR, label: Approve exact design/build/review version}
+      - {id: n16, primitive: GEN, label: Produce QA artifact}
+      - {id: n17, primitive: DVL, label: Run per-language QA and verification}
+      - {id: n18, primitive: APR, label: Approve exact QA evidence version}
+      - {id: n19, primitive: CHK, label: Package signed release candidate}
+      - {id: n20, primitive: WAI, label: Wait for deployment approval}
+      - {id: n21, primitive: APR, label: Approve exact release candidate}
+      - {id: n22, primitive: IDM, label: Create deployment idempotency key}
+      - {id: n23, primitive: TXN, label: Deploy signed version}
+      - {id: n24, primitive: DVL, label: Verify deployment postcondition}
+      - {id: n25, primitive: CMP, label: Roll back on failed postcondition}
+      - {id: n26, primitive: GEN, label: Produce retrospective}
+      - {id: n27, primitive: EVH, label: Record outcome and execution history}
+      - {id: n28, primitive: FSK, label: Terminal outcome}
+      - {id: n29, primitive: TMO, label: Timeout gate}
+      - {id: n30, primitive: CAN, label: Cancel withdrawn request}
+    edges:
+      - {from: n1, to: n2}
+      - {from: n2, to: n3}
+      - {from: n3, to: n4, condition: selected short or full track}
+      - {from: n4, to: n5}
+      - {from: n5, to: n6}
+      - {from: n6, to: n7}
+      - {from: n7, to: n8}
+      - {from: n8, to: n9}
+      - {from: n8, to: n29, condition: approval timeout}
+      - {from: n4, to: n10, condition: full track}
+      - {from: n10, to: n11}
+      - {from: n10, to: n12}
+      - {from: n11, to: n13}
+      - {from: n12, to: n13}
+      - {from: n13, to: n14, condition: build and review joined}
+      - {from: n14, to: n15}
+      - {from: n15, to: n16}
+      - {from: n16, to: n17}
+      - {from: n17, to: n18}
+      - {from: n18, to: n19}
+      - {from: n19, to: n20}
+      - {from: n20, to: n21}
+      - {from: n20, to: n29, condition: approval timeout}
+      - {from: n21, to: n22}
+      - {from: n22, to: n23}
+      - {from: n23, to: n24}
+      - {from: n24, to: n26, condition: postcondition passed}
+      - {from: n24, to: n25, condition: postcondition failed}
+      - {from: n25, to: n26, condition: rollback confirmed}
+      - {from: n26, to: n27}
+      - {from: n27, to: n28}
+      - {from: n9, to: n10, condition: approved exact version and full track}
+      - {from: n9, to: n16, condition: approved exact version and short track}
+      - {from: n9, to: n28, condition: rejected}
+      - {from: n21, to: n28, condition: rejected}
+      - {from: n29, to: n28, condition: escalated}
+      - {from: n30, to: n28, condition: cancelled}
+  effects:
+    - name: deploy-signed-release-candidate
+      level: EF4
+      idempotency_key: run-id + release-candidate-digest + target-environment
+      authoriser: Named human deployment approver for exact release-candidate digest
+      executor: Constrained deployment adapter with rollback capability
+  selected_profile: EP2
+  selected_pattern: WP07
+  embedded_patterns: [WP00, WP01, WP08]
+  lifecycle_envelope: WP08
+  overlays: [OV-01, OV-02, OV-03, OV-04, OV-05, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03, XB-04, XB-05]
+  runtime_components: [RC-01, RC-02, RC-03, RC-04, RC-05, RC-06, RC-07, RC-08, RC-09, RC-10]
+  readiness_tier: RT3
+  conformance_target: CL3
+recommendation:
+  deterministic_baseline: Fixed stage order, track selection, fan-out/join, per-language checks, digest comparison, gate placement, approval invalidation, deployment idempotency, and terminal outcomes are rule-driven.
+  agent_justification: Bounded model assistance helps create and explain stage artifacts, but every result is validated and remains a proposal until a named human approves the exact version.
+  selection_explanation: WP07 protects each authority boundary; WP00 controls the fixed pipeline; WP01 bounds specialist model work; WP08 supplies durable waits and replay; OV-02/03/05 protect deployment and rollback.
+  alternatives_rejected: [EP4/WP09 (agents cannot own sequence or gates), WP05 (the stage plan is fixed), WP10 (no goal delegation), EP1 alone (semantic stage artifacts need bounded model assistance)]
+  mandatory_primitives: [TRG, INP, BRL, SEQ, GEN, DVL, CHK, WAI, APR, PAR, IDM, TXN, CMP, EVH, FSK]
+  required_views: [VW-01, VW-05, VW-07, VW-10]
+  exceptions: []

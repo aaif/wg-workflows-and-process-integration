@@ -1,0 +1,181 @@
+wera_version: v2-descriptor-driven
+
+workflow:
+  id: autonomous-maintenance-run
+  name: Autonomous Maintenance Run
+  owner: Engineering Productivity
+  intended_outcome: >
+    For one bounded maintenance task, either open a pull request containing the
+    exact sandbox-validated change, or record a safe non-success disposition;
+    never merge, deploy, or alter the authoritative repository directly.
+  authoritative_decision_owner: >
+    Maintenance-scope policy and deterministic CI/contract gate; a human owns
+    escalated scope and failure dispositions.
+  run_boundary:
+    start: >
+      A scheduled run selects one eligible triage-labelled backlog item, or an
+      eligible labelled item is submitted directly.
+    terminal_outcomes: [COMPLETED, REJECTED, ESCALATED, FAILED_BUDGET, FAILED_TECHNICAL, CANCELLED]
+
+intake:
+  inputs:
+    sources: [scheduler, triage-labelled issue backlog, issue text, dependency changelog, repository and CI feedback]
+    schemas: [maintenance-task-contract, sandbox-change-result, deterministic-gate-result, pull-request-intent]
+    data_classification: [repository-source, issue-content, CI-output]
+    untrusted_content: true
+  nondeterminism:
+    required: true
+    smallest_semantic_task: >
+      Within one declared maintenance-task scope, choose the next allowed edit
+      or sandbox tool invocation in response to current source and deterministic
+      gate feedback.
+    reason_rules_insufficient: >
+      Diagnosing dependency, lint/type, specification, and documentation drift
+      and selecting a repair requires context-sensitive tool and edit choices;
+      deterministic policy can bound the task, tools, scope, and success gate but
+      cannot prescribe every repair sequence.
+  requested_authority:
+    may_select_branch: true
+    may_select_tool: true
+    may_propose_write: true
+    may_execute_write: true
+    may_delegate_goal: false
+  assurance:
+    deterministic_verification: full
+    human_review: true
+    human_approval: false
+    abstention_allowed: true
+  side_effects:
+    level: EF2
+    reversible: true
+    idempotent: "yes"
+    compensation_available: true
+  operations:
+    target_readiness: RT2
+    impact: IM2
+    latency_objective: minutes to hours per task, including durable CI waits
+    per_run_budget: bounded task count (one), sandbox attempts, tokens, tool calls, wall-clock time, and one PR effect
+    provenance_required: true
+
+design:
+  coordinates:
+    nondeterminism: ND6
+    control_flow_authority: workflow
+    actor_topology: bounded_agentic_region
+    flow_shape: FS7
+    durability: DUR4
+    effect_level: EF2
+    assurance: AS2
+    impact: IM2
+  authority_allocation:
+    control_flow: >
+      Workflow runtime selects one task, enters and exits the bounded region,
+      enforces accepted transitions, waits durably for CI, and closes the run.
+    decision: >
+      Agent selects local repair steps only inside the delegated task contract;
+      deterministic scope policy, gate result, and PR policy decide admission,
+      success, and disposition; humans decide escalations.
+    action_authorisation: >
+      Workflow policy authorises only declared sandbox edits and, after a green
+      gate, one exact PR payload; merge and deployment are never authorised.
+    execution: >
+      Sandboxed agent tools use ephemeral sandbox credentials; a separate
+      constrained Git-host adapter opens the PR.
+    state: >
+      Workflow execution-history store is authoritative and links task, sandbox,
+      gate, commit, and PR identities.
+  primitive_graph:
+    nodes:
+      - { id: n1, primitive: TRG, label: Start scheduled or backlog-triggered run }
+      - { id: n2, primitive: INP, label: Bind one task contract and untrusted inputs }
+      - { id: n3, primitive: BRL, label: "Check label eligibility, scope, duplicate, and policy" }
+      - { id: n4, primitive: POL, label: Admit task or select safe disposition }
+      - { id: n5, primitive: CHK, label: Record admitted task and create fresh sandbox }
+      - { id: n6, primitive: DLG, label: Delegate bounded repair goal }
+      - { id: n7, primitive: PLN, label: Form local repair approach inside sandbox }
+      - { id: n8, primitive: TSL, label: Select allowed edit or diagnostic tool }
+      - { id: n9, primitive: TRW, label: Apply scoped sandbox edit }
+      - { id: n10, primitive: TRO, label: Run allowed diagnostics and deterministic gate }
+      - { id: n11, primitive: WAI, label: Wait durably for asynchronous CI gate }
+      - { id: n12, primitive: DVL, label: "Validate gate result, scope, and change manifest" }
+      - { id: n13, primitive: LOP, label: Bound repair iteration with gate feedback }
+      - { id: n14, primitive: CST, label: "Check token, step, tool, and time budgets" }
+      - { id: n15, primitive: HND, label: Return validated result to workflow }
+      - { id: n16, primitive: IDM, label: Bind exact PR intent idempotency key }
+      - { id: n17, primitive: TRW, label: Open protected pull request }
+      - { id: n18, primitive: RCP, label: Reconcile ambiguous PR creation result }
+      - { id: n19, primitive: EVH, label: "Record outcome, attempts, evidence, and effects" }
+      - { id: n20, primitive: FSK, label: Close with a terminal outcome }
+    edges:
+      - { from: n1, to: n2 }
+      - { from: n2, to: n3 }
+      - { from: n3, to: n4 }
+      - { from: n4, to: n20, condition: "ineligible, duplicate, or out of autonomous scope" }
+      - { from: n4, to: n5, condition: one task admitted }
+      - { from: n5, to: n6 }
+      - { from: n6, to: n7 }
+      - { from: n7, to: n8 }
+      - { from: n8, to: n9, condition: allowed sandbox edit selected }
+      - { from: n9, to: n10 }
+      - { from: n10, to: n11, condition: CI gate asynchronous }
+      - { from: n10, to: n12, condition: gate result available }
+      - { from: n11, to: n12 }
+      - { from: n12, to: n15, condition: green gate and scope-valid manifest }
+      - { from: n12, to: n13, condition: red gate and repair permitted }
+      - { from: n13, to: n14 }
+      - { from: n14, to: n7, condition: budget remains }
+      - { from: n14, to: n20, condition: budget exhausted }
+      - { from: n12, to: n20, condition: over-scope or repeated failure requires escalation }
+      - { from: n15, to: n16 }
+      - { from: n16, to: n17 }
+      - { from: n17, to: n19, condition: PR confirmed }
+      - { from: n17, to: n18, condition: PR result ambiguous }
+      - { from: n18, to: n19 }
+      - { from: n19, to: n20 }
+  effects:
+    - name: apply-scoped-sandbox-edit
+      level: EF2
+      idempotency_key: run-id + task-digest + iteration + sandbox-generation
+      authoriser: maintenance-scope policy and bounded-region contract
+      executor: ephemeral sandbox tool gateway with repository-scope restrictions
+    - name: open-pull-request
+      level: EF2
+      idempotency_key: run-id + task-digest + validated-change-digest
+      authoriser: policy after green deterministic gate and scope-manifest validation
+      executor: constrained Git-host adapter with PR-create-only credentials
+  selected_profile: EP3
+  selected_pattern: WP09
+  embedded_patterns: [WP00, WP04]
+  lifecycle_envelope: WP08
+  overlays: [OV-02, OV-03, OV-04, OV-06, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03, XB-04, XB-05]
+  runtime_components: [RC-01, RC-02, RC-03, RC-04, RC-06, RC-07, RC-08, RC-09, RC-10]
+  readiness_tier: RT2
+  conformance_target: CL2
+
+recommendation:
+  deterministic_baseline: >
+    Scheduling, one-task selection, task-label and scope checks, duplicate
+    exclusion, sandbox provisioning, tool allow-list enforcement, CI/contract
+    gate execution, gate pass/fail adjudication, budget accounting, PR payload
+    construction, idempotency, reconciliation, and terminal disposition are
+    deterministic (WP00). No agent chooses a task, widens scope, merges, or deploys.
+  agent_justification: >
+    Repairing bounded code and maintenance drift requires dynamic diagnosis and
+    selection of allowed edit and diagnostic tools. That capability is confined
+    to one fresh sandbox and a goal/result contract (WP09); feedback-driven
+    repair is bounded by WP04 and OV-06.
+  selection_explanation: >
+    ND6 local planning and tool selection requires an agentic region, but the
+    workflow retains run coordination and state, selecting EP3 rather than EP4.
+    The long CI wait and restart tolerance require WP08, DUR4, and OV-04/OV-07.
+    Sandbox edits and PR creation are reversible EF2 effects protected by OV-02
+    and reconciled through OV-03. Deterministic gate evidence provides AS2.
+  alternatives_rejected:
+    - "EP2 / WP04 alone: a fixed workflow cannot prescribe the dynamic diagnostic and tool-selection sequence needed for each repair."
+    - "EP4 agent-directed: grants whole-run control-flow unnecessarily; the workflow can retain task intake, budgets, waits, PR admission, and closure."
+    - "WP07 / OV-01 before PR: a human approval gate would contradict the explicit autonomous-PR requirement; human handling is reserved for escalation."
+    - "EF3 or EF4: sandbox edits and a PR are reversible; merge and deployment are excluded."
+  mandatory_primitives: [INP, BRL, POL, CHK, DLG, PLN, TSL, TRW, TRO, WAI, DVL, LOP, CST, HND, IDM, RCP, EVH]
+  required_views: [VW-01, VW-02, VW-03, VW-05, VW-06, VW-07, VW-09, VW-10, VW-11, VW-12]
+  exceptions: []

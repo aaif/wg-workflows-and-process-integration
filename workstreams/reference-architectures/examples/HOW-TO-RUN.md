@@ -1,0 +1,188 @@
+# How to run a use case → full solution
+
+Status: Mature
+
+This is the repeatable recipe for turning a business use case into a **full solution** —
+the same file set as [invoice-processing](invoice-processing/README.md) — using a coding
+agent and this repository. It is the practical wrapper around the
+[Workflow Design Method](../ra/08-lifecycle/workflow-design-method.md): the method is
+*what to think*; this page is *how to run it*.
+
+## Quickstart
+
+You need one thing before running the agent: a folder under `examples/` containing a
+filled `use-case.md`. Get there one of two ways.
+
+**If you already have a `use-case.md`** (e.g. the prepared
+[`ticket-triage-routing` seed](README.md#try-it-yourself)) — skip straight to step 3 with
+`<FOLDER>` set to that folder's name.
+
+**If you're starting fresh:**
+
+1. **Copy the template.** `examples/_template/` → `examples/<your-usecase>/`
+   (short, kebab-case name). Delete the template's `README.md` from the copy.
+2. **Describe the problem.** Fill in `examples/<your-usecase>/use-case.md`. This is the
+   only file you write by hand.
+
+Then, either way:
+
+3. **Run the agent.** Paste the prompt below into your coding agent, with `<FOLDER>`
+   replaced by your folder name.
+4. **Check it.** Confirm the [done criteria](#what-done-looks-like) below.
+
+## The prompt
+
+The prompt is **generic** — the only thing that changes between runs is `<FOLDER>`. Point
+it at a folder that already contains a filled `use-case.md`.
+
+```text
+You are a workflow architect. Read this repository — start at ra/README.md and load
+descriptor/registry.yaml as data. Follow the Workflow Design Method
+(ra/08-lifecycle/workflow-design-method.md) for the use case in:
+
+    examples/<FOLDER>/use-case.md
+
+Produce the FULL solution set in examples/<FOLDER>/, matching the shape of
+examples/invoice-processing/ (see examples/_template/SOLUTION-FILES.md):
+
+    rationale.md
+    solution.md
+    <FOLDER>.wera.yaml
+    views/architecture.md
+    views/execution.md
+    views/sequence.md
+    views/contracts-and-state.md
+    README.md
+
+Rules:
+- Do not invent architectural concepts outside this repository.
+- Use only codes present in descriptor/registry.yaml.
+- Reuse existing patterns and profiles whenever possible.
+- Prefer the least-agentic composition that satisfies the requirements (DP-01).
+- If you must introduce a new concept, explain why existing concepts were insufficient.
+- Reference cross-cutting concerns owned by other WGs as external boundaries (XB-##);
+  do not redefine them.
+- In solution.md, COLOR-CODE the "design in one picture" flowchart by step authority so a
+  reviewer sees where the nondeterminism is at a glance. Tag each node with one of
+  :::model (an LLM/agent generates or decides), :::deterministic (plain rules / code /
+  lookup / validation — the WP00 baseline), or :::human (a person acts or approves);
+  branch/terminal nodes may stay unstyled. Include this classDef block verbatim at the
+  end of the flowchart and a one-line legend right under it:
+
+      classDef model fill:#ffd6d6,stroke:#c0392b,color:#000
+      classDef deterministic fill:#d6f5d6,stroke:#27ae60,color:#000
+      classDef human fill:#fff3cd,stroke:#d4a017,color:#000
+
+  Legend line: > 🔴 model/agent step · 🟢 deterministic step · 🟡 human step
+
+Before returning, self-check against the repository:
+- the *.wera.yaml validates against descriptor/workflow-descriptor.schema.json;
+- every code used (in the WDS and the prose) exists in descriptor/registry.yaml (INV-017);
+- applicable invariants and composition rules hold (target at least CL1);
+- no cross-WG concern was redefined locally (INV-015);
+- the least-agentic viable composition was chosen (DP-01);
+- solution.md's flowchart is color-coded with the three authority classes + legend;
+- relative links resolve (../../ra/… from the folder, ../../../ra/… from views/).
+```
+
+This is the [AI agent instructions](../ra/08-lifecycle/ai-agent-instructions.md) prompt,
+extended to point at a folder and ask for the full solution set instead of only the WDS.
+
+## Reproduce or complete an existing example
+
+Point `<FOLDER>` at an example that already exists:
+
+- **Generate from a seed** — the [`ticket-triage-routing`](ticket-triage-routing/use-case.md)
+  folder ships with only a `use-case.md`. Running the prompt with that folder produces the
+  full solution from scratch — the same path a new user takes.
+- **Regenerate / audit** — run the prompt against any folder and diff the result against
+  the committed files. A clean reproduction is exactly the
+  [acceptance test](../docs/acceptance-test.md): the same repository, the same use case,
+  the same solution.
+
+## What "done" looks like
+
+- Every file in [`_template/SOLUTION-FILES.md`](_template/SOLUTION-FILES.md) exists in the
+  folder (a lighter WDS-only deliverable is fine for a quick trial).
+- The `*.wera.yaml` validates against the
+  [schema](../descriptor/workflow-descriptor.schema.json).
+- Every code resolves in [registry.yaml](../descriptor/registry.yaml); relative links
+  resolve.
+
+### Verifying
+
+```python
+# from workstreams/reference-architectures/ — schema-validate the WDS
+import json, yaml, jsonschema
+schema = json.load(open("descriptor/workflow-descriptor.schema.json"))
+doc = yaml.safe_load(open("examples/<FOLDER>/<FOLDER>.wera.yaml"))
+jsonschema.validate(doc, schema)
+```
+
+Reviewers apply the [review checklist](../ra/08-lifecycle/review-checklist.md) and the
+[conformance levels](../ra/07-readiness/conformance.md) to judge quality beyond schema
+validity.
+
+## After the WDS
+
+A WDS is a **design, not an implementation**. It is the recommended way to build the
+workflow — profile, patterns, authorities, effects, overlays — captured once, so the build
+step is a hand-off rather than a fresh interpretation.
+
+With the WDS in hand you (or a coding agent) build the actual workflow on whatever engine
+or platform you use:
+
+```text
+Here is the Workflow Design Specification for my workflow:
+examples/<FOLDER>/<FOLDER>.wera.yaml (with its solution.md and views/).
+Implement it on <the workflow engine / automation platform we use>, preserving the
+authority allocation, the protected effects, and the human-in-the-loop gates exactly as
+the WDS specifies.
+```
+
+WERA stays **vendor-neutral** on purpose: it says *what* the workflow should be and *why*,
+never which product to build it in. The same WDS can target different engines without
+being redesigned — that portability is the point ([the WG exists to avoid workflow
+lock-in](../../../charter/charter.md)). The WDS is also the review and conformance artifact,
+so what gets built can be checked back against what was designed.
+
+## Assess an existing workflow
+
+The reverse direction: you already have a workflow (in a product, a diagram, or code) and
+want to know how it measures up. Recover its design as a WDS, then judge it against the
+architecture. Paste this into your coding agent:
+
+```text
+You are a workflow reviewer. Read this repository — start at ra/README.md and load
+descriptor/registry.yaml as data.
+
+I have an EXISTING workflow to assess (described below / in the file I point you to).
+Do not redesign it yet — first recover its design, then evaluate it:
+
+1. Locate its coordinates on the eight axes (ra/02-architecture-model/classification.md)
+   and name the execution profile it currently is (ra/04-profiles/).
+2. Express it as a *.wera.yaml descriptor (validates against
+   descriptor/workflow-descriptor.schema.json) — an "as-is" WDS.
+3. Assess it with the review checklist (ra/08-lifecycle/review-checklist.md) and report
+   its conformance level CL0-CL3 (ra/07-readiness/conformance.md): which invariants and
+   composition rules hold, which are violated, and which overlays/boundaries are missing.
+4. Recommend the smallest changes that would raise conformance, preferring the
+   least-agentic composition (DP-01).
+
+Use only codes present in descriptor/registry.yaml; do not invent concepts; reference
+cross-WG concerns as external boundaries (XB-##).
+
+Existing workflow:
+<describe it, or point to a file / diagram / repo>
+```
+
+This reuses the same vocabulary as designing a new one — the [review
+checklist](../ra/08-lifecycle/review-checklist.md) explicitly doubles as the
+assess-an-existing-workflow checklist.
+
+## Later: one command
+
+This page is written so a future `run-my-usecase.py` is a thin wrapper: ask for the
+use-case name, copy `_template/` into place, open `use-case.md` for editing, then print
+the prompt above with `<FOLDER>` filled in. The manual recipe and the script produce the
+same result, so starting by hand costs nothing.

@@ -1,0 +1,162 @@
+wera_version: v2-descriptor-driven
+
+workflow:
+  id: autonomous-maintenance-run-agent-directed
+  name: Agent-Directed Autonomous Maintenance Run
+  owner: Engineering Productivity
+  intended_outcome: >
+    An agent-directed run independently pursues one maintenance objective to a
+    deterministic green gate and opens one PR for the exact validated change, or
+    records an auditable safe outcome; it never merges, deploys, or alters the
+    authoritative repository directly.
+  authoritative_decision_owner: >
+    The agent directs run decisions within the enforced envelope; deterministic
+    effect policy authorises sandbox and PR effects, and humans own escalations.
+  run_boundary:
+    start: A schedule or triage-labelled backlog event supplies a maintenance objective to the agent envelope.
+    terminal_outcomes: [COMPLETED, REJECTED, ESCALATED, FAILED_BUDGET, FAILED_TECHNICAL, CANCELLED]
+
+intake:
+  inputs:
+    sources: [scheduler, triage-labelled issue backlog, issue text, dependency changelog, repository and CI feedback]
+    schemas: [maintenance-objective-envelope, sandbox-change-result, deterministic-gate-result, pull-request-intent]
+    data_classification: [repository-source, issue-content, CI-output]
+    untrusted_content: true
+  nondeterminism:
+    required: true
+    smallest_semantic_task: >
+      Decide the run sequence — task interpretation, diagnostics, repair steps,
+      gate invocation, retry, and proposed terminal disposition — toward one
+      maintenance objective within a fixed envelope.
+    reason_rules_insufficient: >
+      The requested variant deliberately gives the agent whole-run planning and
+      branch selection; rules enforce the envelope and evaluate effects but do
+      not prescribe the run sequence.
+  requested_authority:
+    may_select_branch: true
+    may_select_tool: true
+    may_propose_write: true
+    may_execute_write: true
+    may_delegate_goal: false
+  assurance:
+    deterministic_verification: full
+    human_review: true
+    human_approval: false
+    abstention_allowed: true
+  side_effects:
+    level: EF2
+    reversible: true
+    idempotent: "yes"
+    compensation_available: true
+  operations:
+    target_readiness: RT2
+    impact: IM2
+    latency_objective: minutes to hours per objective, including durable CI waits
+    per_run_budget: one objective, strict token/step/tool/wall-clock/effect ceilings, and one PR effect
+    provenance_required: true
+
+design:
+  coordinates:
+    nondeterminism: ND6
+    control_flow_authority: agent
+    actor_topology: single_agent
+    flow_shape: FS7
+    durability: DUR4
+    effect_level: EF2
+    assurance: AS3
+    impact: IM2
+  authority_allocation:
+    control_flow: Agent runtime chooses the full run sequence and proposed terminal disposition within the envelope.
+    decision: Agent interprets and pursues the maintenance objective; deterministic gates and policy reject impermissible effects; humans decide escalations.
+    action_authorisation: Independent policy gateway authorises only allow-listed sandbox writes and one exact green, scope-valid PR intent; merge and deploy are denied.
+    execution: Ephemeral sandbox tool gateway and separate PR adapter hold constrained credentials and enforce the effect ceiling.
+    state: Workflow execution-history store remains the authoritative state owner and accepts only validated, auditable transitions.
+  primitive_graph:
+    nodes:
+      - { id: n1, primitive: TRG, label: Receive scheduled or backlog objective }
+      - { id: n2, primitive: INP, label: Bind immutable envelope and untrusted inputs }
+      - { id: n3, primitive: CHK, label: Record initial state and fresh sandbox identity }
+      - { id: n4, primitive: PLN, label: Agent plans whole-run next steps }
+      - { id: n5, primitive: TSL, label: Agent selects allowed diagnostic edit gate or wait action }
+      - { id: n6, primitive: TRO, label: Read repository context or run deterministic gate }
+      - { id: n7, primitive: TRW, label: Propose scoped sandbox edit through gateway }
+      - { id: n8, primitive: DVL, label: Validate scope manifest gate correlation and postcondition }
+      - { id: n9, primitive: WAI, label: Wait durably for asynchronous CI }
+      - { id: n10, primitive: CST, label: "Enforce strict token, step, tool, time, and effect budgets" }
+      - { id: n11, primitive: POL, label: Independently authorise or deny requested effect }
+      - { id: n12, primitive: IDM, label: Bind exact pull-request intent }
+      - { id: n13, primitive: TRW, label: Open protected pull request }
+      - { id: n14, primitive: RCP, label: Reconcile uncertain pull-request result }
+      - { id: n15, primitive: HRV, label: Send repeated failure or over-scope evidence to human }
+      - { id: n16, primitive: EVH, label: Record accepted transitions and evidence }
+      - { id: n17, primitive: FSK, label: Close in validated terminal outcome }
+    edges:
+      - { from: n1, to: n2 }
+      - { from: n2, to: n3 }
+      - { from: n3, to: n4 }
+      - { from: n4, to: n5 }
+      - { from: n5, to: n6, condition: diagnostic or gate selected }
+      - { from: n5, to: n7, condition: scoped sandbox edit proposed }
+      - { from: n7, to: n11 }
+      - { from: n11, to: n8, condition: sandbox edit authorised and executed }
+      - { from: n6, to: n9, condition: asynchronous gate pending }
+      - { from: n6, to: n8, condition: gate result available }
+      - { from: n9, to: n8 }
+      - { from: n8, to: n10 }
+      - { from: n10, to: n4, condition: agent continues within strict envelope }
+      - { from: n10, to: n15, condition: "budget risk, repeated failure, or over-scope" }
+      - { from: n8, to: n11, condition: green gate and exact scope-valid PR proposed }
+      - { from: n11, to: n12, condition: PR independently authorised }
+      - { from: n12, to: n13 }
+      - { from: n13, to: n16, condition: PR confirmed }
+      - { from: n13, to: n14, condition: PR result uncertain }
+      - { from: n14, to: n16 }
+      - { from: n15, to: n16 }
+      - { from: n16, to: n17 }
+  effects:
+    - name: apply-scoped-sandbox-edit
+      level: EF2
+      idempotency_key: run-id + envelope-digest + iteration + sandbox-generation
+      authoriser: independent policy gateway enforcing envelope scope and effect ceiling
+      executor: ephemeral sandbox tool gateway with repository and path restrictions
+    - name: open-pull-request
+      level: EF2
+      idempotency_key: run-id + envelope-digest + validated-change-digest
+      authoriser: independent policy gateway after matching green-gate and scope-manifest evidence
+      executor: constrained Git-host adapter with PR-create-only credentials
+  selected_profile: EP4
+  selected_pattern: WP09
+  embedded_patterns: [WP00, WP04, WP07]
+  lifecycle_envelope: WP08
+  overlays: [OV-01, OV-02, OV-03, OV-04, OV-06, OV-07]
+  external_boundaries: [XB-01, XB-02, XB-03, XB-04, XB-05]
+  runtime_components: [RC-01, RC-02, RC-03, RC-04, RC-05, RC-06, RC-07, RC-08, RC-09, RC-10]
+  readiness_tier: RT2
+  conformance_target: CL2
+
+recommendation:
+  deterministic_baseline: >
+    The envelope, fresh sandbox, capability and credential restrictions, effect
+    ceiling, gate execution and digest matching, budget metering, effect
+    authorisation, idempotency, reconciliation, state acceptance, and evidence
+    recording stay deterministic (WP00). The agent does not bypass them.
+  agent_justification: >
+    The architect explicitly overrides DP-01 to make the agent, rather than a
+    workflow sequence, direct admission interpretation, planning, retries,
+    waits, and closure toward the green gate. EP4 is selected by directive, not
+    because it is the least-agentic viable design.
+  selection_explanation: >
+    Agent whole-run planning is ND6 with agent control-flow, selecting EP4.
+    WP08/DUR4 externalise durable authority; WP04 bounds repair; WP09 supplies
+    the fenced capability model. Extra agency requires AS3 review of outcomes,
+    OV-01 escalation, stricter OV-06 budgets, and independent OV-02 effect gates.
+  alternatives_rejected:
+    - "EP3: the baseline is safer and least-agentic, but it does not meet the architect directive that the agent direct the whole run."
+    - "EP2: bounded proposals cannot own the run sequence."
+    - "Unenveloped EP4: violates DP-09 and leaves effects and termination unsafe."
+  mandatory_primitives: [INP, CHK, PLN, TSL, TRO, TRW, DVL, WAI, CST, POL, IDM, RCP, HRV, EVH]
+  required_views: [VW-01, VW-02, VW-03, VW-05, VW-06, VW-07, VW-08, VW-09, VW-10, VW-11, VW-12]
+  exceptions:
+    - rule: DP-01
+      rationale: Architect-directed EP4 comparison example requires whole-run agent control-flow.
+      compensating_control: Strict envelope, independent effect policy, stronger budgets, durable state/history, mandatory escalation, and post-run human review.
