@@ -6,7 +6,7 @@ This workstream establishes a shared vocabulary for the Workflows and Process In
 
 ## Contents
 
-- [workflow-terms.md](terms.md) — Core workflow terms proposed for the WG taxonomy
+- [terms.md](terms.md) — Core workflow terms proposed for the WG taxonomy
 
 ## Contributing
 
@@ -17,4 +17,4 @@ This workstream establishes a shared vocabulary for the Workflows and Process In
 ## Related Workstreams
 
 - [Reference Architectures](../reference-architectures/README.md) — Architecture patterns that apply these terms
-- Use Cases — *(coming soon)*
+- [Critical Use Cases](../critical-use-cases/) — Use cases that apply these terms
