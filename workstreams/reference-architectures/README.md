@@ -109,6 +109,10 @@ If a document is meant to inform the workstream but not define the architecture,
 - Use decision notes when a choice needs to be recorded.
 - Use TODOs instead of blank sections when something is intentionally unresolved.
 
+## Principles and contributing
+
+Read [principles.md](principles.md) for the shared design guidance that applies to patterns and reference architectures. For contribution types, templates, and self-review, read [CONTRIBUTING.md](CONTRIBUTING.md). AI coding agents must start with [AGENTS.md](AGENTS.md), which routes them to the same guide and templates.
+
 ## Contribution flow
 
 1. Create or update work in your fork
