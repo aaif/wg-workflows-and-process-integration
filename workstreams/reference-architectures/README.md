@@ -30,12 +30,10 @@ for working group review.
   its behavior concrete. A scenario is validation material, not a separate
   architecture.
 
-The first worked architecture is a
-[single-agent process with human approval](architectures/single-agent-human-approval.md).
-It composes the
-[proposal/execution split](patterns/proposal-execution-split.md),
-[human approval gate](patterns/human-approval-gate.md), and
-[durable wait](patterns/durable-wait.md) patterns.
+The first worked architectures cover two deliberately contrasting jobs:
+
+- [Single-agent process with human approval](architectures/single-agent-human-approval.md): an agent proposes, a person approves, and a workflow-controlled executor performs the protected effect. It composes [proposal/execution split](patterns/proposal-execution-split.md), [human approval gate](patterns/human-approval-gate.md), and [durable wait](patterns/durable-wait.md).
+- [Bounded autonomous remediation](architectures/bounded-autonomous-remediation.md): an agent iterates on one fenced problem, an independent deterministic gate decides whether it has converged, and only a constrained effect may follow. It composes [bounded convergence loop](patterns/bounded-convergence-loop.md), [deterministic acceptance gate](patterns/deterministic-acceptance-gate.md), and [proposal/execution split](patterns/proposal-execution-split.md).
 
 ## Guidelines
 
@@ -63,12 +61,15 @@ workstreams/reference-architectures/
 ├── README.md
 ├── architectures/           # complete architectures: what you'd say you're building
 │   ├── TEMPLATE.md
-│   └── single-agent-human-approval.md
+│   ├── single-agent-human-approval.md
+│   └── bounded-autonomous-remediation.md
 ├── patterns/                # independently adoptable pattern entries
 │   ├── TEMPLATE.md
-│   ├── durable-wait.md
+│   ├── proposal-execution-split.md
 │   ├── human-approval-gate.md
-│   └── proposal-execution-split.md
+│   ├── durable-wait.md
+│   ├── bounded-convergence-loop.md
+│   └── deterministic-acceptance-gate.md
 ├── decisions/
 │   ├── TEMPLATE.md
 │   └── job-oriented-architecture-model.md
@@ -108,6 +109,10 @@ If a document is meant to inform the workstream but not define the architecture,
 - Keep drafts concise and easy to review.
 - Use decision notes when a choice needs to be recorded.
 - Use TODOs instead of blank sections when something is intentionally unresolved.
+
+## Contributing
+
+For the shared authoring rules, contribution types, templates, and self-review checklist, read [CONTRIBUTING.md](CONTRIBUTING.md). AI coding agents must start with [AGENTS.md](AGENTS.md), which routes them to the same guide and templates.
 
 ## Contribution flow
 
