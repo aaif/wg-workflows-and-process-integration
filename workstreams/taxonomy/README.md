@@ -7,6 +7,9 @@ This workstream establishes a shared vocabulary for the Workflows and Process In
 ## Contents
 
 - [terms.md](terms.md) — Core workflow terms proposed for the WG taxonomy
+- [primitives/](primitives/README.md) — `P1`–`P19` primitive vocabulary shared by the
+  reference-architectures workstream's [`single-agent.md`](../reference-architectures/architectures/single-agent.md)
+  and [`multi-agent.md`](../reference-architectures/architectures/multi-agent.md) drafts
 
 ## Contributing
 

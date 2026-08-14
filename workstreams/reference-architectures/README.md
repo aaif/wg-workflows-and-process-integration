@@ -37,6 +37,16 @@ It composes the
 [human approval gate](patterns/human-approval-gate.md), and
 [durable wait](patterns/durable-wait.md) patterns.
 
+A second, primitive-based draft is also under WG review in this workstream:
+[`single-agent.md`](architectures/single-agent.md) and
+[`multi-agent.md`](architectures/multi-agent.md) define reference architectures
+directly around agent count, built on a primitive vocabulary shared with the
+taxonomy workstream ([`taxonomy/primitives/`](../taxonomy/primitives/)), the
+[`AgentStep` and `Handoff` boundary contracts](contracts/), a
+[topology catalogue](topologies/) for multi-agent shapes, and supporting
+[guidance](guidance/). This track has not yet been reconciled with the
+job-oriented model above.
+
 ## Guidelines
 
 A reference architecture should act as a routing checklist: a practitioner
@@ -63,7 +73,19 @@ workstreams/reference-architectures/
 ├── README.md
 ├── architectures/           # complete architectures: what you'd say you're building
 │   ├── TEMPLATE.md
-│   └── single-agent-human-approval.md
+│   ├── single-agent-human-approval.md
+│   ├── single-agent.md      # primitive-based draft, agent-count-oriented
+│   └── multi-agent.md       # primitive-based draft, agent-count-oriented
+├── contracts/                # boundary contracts single-agent.md / multi-agent.md rely on
+│   ├── README.md
+│   ├── agent-step-boundary.md
+│   └── handoff.md
+├── topologies/                # T1-T6 multi-agent shapes referenced by multi-agent.md
+│   ├── README.md
+│   └── t1-supervisor.md … t6-generator-critic.md
+├── guidance/                  # supporting arguments shared by single-agent.md / multi-agent.md
+│   ├── README.md
+│   └── *.md
 ├── patterns/                # independently adoptable pattern entries
 │   ├── TEMPLATE.md
 │   ├── durable-wait.md
