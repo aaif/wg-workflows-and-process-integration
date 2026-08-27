@@ -328,6 +328,9 @@ illustrative examples are labeled separately until a source exists.
 | Scenario | Source | Result | Notes |
 |---|---|---|---|
 | The refund (agent drafts, finance approves, ERP executes) | Working group discussion; pending a Use Cases workstream entry | Illustrative only — validation pending | Exercises all components and three composed patterns |
+| FAQ & knowledge base update | [Use Case Inventory — Customer support](../../critical-use-cases/use-case-inventory.md#customer-support) | Validated | The agent drafts knowledge-base content, and a person approves it before publication. |
+| Release notes generation | [Use Case Inventory — SDLC](../../critical-use-cases/use-case-inventory.md#sdlc) | Validated | The agent drafts release notes, and a person approves them before publication. |
+| Listing description generation | [Use Case Inventory — Real estate](../../critical-use-cases/use-case-inventory.md#real-estate) | Validated | The agent drafts listing copy, and a person approves it before publication. |
 
 ## Open questions
 
