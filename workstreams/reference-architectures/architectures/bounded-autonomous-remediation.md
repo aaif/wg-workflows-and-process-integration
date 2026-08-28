@@ -250,8 +250,9 @@ flowchart TD
 
 | Scenario | Source | Result | Notes |
 |---|---|---|---|
-| Autonomous maintenance run ("night shift") | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Candidate fit | Exercises bounded task scope, independent convergence gate, reversible pull-request effect, budget limit, and exception escalation. The source is a WG-contributed production scenario. |
+| [Autonomous maintenance run ("night shift")](../docs/autonomous-maintenance-run-validation.md) | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Validated | Each maintenance task is bounded and isolated; deterministic CI/contract gates decide acceptance; only the accepted change becomes a pull request; repeated failure or oversized work escalates. |
 | Closed-loop dependency & CVE remediation (fleet-wide) | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Partial fit | Each repository may use this architecture as one bounded target run. Fleet-wide discovery, fan-out, batching, and closure aggregation require a future composition. |
+| [Weekly staff schedule generation](../docs/weekly-staff-schedule-validation.md) | Working-session example; pending a Critical Use Cases inventory entry | Illustrative only — validation pending | A deterministic gate checks mandatory scheduling and fairness rules. Only the accepted schedule is published; unresolved preference collisions or exhausted attempts escalate. |
 
 ## Open questions
 
