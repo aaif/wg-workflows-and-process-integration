@@ -250,15 +250,83 @@ flowchart TD
 
 | Scenario | Source | Result | Notes |
 |---|---|---|---|
-| [Autonomous maintenance run ("night shift")](../docs/autonomous-maintenance-run-validation.md) | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Validated | Each maintenance task is bounded and isolated; deterministic CI/contract gates decide acceptance; only the accepted change becomes a pull request; repeated failure or oversized work escalates. |
+| Autonomous maintenance run ("night shift") | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Validated | Each maintenance task is bounded and isolated; deterministic CI/contract gates decide acceptance; only the accepted change becomes a pull request; repeated failure or oversized work escalates. |
 | Closed-loop dependency & CVE remediation (fleet-wide) | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Partial fit | Each repository may use this architecture as one bounded target run. Fleet-wide discovery, fan-out, batching, and closure aggregation require a future composition. |
-| [Weekly staff schedule generation](../docs/weekly-staff-schedule-validation.md) | Working-session example; pending a Critical Use Cases inventory entry | Illustrative only — validation pending | A deterministic gate checks mandatory scheduling and fairness rules. Only the accepted schedule is published; unresolved preference collisions or exhausted attempts escalate. |
+| Weekly staff schedule generation | Working-session example; pending a Critical Use Cases inventory entry | Illustrative only — validation pending | A deterministic gate checks mandatory scheduling and fairness rules. Only the accepted schedule is published; unresolved preference collisions or exhausted attempts escalate. |
 
 ## Open questions
 
 - Should idempotent/reconciled external execution become a separate reusable pattern, or remain a mandatory capability/invariant of architectures with effects?
 - Does an explicit fan-out/join pattern need to be added before documenting fleet-wide remediation as a complete architecture?
 - What minimum evidence makes a deterministic gate strong enough for different classes of constrained effect?
+
+## Appendix: validation notes
+
+These notes record the reasoning behind the validation results without adding new
+guarantees to the architecture.
+
+### Autonomous maintenance run ("night shift")
+
+**Source:** [Critical Use Case Inventory — Autonomous maintenance run
+("night shift")](../../critical-use-cases/use-case-inventory.md#sdlc)
+
+The inventory describes small dependency bumps, lint/type fixes, and
+specification/documentation drift in an isolated sandbox. Deterministic CI and contract
+checks evaluate each candidate. The agent retries when checks fail; repeated failures or
+changes larger than allowed escalate. Preconditions include meaningful CI, a fresh
+isolated environment per task, scoped write credentials, and a token limit. The resulting
+effect is opening a pull request.
+
+| Validation check | Current evidence |
+|---|---|
+| Is each maintenance problem bounded before work starts? | **Yes** — the inventory calls these small bounded changes, requires a fresh isolated environment per task and scoped write credentials, and escalates changes that are too large. |
+| Does an independent deterministic gate decide whether the candidate is acceptable? | **Yes** — deterministic contract/evaluation checks and CI assess each candidate; the agent iterates until the gate is green. |
+| Is the effect constrained, with a safe route when work does not converge? | **Yes** — the agent works in a sandbox, the accepted effect is opening a pull request, and repeated failure or out-of-scope work escalates. |
+
+**Result:** `Validated`
+
+The evidence establishes the bounded per-task remediation job: bounded and isolated
+work, independent deterministic acceptance, iteration on failure, a constrained
+pull-request effect, and escalation when work cannot converge safely. The surrounding
+backlog workflow is additional composition detail and does not change this fit.
+
+### Weekly staff schedule generation
+
+**Source:** Working-session example; not yet included in the Critical Use Case Inventory.
+
+A small restaurant, salon, or shop needs the next week's employee schedule. The agent
+reads availability, approved leave, qualifications, and informal preferences; balances
+coverage and fairness; and generates a complete candidate schedule.
+
+The workflow is `Generate → validate → repair → validate again → publish`.
+
+The **Schedule Acceptance Gate** evaluates the complete schedule against these criteria:
+
+- Every required shift is covered.
+- Every assigned employee is available.
+- Required roles and qualifications are present.
+- No employee has overlapping shifts.
+- Minimum rest periods are respected.
+- Maximum weekly hours are respected.
+- Approved time off is respected.
+- Popular and unpopular shifts follow the agreed distribution rule.
+
+All criteria must be satisfied for the same schedule (an AND condition). If any criterion
+fails, the schedule is rejected and the gate returns the exact violations. The agent uses
+that feedback to generate another candidate. Only the exact passing schedule may be
+published. Unresolved preference collisions, ambiguity, or failure to converge after the
+maximum number of attempts escalates to the manager.
+
+| Validation check | Current evidence |
+|---|---|
+| Is the task explicitly bounded before work starts? | **Yes** — one business, one week, known employees and shifts, declared availability, qualifications, leave, and scheduling rules. |
+| Can an independent deterministic gate evaluate the candidate? | **Yes** — the gate checks all mandatory constraints and the declared popular/unpopular-shift distribution rule. |
+| Is the effect constrained, with a safe non-success route? | **Yes** — only the exact passing schedule is published; unresolved preference collisions and exhausted attempts escalate to the manager. |
+
+**Result:** `Illustrative only — validation pending`
+
+The example matches the architecture, but it is not independent validation until a
+sourced use case is added to the Critical Use Case Inventory.
 
 ## Appendix: additional examples of the same job
 
