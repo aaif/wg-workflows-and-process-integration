@@ -86,7 +86,7 @@ Two separate questions. Default to the simpler answer when in doubt.
 
 - **`Fixed/scripted`.** Deterministic code decides.
 - **`Single-agent, orchestrated`.** One agent running a dynamic, ReAct-style loop. Only applies with `Single-agent sufficient`.
-- **`AI-coordinated, routing`.** A supervisor delegates at runtime, no multi-step plan.
+- **`AI-coordinated, routing`.** A supervisor delegates at runtime, no multi-activity plan.
 - **`AI-coordinated, planning`.** A supervisor builds and revises a plan.
 - **`Swarm/peer-to-peer`.** Decentralized, all-to-all. Not seen in the inventory yet.
 - **`n/a`.** Single agent, no dynamic loop.
@@ -158,7 +158,7 @@ For agents that hand off control to each other with no central coordinator and n
 
 ### Where does model selection happen?
 
-Not captured by any dimension today. Which model runs a given activity, and who chooses it, is a separate question from Coordination (which is about what runs next, not which model does it): a fully `Fixed/scripted` pipeline can still use different models per phase if that's set by config rather than decided by a model at runtime. Using multiple models isn't on its own grounds for `AI-coordinated`.
+Not captured by any dimension today. Which model runs a given activity, and who chooses it, is a separate question from Coordination (which is about what runs next, not which model does it): a fully `Fixed/scripted` pipeline can still use different models per phase if that's set by config rather than decided by a reasoning activity. Using multiple models isn't on its own grounds for `AI-coordinated`.
 
 This matters because model choice per phase is now a real, cost-driven design decision in production pipelines (cheap model for triage, escalate to a stronger one on failure or risk), and two rows can look identical on every other dimension while behaving very differently on cost and quality depending on how the model is chosen. Broader model infrastructure stays with the Reference Architecture; this is narrower.
 
