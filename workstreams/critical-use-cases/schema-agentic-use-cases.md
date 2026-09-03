@@ -71,6 +71,15 @@ The primary gate in the critical path: the one that blocks progress, not an opti
 - **`None`.** No mandatory checkpoint.
 - **`Exception escalation`.** Runs autonomously by default; a person is pulled in only when confidence runs out, or before one specific irreversible activity.
 - **`Approval gate`.** A person acts before a point every run reaches. Covers three sub-cases (transactional, content review, formal sign-off); note which one applies in the row's Notes.
+- **`Hard constraint`.** A human must perform a specific activity regardless of agent capability — not because the agent lacks competence, but because regulation, policy, or institutional rules require human accountability for that step (e.g., physician signature on a diagnosis, lawyer's certification of a filing, board approval of a transaction above a threshold). Unlike other patterns, a hard constraint is non-negotiable and does not relax as the system matures. It is a ceiling, not a checkpoint.
+
+#### Autonomy Graduation
+
+Real-world deployments frequently evolve their oversight level over time as trust is established and the system proves reliable. A workflow that starts with an `Approval gate` may graduate to `Exception escalation` and eventually to `None` as confidence is demonstrated. This is a recognized deployment pattern, not a classification dimension.
+
+When documenting a use case, classify it at its **current steady-state** HITL pattern. If the expected graduation path is known, note it in the Notes column (e.g., "Currently Approval gate; expected to graduate to Exception escalation after 90-day validation period").
+
+Hard constraints do not participate in graduation — they are structural requirements that persist regardless of system maturity.
 
 ### Agent Count and Coordination
 
@@ -123,7 +132,7 @@ See [open question](#open-questions).
 | Dimension | Description | Allowed values |
 |---|---|---|
 | **Trigger** | What starts execution | • `Event`<br>• `Scheduled`<br>• `User` |
-| **HITL Pattern** | Where a person has to act | • `None`<br>• `Exception escalation`<br>• `Approval gate` |
+| **HITL Pattern** | Where a person has to act | • `None`<br>• `Exception escalation`<br>• `Approval gate`<br>• `Hard constraint` |
 | **Agent Count** | How many agents the workflow uses, and why | • `Single-agent sufficient`<br>• `Better as multi-agent`<br>• `Inherently multi-agent` |
 | **Coordination** | Scripted vs. decided at runtime | • `Fixed/scripted`<br>• `Single-agent, orchestrated`<br>• `AI-coordinated, routing`<br>• `AI-coordinated, planning`<br>• `Swarm/peer-to-peer`<br>• `n/a` |
 | **Workflow Pattern** | The processing shape, checked in priority order | • `Convergence loop`<br>• `Parallel fan-out`<br>• `Sequential pipeline`<br>• `Atomic action` |
