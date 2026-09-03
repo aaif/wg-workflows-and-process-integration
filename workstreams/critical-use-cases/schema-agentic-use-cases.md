@@ -71,7 +71,7 @@ The primary gate in the critical path: the one that blocks progress, not an opti
 - **`None`.** No mandatory checkpoint.
 - **`Exception escalation`.** Runs autonomously by default; a person is pulled in only when confidence runs out, or before one specific irreversible activity.
 - **`Approval gate`.** A person acts before a point every run reaches. Covers three sub-cases (transactional, content review, formal sign-off); note which one applies in the row's Notes.
-- **`Hard constraint`.** A human must perform a specific activity regardless of agent capability — not because the agent lacks competence, but because regulation, policy, or institutional rules require human accountability for that step (e.g., physician signature on a diagnosis, lawyer's certification of a filing, board approval of a transaction above a threshold). Unlike other patterns, a hard constraint is non-negotiable and does not relax as the system matures. It is a ceiling, not a checkpoint.
+- **`Hard constraint`.** A human must act not because the agent can't, but because regulation, policy, or institutional rules require human accountability (e.g., physician signature, legal certification, board approval above a threshold). Non-negotiable; does not relax as the system matures.
 
 #### Autonomy Graduation
 
