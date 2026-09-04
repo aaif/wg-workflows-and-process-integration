@@ -239,6 +239,32 @@ flowchart TD
 - **Fan-out is not free.** Many independent target runs may each use this architecture, but the parent fan-out, batching, aggregation, and reviewer-capacity controls are a separate composition.
 - **Untrusted input remains untrusted.** External task descriptions, diagnostics, or source material must not override the task contract, tool allowlist, or effect constraints.
 
+## Minimum evidence for a deterministic gate
+
+A deterministic gate is only as strong as the evidence it records for the effect it permits. The minimum evidence bar is set by two properties of the permitted effect:
+
+- **Blast radius.** How wide a wrong acceptance can reach: one isolated record, one repository, a direct write to a system of record, or the same action repeated across many targets.
+- **Reversal cost.** How expensive a wrong acceptance is to undo: a draft or staged change is cheap to discard, while a published or externally visible effect may be impossible to retract cleanly.
+
+A reversible, contained effect can accept a lightweight gate, because a wrong acceptance is cheap to undo. An irreversible or wide-reaching effect needs stronger evidence, because a wrong acceptance is expensive or impossible to undo.
+
+| Effect class | Examples | Minimum gate evidence |
+|---|---|---|
+| Reversible and contained | Opening a pull request, staging a change, producing a draft or correction batch | Declared deterministic checks (tests, contract, schema, policy) with scope validation, recorded with the candidate identity |
+| Irreversible or wide-reaching | External publish, direct write to a system of record, fleet-wide action | Stronger evidence than the candidate's own checks can provide: additional policy authority, independent verification, reconciliation, or a named human authorization under the human-approved operation architecture |
+
+The evidence bar for recording a verdict does not weaken as the gate scales. Three properties hold for every acceptance record, independent of gate strength:
+
+1. **Determinism of the verdict.** The same candidate, gate version, and inputs produce the same result. The gate must be independently re-runnable so the verdict can be reproduced rather than taken on trust.
+2. **Binding of verdict to candidate.** The acceptance record identifies the exact artifact that passed (its digest, not just its description), so a later reviewer can confirm the accepted artifact is the one that was evaluated.
+3. **Preservation as execution evidence.** The verdict and its binding survive the run and can be joined back to it later. The system-of-record role in this architecture is execution evidence, distinct from runtime observability; if the record cannot be joined to the run, the gate evidence is effectively lost.
+
+As blast radius grows and reversal cost rises, the checks must get stronger, but the acceptance record must not get weaker. This is consistent with the composition consideration above: acceptance evidence has a limited claim, and weak gates are tolerable only for narrow, reversible effects.
+
+In the worked scenario, each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version, and the run identity, so the resulting pull request can later be traced to the exact evidence that admitted it. The same recording discipline makes a later fleet-wide composition easier to audit when it is documented.
+
+This section resolves the third open question. It is offered for WG review like the rest of this draft and can be revised or moved back to the open questions list if the evidence bar needs refinement.
+
 ## Out of scope (handled elsewhere)
 
 - **Identity, credential issuance, and delegation enforcement** — Identity & Trust WG. This architecture requires scoped credentials and separation from stronger effect authority; it does not specify the identity mechanism.
@@ -257,7 +283,6 @@ flowchart TD
 
 - Should idempotent/reconciled external execution become a separate reusable pattern, or remain a mandatory capability/invariant of architectures with effects?
 - Does an explicit fan-out/join pattern need to be added before documenting fleet-wide remediation as a complete architecture?
-- What minimum evidence makes a deterministic gate strong enough for different classes of constrained effect?
 
 ## Appendix: additional examples of the same job
 
