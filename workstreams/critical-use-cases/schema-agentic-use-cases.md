@@ -144,9 +144,37 @@ Filled in per-row in the [Use Case Inventory](./use-case-inventory.md).
 
 ---
 
+## Classifying a row
+
+### Documenting rationale
+
+Every value should have a reason in Notes (e.g., why `Better as multi-agent` helps here specifically). If the value seems right but the rationale isn't written down yet, keep the value and footnote it rather than downgrading to Unspecified: ¹ Needs confirmation. Rationale not yet documented.
+
+Reuse the same footnote number for every cell in a table with the same kind of gap.
+
+### When source material doesn't say enough
+
+If a cited source describes what a workflow does but not enough to choose a value confidently (e.g., whether three reads happen concurrently or in sequence), write **Unspecified: insufficient source detail** rather than guessing, and add a line in Notes naming the gap.
+
+---
+
 ## Open questions
 
 Add to this list as new questions surface. Record the resolution here rather than deleting the entry once one's settled; the reasoning is worth keeping.
+
+### How should we handle link rot and ephemeral sources?
+
+Many citations in the inventory point to vendor blog posts, product marketing pages, and
+feature announcement articles that are likely to move, be consolidated, or disappear as
+companies rebrand, restructure their sites, or discontinue products. This is a known
+maintenance risk, not an edge case.
+
+**The question is not resolved.** Open for WG discussion.
+
+**Related:** the same staleness risk applies to version-specific product claims in Notes
+cells (feature names, capability descriptions, and pricing tiers change). A citation that
+was accurate at time of writing may silently become inaccurate without any link breaking.
+This is harder to catch than link rot and is not addressed by any of the options above.
 
 ### Should `Tools & Systems` be a dimension?
 
@@ -169,20 +197,6 @@ Three candidate cases proposed:
 * **Model-native.** A single vendor's endpoint routes within its own model family. Not broadly available yet.
 
 Not resolved. Leaning toward a Notes convention (e.g. `routing: gateway (cross-brand)`) rather than a new column, promoting to a column only if enough rows end up using it.
-
----
-
-## Classifying a row
-
-### Documenting rationale
-
-Every value should have a reason in Notes (e.g., why `Better as multi-agent` helps here specifically). If the value seems right but the rationale isn't written down yet, keep the value and footnote it rather than downgrading to Unspecified: ¹ Needs confirmation. Rationale not yet documented.
-
-Reuse the same footnote number for every cell in a table with the same kind of gap.
-
-### When source material doesn't say enough
-
-If a cited source describes what a workflow does but not enough to choose a value confidently (e.g., whether three reads happen concurrently or in sequence), write **Unspecified: insufficient source detail** rather than guessing, and add a line in Notes naming the gap.
 
 ---
 
