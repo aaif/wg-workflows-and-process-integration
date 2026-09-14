@@ -13,13 +13,15 @@ Draft for working group review. Nothing here is locked. This architecture is pro
 
 This architecture serves a recurring practitioner job: resolve one small, bounded problem without requiring a human approval for every attempt, while preserving clear limits on what the agent may do and clear evidence for why the result was accepted.
 
-Use it when the task has a declared scope, allowed tools, budget, and independently checkable acceptance condition; the permitted effect is constrained and reversible or otherwise low enough impact for policy-authorized execution. Examples can include opening a remediation pull request, creating a corrected draft record, preparing a change request, or producing a reconciled correction batch.
+Use it when the business task has a declared scope, allowed tools, budget, and independently checkable acceptance condition; the permitted effect is constrained and reversible or otherwise low enough impact for policy-authorized execution. Examples can include opening a remediation pull request, creating a corrected draft record, preparing a change request, or producing a reconciled correction batch.
+
+> **Terminology:** In this architecture, a **business task** is the bounded business problem or unit of work admitted to a run. It is not a workflow **activity**, which is a subunit of work that the workflow performs while handling the business task.
 
 Do not use it for open-ended objectives, work whose result needs human judgment to accept, or effects whose impact requires a named human authorization.
 
 This architecture guarantees:
 
-- **Bounded autonomy.** The agent has only the task scope, tools, data, credentials, and budget declared for one run.
+- **Bounded autonomy.** The agent has only the business task scope, tools, data, credentials, and budget declared for one run.
 - **Independent acceptance.** A deterministic gate, not the agent, decides whether a candidate result meets the declared acceptance condition.
 - **Controlled effect.** Only the exact accepted, scope-valid result may reach the predeclared external effect; the agent cannot invoke a stronger capability.
 - **Safe non-convergence.** Exhausted budget, repeated failure, ambiguous evidence, or out-of-scope work ends in an explicit recorded outcome and can escalate to a human-owned process.
@@ -28,13 +30,13 @@ This architecture guarantees:
 
 ## Is this your architecture? (checklist)
 
-1. **Is the problem explicitly bounded before work starts?** The run needs a known task contract, allowed scope, permitted tools/data, and measurable acceptance condition. If the objective is open-ended or changes during execution, this is not the architecture.
+1. **Is the problem explicitly bounded before work starts?** The run needs a known business task contract, allowed scope, permitted tools/data, and measurable acceptance condition. If the objective is open-ended or changes during execution, this is not the architecture.
 2. **Can an independent deterministic gate evaluate the result?** Tests, reconciliation rules, contracts, schemas, or policy rules must provide evidence meaningful enough for the effect that follows. If only human judgment can decide acceptability, route to the human-approved operation architecture.
 3. **Is the permitted effect constrained?** The effect must be predeclared and limited to the accepted result. A reversible effect is the normal fit. High-impact, irreversible, or broadly scoped effects need a different architecture with stronger authorization.
-4. **Can the agent be fenced?** The agent needs an isolated or non-authoritative work area and only the tools, credentials, data, time, and budget necessary for this task. If it needs broad standing access, this is not bounded autonomy.
+4. **Can the agent be fenced?** The agent needs an isolated or non-authoritative work area and only the tools, credentials, data, time, and budget necessary for this business task. If it needs broad standing access, this is not bounded autonomy.
 5. **Is there a safe non-success route?** Repeated failure, exhausted budget, invalid scope, missing gate evidence, or an ambiguous effect result must route to a recorded stop, reconciliation, or human-owned follow-up.
 
-If every answer is yes, this architecture fits. If the answer to questions 2 or 3 is no because a person must decide, use the [human-approved operation](single-agent-human-approval.md). If the answer to question 1 or 4 is no, do not force open-ended autonomous work into this architecture; it requires a different job-oriented architecture. If the answer to question 5 is no, do not run the task autonomously until a recorded stop, reconciliation, or human-owned follow-up path is defined.
+If every answer is yes, this architecture fits. If the answer to questions 2 or 3 is no because a person must decide, use the [human-approved operation](single-agent-human-approval.md). If the answer to question 1 or 4 is no, do not force open-ended autonomous work into this architecture; it requires a different job-oriented architecture. If the answer to question 5 is no, do not run the business task autonomously until a recorded stop, reconciliation, or human-owned follow-up path is defined.
 
 The same checklist works in reverse for an existing workflow: every “no” is an identified gap before treating it as bounded autonomy.
 
@@ -63,7 +65,7 @@ flowchart TB
     S[("State / context store")]
     R[("Audit log / system of record")]
 
-    E -->|bounded task| A
+    E -->|bounded business task| A
     A -->|candidate result| W
     W -->|candidate + manifest| G
     G -->|accepted evidence| E
@@ -87,13 +89,13 @@ flowchart TB
 
 | Capability | Responsibility in this architecture | Charter basis |
 |---|---|---|
-| Execution engine / orchestrator | Admits one task; owns sequencing, budgets, retries, stop conditions, effect routing, and escalation | 3A, 3B |
-| Bounded agent environment | Interprets the task and creates candidate results using only allowed tools and data | 3A, 3C |
+| Execution engine / orchestrator | Admits one business task; owns sequencing, budgets, retries, stop conditions, effect routing, and escalation | 3A, 3B |
+| Bounded agent environment | Interprets the business task and creates candidate results using only allowed tools and data | 3A, 3C |
 | Isolated or non-authoritative work area | Keeps candidate work separate from protected or authoritative state until acceptance | 3C |
 | Deterministic acceptance gate | Independently evaluates the exact candidate against declared checks, contract, policy, and scope | 3A, 3F |
-| State / context store | Persists task scope, attempts, budgets, candidate identity, and gate evidence across restart or wait | 3B |
+| State / context store | Persists business task scope, attempts, budgets, candidate identity, and gate evidence across restart or wait | 3B |
 | Constrained effect executor | Performs only the predeclared effect for the exact accepted candidate; reconciles uncertain results before retry | 3A, 3F |
-| Human escalation surface | Delivers a bounded handoff with task, candidate, evidence, and reason to a human-owned process | 3D |
+| Human escalation surface | Delivers a bounded handoff with business task, candidate, evidence, and reason to a human-owned process | 3D |
 | Audit log / system of record | Records run identity, attempts, acceptance evidence, effect, and terminal outcome | 3B |
 
 These are logical capability roles, not a prescribed deployment topology. A platform may implement several roles together, but the authority boundaries and guarantees must remain enforceable.
@@ -102,7 +104,7 @@ These are logical capability roles, not a prescribed deployment topology. A plat
 
 The patterns have different roles in this architecture:
 
-- The **bounded convergence loop** controls task admission, repeated attempts, and retry or stop decisions.
+- The **bounded convergence loop** controls business task admission, repeated attempts, and retry or stop decisions.
 - The **deterministic acceptance gate** is used inside that loop to evaluate every candidate result.
 - The **proposal/execution split** is an authority boundary: the agent may produce a candidate result as its proposal, but only workflow control may pass the accepted candidate to the constrained executor.
 
@@ -114,7 +116,7 @@ flowchart LR
         A["Agent produces<br/>candidate result"]
         G["Pattern: Deterministic acceptance gate<br/>evaluates acceptance criteria and scope"]
 
-        C -->|"bounded task"| A
+        C -->|"bounded business task"| A
         A -->|"candidate result"| G
         G -->|"not accepted"| C
         C -->|"retry criteria permit"| A
@@ -138,13 +140,13 @@ flowchart LR
 
 Read the diagram from left to right:
 
-1. The **bounded convergence loop** uses workflow control to admit the task, record each attempt, and retry or stop according to configured criteria.
+1. The **bounded convergence loop** uses workflow control to admit the business task, record each attempt, and retry or stop according to configured criteria.
 2. The **deterministic acceptance gate** evaluates every candidate result in that loop. A non-accepted result returns to workflow control; an accepted result leaves the loop with recorded evidence.
 3. The **proposal/execution split** prevents the agent from causing the external effect. Workflow control passes only the exact accepted candidate to the constrained executor.
 
 | Pattern | Relationship in this architecture | Where it sits | Why it is required here |
 |---|---|---|---|
-| [Bounded convergence loop](../patterns/bounded-convergence-loop.md) | Controls task admission, repeated attempts, and retry or stop decisions | From task admission through repeated candidate attempts | Gives iteration a finite scope, budget, and safe non-convergence outcomes |
+| [Bounded convergence loop](../patterns/bounded-convergence-loop.md) | Controls business task admission, repeated attempts, and retry or stop decisions | From business task admission through repeated candidate attempts | Gives iteration a finite scope, budget, and safe non-convergence outcomes |
 | [Deterministic acceptance gate](../patterns/deterministic-acceptance-gate.md) | Used by the convergence loop to evaluate every candidate result | After every candidate result | Provides independent, recorded evidence that a result meets declared acceptance and scope conditions |
 | [Proposal/execution split](../patterns/proposal-execution-split.md) | Separates the agent's proposal from the external effect; workflow control passes only an accepted candidate to the executor | Between accepted candidate and external effect | Prevents the agent from directly invoking a stronger capability or changing the exact accepted result |
 
@@ -154,20 +156,20 @@ Read the diagram from left to right:
 
 The agent may:
 
-- inspect the bounded task and permitted context;
+- inspect the bounded business task and permitted context;
 - use the allowed diagnostic, analysis, or editing tools inside the non-authoritative work area;
 - produce a candidate result and associated explanation or manifest;
 - receive deterministic gate feedback and make another permitted attempt.
 
 The agent must not:
 
-- expand task scope, tool/data access, credentials, budget, or acceptance criteria;
+- expand business task scope, tool/data access, credentials, budget, or acceptance criteria;
 - decide that its own result has passed the gate;
 - alter the accepted candidate after evidence is recorded;
 - invoke the constrained executor or a stronger external capability directly;
 - reset its own iteration, time, or cost budget.
 
-Workflow-controlled activities admit the task, establish the work area, preserve state, evaluate the gate, enforce scope/budget, invoke the constrained effect executor, reconcile uncertain effects, and record escalation or completion.
+Workflow-controlled activities admit the business task, establish the work area, preserve state, evaluate the gate, enforce scope/budget, invoke the constrained effect executor, reconcile uncertain effects, and record escalation or completion.
 
 ## Choosing deterministic and model-driven activities
 
@@ -181,9 +183,9 @@ Every run ends in one of the following recorded outcomes:
 
 | Exit state | Reached when | Recorded as |
 |---|---|---|
-| Completed | The exact accepted candidate caused the declared constrained effect successfully | Task, candidate digest, acceptance evidence, effect confirmation |
-| Rejected | Admission rules reject the task or scope before work begins | Admission decision and reason |
-| Escalated | The task becomes out of scope, repeatedly fails, needs human judgment, or has ambiguous acceptance evidence | Handoff package, last candidate, evidence, and reason |
+| Completed | The exact accepted candidate caused the declared constrained effect successfully | Business-task identity, candidate digest, acceptance evidence, effect confirmation |
+| Rejected | Admission rules reject the business task or scope before work begins | Admission decision and reason |
+| Escalated | The business task becomes out of scope, repeatedly fails, needs human judgment, or has ambiguous acceptance evidence | Handoff package, last candidate, evidence, and reason |
 | Budget exhausted | Iteration, time, or cost limit is reached before convergence | Consumed budget, attempt history, and last gate result |
 | Failed | Work area, gate, state, or constrained execution fails beyond its recovery policy | Failure class, last durable state, and recovery evidence |
 | Cancelled | An authorized requester or operator stops the run before the effect | Cancelling principal, reason, last candidate/state |
@@ -194,9 +196,9 @@ The following scenario illustrates the architecture; it does not limit the archi
 
 ### Autonomous maintenance run ("night shift")
 
-A scheduled or triage-labelled task requests a small dependency bump, lint/type correction, or documentation repair.
+A scheduled or triage-labelled business task requests a small dependency bump, lint/type correction, or documentation repair.
 
-1. **Admit the task.** The workflow checks duplicate work, declared repository/scope, allowed effect, and available budget. It rejects or escalates anything outside the contract.
+1. **Admit the business task.** The workflow checks duplicate work, declared repository/scope, allowed effect, and available budget. It rejects or escalates anything outside the contract.
 2. **Create the work area.** The workflow creates a fresh isolated sandbox with scoped credentials. The agent cannot alter production, merge, or deploy.
 3. **Produce a candidate.** The agent diagnoses the issue and makes an allowed candidate change in the sandbox.
 4. **Evaluate independently.** Deterministic CI, contract checks, and scope validation evaluate the exact candidate. The evidence is recorded with the candidate identity.
@@ -207,7 +209,7 @@ A scheduled or triage-labelled task requests a small dependency bump, lint/type 
 
 ```mermaid
 flowchart TD
-    A["Admit task"] --> W["Create work area"]
+    A["Admit business task"] --> W["Create work area"]
     W --> T["Agent attempt"]
     T --> G["Evaluate candidate and<br/>record gate evidence"]
     G -->|"gate not accepted; retry criteria permit"| T
@@ -225,7 +227,7 @@ flowchart TD
 
 | If the process dies during… | What happens on restart | What makes it safe |
 |---|---|---|
-| Admission / work-area creation | The workflow resumes or reconciles the declared task and work-area state | Task identity and admission state are recorded before work proceeds |
+| Admission / work-area creation | The workflow resumes or reconciles the declared business task and work-area state | Business-task identity and admission state are recorded before work proceeds |
 | Agent attempt | The workflow resumes from recorded loop state; it does not create a new attempt or reset the budget | Attempt number, budget, and candidate state are durable |
 | Gate evaluation | The workflow reconciles the gate result or reruns the deterministic gate for the same candidate | Candidate identity and acceptance evidence are bound together |
 | Constrained effect | The executor reconciles whether the exact effect already occurred before retrying | The effect is constrained and must be idempotent or reconciled |
@@ -234,15 +236,15 @@ flowchart TD
 ## Composition considerations
 
 - **Acceptance evidence has a limited claim.** A passing gate is evidence only for the acceptance contract it checks. If gate quality is weak, the permitted scope and effect must remain correspondingly narrow.
-- **Scope must survive the loop.** Every retry uses the original task contract; gate feedback cannot silently expand the task, tools, or permitted effect.
+- **Scope must survive the loop.** Every retry uses the original business task contract; gate feedback cannot silently expand the business task, tools, or permitted effect.
 - **The effect needs its own recovery rule.** A gate can prove a candidate is acceptable but cannot prove whether a network call to an external target succeeded. The executor must use idempotency or reconciliation before retrying an ambiguous effect.
 - **Fan-out is not free.** Many independent target runs may each use this architecture, but the parent fan-out, batching, aggregation, and reviewer-capacity controls are a separate composition.
-- **Untrusted input remains untrusted.** External task descriptions, diagnostics, or source material must not override the task contract, tool allowlist, or effect constraints.
+- **Untrusted input remains untrusted.** External business task descriptions, diagnostics, or source material must not override the business task contract, tool allowlist, or effect constraints.
 
 ## Out of scope (handled elsewhere)
 
 - **Identity, credential issuance, and delegation enforcement** — Identity & Trust WG. This architecture requires scoped credentials and separation from stronger effect authority; it does not specify the identity mechanism.
-- **Prompt injection, malicious content, and data-exfiltration controls** — Security WG. This architecture identifies untrusted task inputs but does not define the security controls.
+- **Prompt injection, malicious content, and data-exfiltration controls** — Security WG. This architecture identifies untrusted business task inputs but does not define the security controls.
 - **Quality of tests, checks, and agent-produced results** — Reliability & Accuracy WG. The gate is only as meaningful as its declared contract and evaluation quality.
 - **Tracing, metrics, and operational telemetry** — Observability WG. The audit/system-of-record requirement is execution evidence, not an observability specification.
 
@@ -250,7 +252,7 @@ flowchart TD
 
 | Scenario | Source | Result | Notes |
 |---|---|---|---|
-| Autonomous maintenance run ("night shift") | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Validated | Each maintenance task is bounded and isolated; deterministic CI/contract gates decide acceptance; only the accepted change becomes a pull request; repeated failure or oversized work escalates. |
+| Autonomous maintenance run ("night shift") | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Validated | Each maintenance business task is bounded and isolated; deterministic CI/contract gates decide acceptance; only the accepted change becomes a pull request; repeated failure or oversized work escalates. |
 | Closed-loop dependency & CVE remediation (fleet-wide) | [Critical Use Cases inventory](../../critical-use-cases/use-case-inventory.md) | Partial fit | Each repository may use this architecture as one bounded target run. Fleet-wide discovery, fan-out, batching, and closure aggregation require a future composition. |
 | Weekly staff schedule generation | Working-session example; pending a Critical Use Cases inventory entry | Illustrative only — validation pending | A deterministic gate checks mandatory scheduling and fairness rules. Only the accepted schedule is published; unresolved preference collisions or exhausted attempts escalate. |
 
@@ -332,7 +334,7 @@ sourced use case is added to the Critical Use Case Inventory.
 
 The architecture can apply outside software maintenance when the same guarantees hold:
 
-| Candidate scenario | Bounded task | Independent gate | Constrained effect |
+| Candidate scenario | Bounded business task | Independent gate | Constrained effect |
 |---|---|---|---|
 | Data-quality correction | Correct one identified record/batch anomaly | Reconciliation, schema, and policy checks | Create a correction batch or draft update |
 | Configuration remediation | Correct one approved staging configuration drift | Desired-state and health checks | Create a change request or staged configuration update |
