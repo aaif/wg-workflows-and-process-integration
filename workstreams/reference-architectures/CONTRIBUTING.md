@@ -14,6 +14,10 @@ Read these in order:
 
 Reuse existing guidance before proposing a new concept. This workstream is a draft: record genuine gaps as open questions rather than silently inventing new terminology or rules.
 
+## Validate a use case against a reference architecture
+
+To validate an existing or proposed RA against one real use case, see the [RA use-case validation guide](docs/ra-use-case-validation-guide.md).
+
 ## Choose the right contribution type
 
 | If you have… | Add or update… | It is for… |

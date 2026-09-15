@@ -13,6 +13,7 @@ Before adding or changing a pattern, reference architecture, scenario, decision,
 - A **pattern** solves one independently reusable workflow problem.
 - A **reference architecture** serves a recognizable practitioner job and composes patterns, capability roles, boundaries, guarantees, and exit states.
 - A **scenario** validates an architecture; do not mistake a domain example for the generic architecture name.
+- For RA use-case validation, follow the guide linked from `CONTRIBUTING.md`, use only supplied evidence, and do not create a GitHub Issue or PR unless the user explicitly asks.
 - Reuse existing patterns before proposing a new one.
 - Keep capability descriptions vendor-neutral and at the logical role level.
 - Make the boundary between agent and workflow-controlled work explicit.
