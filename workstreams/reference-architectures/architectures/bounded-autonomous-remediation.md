@@ -15,7 +15,7 @@ This architecture serves a recurring practitioner job: resolve one small, bounde
 
 Use it when the business task has a declared scope, allowed tools, budget, and independently checkable acceptance condition; the permitted effect is constrained and reversible or otherwise low enough impact for policy-authorized execution. Examples can include opening a remediation pull request, creating a corrected draft record, preparing a change request, or producing a reconciled correction batch.
 
-> **Terminology:** In this architecture, a **business task** is the bounded business problem or unit of work admitted to a run. It is not a workflow **activity**, which is a subunit of work that the workflow performs while handling the business task.
+> **Terminology:** A **business task** is the bounded request or problem this workflow handles. The workflow handles that business task through [activities](../../taxonomy/terms.md#activity).
 
 Do not use it for open-ended objectives, work whose result needs human judgment to accept, or effects whose impact requires a named human authorization.
 
