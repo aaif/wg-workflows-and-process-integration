@@ -20,6 +20,8 @@ The primary unit of structured, multi-activity work with a defined goal and outc
 
 A runtime instance of a Workflow definition. A single Workflow definition may have multiple concurrent Workflow Executions, each maintaining its own execution state and lifecycle.
 
+**Note:** this definition holds without modification for agentic Workflows, including where a Plan is created or revised mid-execution (see Plan) or an Activity is retried. In the common case, replanning and retry are treated as transitions within a single Workflow Execution's Lifecycle (see Lifecycle) rather than the start of a new one, so the Workflow Execution's identity persists across them. This depends on how a given system defines execution identity, and is not asserted here as the only valid model.
+
 ### Workflow State
 
 The information representing the current condition of a Workflow Execution at a specific point in time, including execution progress and data required to continue execution.
@@ -36,6 +38,8 @@ The shared information available to Workflow participants during execution that 
 
 The logic that determines the order, conditions, branching, iteration, parallelism, and synchronization of Activity execution within a Workflow.
 
+**Note:** this definition is agnostic to when or how that logic is evaluated — it may be fixed at design time, or determined dynamically at runtime, for example by an agent's own reasoning about which Activity to perform next. The latter case is still Control Flow in the sense defined here; which participant or mechanism is doing the determining is Orchestration's concern, not Control Flow's — Orchestration already covers an orchestrator "determining subsequent actions based on execution State and results." No change to either definition is proposed; this note exists only to make an ambiguity explicit before "logic that determines" gets read as implying a static, pre-authored structure.
+
 ### Trigger
 
 An event, condition, signal, schedule, or request that initiates a Workflow Execution or causes a Workflow Execution to advance.
@@ -50,7 +54,9 @@ The capability of a Workflow Execution to preserve its execution state across fa
 
 ### Determinism
 
-The property by which a Workflow produces consistent execution behavior when provided the same inputs, execution state, and execution history.
+The degree to which a Workflow Execution, or a specific layer of a Workflow Execution such as its Control Flow or an individual Activity, produces the same execution behavior given the same inputs, execution state, and execution history.
+
+**Note:** Determinism can apply at the level of the overall Workflow Execution or at the level of a specific layer or component within it, such as its Control Flow or an individual Activity — a Workflow may be deterministic in its Control Flow (the same branch taken, the same next Activity selected, the same synchronization point reached) while containing Activities, particularly LLM-driven ones, whose individual outputs vary across otherwise identical executions. This definition deliberately says nothing about how Determinism is measured, scored, or evaluated; that is a separate question for whichever group or specification takes it up.
 
 ---
 
