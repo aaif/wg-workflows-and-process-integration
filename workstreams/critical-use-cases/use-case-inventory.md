@@ -59,7 +59,7 @@ The inventory is **not**:
 
 ## Assumptions and editorial decisions
 
-This section documents the judgment calls behind this inventory. For how dimensions are defined and classified, see the [Classification Schema](./classification-schema.md) file. Read both before adding or editing rows, and flag disagreement with existing assumptions in your contribution comment.
+This section documents the judgment calls behind this inventory. For how dimensions are defined and classified, see the [Classification Schema](./schema-agentic-use-cases.md) file. Read both before adding or editing rows, and flag disagreement with existing assumptions in your contribution comment.
 
 ### Scope
 
@@ -88,13 +88,13 @@ The following topics are handled by other WGs and should not be added as columns
 
 This table has known gaps: coverage that's thin, columns that aren't fully backfilled, and open taxonomy questions for other WG deliverables. These are tracked as a GitHub issue on this file in the parent repo, kept current as gaps close and new ones surface. See the open issues for this file, or search "known gaps" in the repo. Contributions closing any of them are welcome. See How to Contribute below.
 
-Two categories of gap are tracked directly in the table, since they're per-row and self-documenting: cells marked **Unspecified: insufficient source detail**, and cells carrying a footnote marker for undocumented rationale. See the [Classification Schema](./classification-schema.md) file's "Classifying a row" section for what each means and how to close it.
+Two categories of gap are tracked directly in the table, since they're per-row and self-documenting: cells marked **Unspecified: insufficient source detail**, and cells carrying a footnote marker for undocumented rationale. See the [Classification Schema](./schema-agentic-use-cases.md) file's "Classifying a row" section for what each means and how to close it.
 
 ---
 
 ## How to Contribute
 
-This document is a living reference. For the general contribution process (branching, pull requests, review), see the [repo's How to Contribute guide](../CONTRIBUTING.md). The reference below is specific to this file. For the classification dimensions themselves (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern), see the [Classification Schema](./classification-schema.md), so new or edited rows stay consistent with the rest of the table.
+This document is a living reference. For the general contribution process (branching, pull requests, review), see the [repo's How to Contribute guide](../CONTRIBUTING.md). The reference below is specific to this file. For the classification dimensions themselves (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern), see the [Classification Schema](./schema-agentic-use-cases.md), so new or edited rows stay consistent with the rest of the table.
 
 ### Row template
 
@@ -110,15 +110,15 @@ Copy this into the appropriate category table and fill in each field:
 - **Descriptions** should follow the pattern: *On [trigger], the agent [does X], [does Y], and [produces Z].*
 - **Tools** should name the system type first, with a specific example in brackets where helpful (e.g. `EHR API (Epic / Cerner)`)
 - **Failure modes** should describe a concrete harm, not just a vague error (e.g. "Drug interaction not flagged; patient safety event" not "agent makes a mistake")
-- **Classification columns** (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) follow the definitions and conventions in the [Classification Schema](./classification-schema.md) file, including how to document rationale and how to flag insufficient source detail.
+- **Classification columns** (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) follow the definitions and conventions in the [Classification Schema](./schema-agentic-use-cases.md) file, including how to document rationale and how to flag insufficient source detail.
 
 ---
 
 ## Use Case Inventory
 
-The [Classification Schema](./classification-schema.md) applied to real use cases across 15 categories. Each row is one workflow. [↑ Back to contents](#contents) links at the top of each category return you here.
+The [Classification Schema](./schema-agentic-use-cases.md) applied to real use cases across 15 categories. Each row is one workflow. [↑ Back to contents](#contents) links at the top of each category return you here.
 
-Footnote markers (¹, ², ...) appearing in a cell mean the value is kept with reasonable confidence but its rationale isn't yet written into Notes. See the [Classification Schema](./classification-schema.md) file's "Documenting rationale" section for what this means and how to resolve it.
+Footnote markers (¹, ², ...) appearing in a cell mean the value is kept with reasonable confidence but its rationale isn't yet written into Notes. See the [Classification Schema](./schema-agentic-use-cases.md) file's "Documenting rationale" section for what this means and how to resolve it.
 
 ### Sales
 
@@ -343,4 +343,4 @@ Footnote markers (¹, ², ...) appearing in a cell mean the value is kept with r
 
 ---
 
-*Every classification column in this table (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) is defined in the companion [Classification Schema](./classification-schema.md) file. That file also documents the conventions used for footnoted and Unspecified cells above.*
+*Every classification column in this table (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) is defined in the companion [Classification Schema](./schema-agentic-use-cases.md) file. That file also documents the conventions used for footnoted and Unspecified cells above.*
