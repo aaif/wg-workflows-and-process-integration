@@ -246,12 +246,14 @@ A deterministic gate is only as strong as the evidence it records for the effect
 - **Blast radius.** How wide a wrong acceptance can reach: one isolated record, one repository, a direct write to a system of record, or the same action repeated across many targets.
 - **Reversal cost.** How expensive a wrong acceptance is to undo: a draft or staged change is cheap to discard, while a published or externally visible effect may be impossible to retract cleanly.
 
-A reversible, contained effect can accept a lightweight gate, because a wrong acceptance is cheap to undo. An irreversible or wide-reaching effect needs stronger evidence, because a wrong acceptance is expensive or impossible to undo.
+A reversible, contained effect can accept a lightweight gate, because a wrong acceptance is cheap to undo. An irreversible or wide-reaching effect is not admitted by adding evidence: the second row below names where that class routes instead. How strong the evidence bar is and whether the effect is admissible here are separate decisions. Only the first belongs to this architecture.
 
 | Effect class | Examples | Minimum gate evidence |
 |---|---|---|
 | Reversible and contained | Opening a pull request, staging a change, producing a draft or correction batch | Declared deterministic checks (tests, contract, schema, policy) with scope validation, recorded with the candidate identity |
-| Irreversible or wide-reaching | External publish, direct write to a system of record, fleet-wide action | Stronger evidence than the candidate's own checks can provide: additional policy authority, independent verification, reconciliation, or a named human authorization under the human-approved operation architecture |
+| Irreversible or wide-reaching | External publish, direct write to a system of record, fleet-wide action | Not admitted by this architecture. Route instead: a named human authorization before a protected effect belongs to the [human-approved operation](single-agent-human-approval.md); fleet-wide or fan-out effects need a composition that is not yet documented. Additional evidence does not admit this class |
+
+The table is an admission decision rather than a ladder. Row two is a routing decision, consistent with the checklist above, where a person deciding acceptability sends the flow to the [human-approved operation](single-agent-human-approval.md). It is consistent too with the Variants section, which lists the fleet-wide flow as deliberately not a variant of this architecture.
 
 The evidence bar for recording a verdict does not weaken as the gate scales. Three properties hold for every acceptance record, independent of gate strength:
 
@@ -262,6 +264,12 @@ The evidence bar for recording a verdict does not weaken as the gate scales. Thr
 As blast radius grows and reversal cost rises, the checks must get stronger, but the acceptance record must not get weaker. This is consistent with the composition consideration above: acceptance evidence has a limited claim, and weak gates are tolerable only for narrow, reversible effects.
 
 In the worked scenario, each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version, and the run identity, so the resulting pull request can later be traced to the exact evidence that admitted it. The same recording discipline makes a later fleet-wide composition easier to audit when it is documented.
+
+A second step in that scenario separates acceptance from completion. The two fail independently. Candidate A passes the gate and the acceptance record is written. The executor then dispatches the pull-request creation and the response times out, so the effect is unconfirmed rather than absent. The acceptance record stays valid, because nothing in it depended on the dispatch returning. What is missing is evidence that the effect landed. A retry at that point risks a second pull request, so reconciliation has to establish whether the first one exists before another attempt is made.
+
+> An acceptance record establishes that the identified candidate passed the declared checks. Completion requires separate effect confirmation; an ambiguous dispatch result requires reconciliation before retry.
+
+The sentence above is quoted from the comment by [@imran-siddique](https://github.com/imran-siddique) on this pull request, dated 2026-09-21, which also asked for the routing wording in the row above.
 
 This section resolves the third open question. It is offered for WG review like the rest of this draft and can be revised or moved back to the open questions list if the evidence bar needs refinement.
 
