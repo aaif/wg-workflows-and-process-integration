@@ -6,7 +6,7 @@
 
 Our workstream is responsible for identifying reusable workflow patterns (“use cases”) that emerge from real deployed agentic applications, evidenced by sourced examples. 
 
-The inventory of sourced examples gives the WG a shared, concrete set of use cases to reason about for its deliverables, surfaces the diversity of workflow patterns across industries and contexts, and provides a community-editable reference that WG members and contributors can challenge, extend, and correct. It is a classification and sourcing exercise, not a prioritization exercise.
+This workstream produced an inventory of explicit use cases — specific, named, real-world workflows drawn from production deployments. Each entry is evidence of a real implementation choice. From that inventory, readers can identify workflow patterns: recurring combinations of classification dimensions that appear across multiple industries and contexts. The inventory supports creating a prioritized set of workflow patterns, potentially based on pattern frequency and industry breadth. This prioritization can be readily derived just from the inventory.
 
 ## Contents
 
