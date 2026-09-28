@@ -6,7 +6,7 @@
 
 Our workstream is responsible for identifying reusable workflow patterns (“use cases”) that emerge from real deployed agentic applications, evidenced by sourced examples. 
 
-This workstream produced an inventory of explicit use cases — specific, named, real-world workflows drawn from production deployments. Each entry is evidence of a real implementation choice. From that inventory, readers can identify workflow patterns: recurring combinations of classification dimensions that appear across multiple industries and contexts. The inventory supports creating a prioritized set of workflow patterns, potentially based on pattern frequency and industry breadth. This prioritization can be readily derived just from the inventory.
+This workstream produced an inventory of explicit use cases — specific, named, real-world workflows drawn from production deployments. Each entry is evidence of a real implementation choice. From that inventory, readers can identify workflow shapes: recurring combinations of classification dimensions that appear across multiple industries and contexts. The inventory supports creating a prioritized set of workflow shapes, potentially based on pattern frequency and industry breadth. This prioritization can be readily derived just from the inventory.
 
 ## Contents
 
