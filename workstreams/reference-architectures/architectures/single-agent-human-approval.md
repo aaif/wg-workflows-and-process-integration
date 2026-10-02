@@ -26,6 +26,10 @@ construct a proposal, but it cannot invoke the capability that causes that
 effect. A human reviews the exact proposal, and a separate,
 workflow-controlled executor acts only after recording explicit approval.
 
+> **Terminology:** A **business task** is the request or problem this workflow
+> handles. The workflow handles that business task through
+> [activities](../../taxonomy/terms.md#activity).
+
 Built to the invariants in its composed patterns, this architecture guarantees:
 
 - **No protected effect occurs without human approval** — and what executes
@@ -48,15 +52,15 @@ Bring a use case, walk the questions:
    count is a design outcome, not a use-case property —
    default to one agent and let the workflow provide the structure. Route
    to a future job-oriented multi-agent architecture only on concrete signals:
-   independent subtasks that must run in parallel, duties that policy requires
+   independent reasoning activities that must run in parallel, duties that policy requires
    be split across separate identities, or coordination across workflows owned
    by different teams. No multi-agent architecture is currently defined.
-   "The task is big" is not a signal — capacity is an implementation concern,
+   "The business task is big" is not a signal — capacity is an implementation concern,
    and it shifts with every model generation.
 2. **Can any activity cause a protected effect that needs human sign-off?** If yes,
    and approve/reject (with optional feedback) is the interaction you need —
    this is your architecture; keep going. If the human's role is richer than
-   a gate (co-editing the draft, steering the agent mid-task, supervising as
+   a gate (co-editing the draft, steering the agent while it works, supervising as
    it acts), that is a different human-in-the-loop flow this architecture
    does not cover — don't force it into a gate. If authorization comes from an
    automated policy rather than a person, that is a separate architecture with
@@ -120,7 +124,7 @@ flowchart TB
     S[("State / context store")]
     R[("Audit log / system of record")]
 
-    E --> |"task"| A
+    E --> |"business task"| A
     A --> |"proposal / failure / escalation"| E
     T --> |"read / draft / stage"| I
     I --> |"result"| T
@@ -144,7 +148,7 @@ of how real runtimes handle these boundaries.
 
 | Arrow | What crosses | Invariant at this boundary |
 |---|---|---|
-| Engine ⇄ agent | Task in; exactly one of proposal / failure / escalate out | The agent cannot cause the protected effect |
+| Engine ⇄ agent | Business task in; exactly one of proposal / failure / escalate out | The agent cannot cause the protected effect |
 | Engine ⇄ human surface | Pending approval (proposal reference + deadline) in; decision event (approve/reject, who, when) out | The decision binds to an immutable proposal version; no default-approve |
 | Agent ⇄ tool / capability access layer | Tool call; result or error | Tools may support investigation and proposal construction but cannot expose the capability or credentials that cause the protected effect |
 | Engine ⇄ workflow-controlled executor | Approved proposal in; execution outcome out | Only the exact approved proposal may reach the protected target; retries are idempotent |
@@ -166,7 +170,7 @@ The required capabilities and their responsibilities:
 These are capability roles, not a prescribed deployment topology. An
 implementation may realize each as a separate technical component or combine
 several in one platform. The workflow-level building blocks a definition is
-written in (task, branch, retry, human gate) are a separate list, deferred to
+written in (activity, branch, retry, human gate) are a separate list, deferred to
 the taxonomy work.
 
 ## Pattern composition
