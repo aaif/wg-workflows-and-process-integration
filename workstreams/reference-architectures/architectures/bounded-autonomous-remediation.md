@@ -241,35 +241,25 @@ flowchart TD
 
 ## Minimum evidence for a deterministic gate
 
-A deterministic gate is only as strong as the evidence it records for the effect it permits. The minimum evidence bar is set by two properties of the permitted effect:
+A deterministic gate is only as strong as the evidence it records for the effect it permits. How strong that evidence has to be depends on the use case and the business domain, which weigh factors such as blast radius (how wide a wrong acceptance can reach), reversibility (how expensive a wrong acceptance is to undo), cost and other consequences when defining the gate. This architecture does not specify gate strength or the checks a gate must perform.
 
-- **Blast radius.** How wide a wrong acceptance can reach: one isolated record, one repository, a direct write to a system of record, or the same action repeated across many targets.
-- **Reversal cost.** How expensive a wrong acceptance is to undo: a draft or staged change is cheap to discard, while a published or externally visible effect may be impossible to retract cleanly.
+Effects a domain judges irreversible or wide-reaching are not admitted here by adding evidence. A named human authorization before a protected effect belongs to the [human-approved operation](single-agent-human-approval.md). Fleet-wide or fan-out effects need a composition that is not yet documented.
 
-A reversible, contained effect can accept a lightweight gate, because a wrong acceptance is cheap to undo. An irreversible or wide-reaching effect is not admitted by adding evidence: the second row below names where that class routes instead. How strong the evidence bar is and whether the effect is admissible here are separate decisions. Only the first belongs to this architecture.
+That routing is an admission decision rather than a ladder. It is consistent with the checklist above and with the Variants section, which lists the fleet-wide flow as deliberately not a variant of this architecture. Whether a domain can define reliable deterministic checks for such an effect is a separate question from whether this architecture admits it.
 
-| Effect class | Examples | Minimum gate evidence |
-|---|---|---|
-| Reversible and contained | Opening a pull request, staging a change, producing a draft or correction batch | Declared deterministic checks (tests, contract, schema, policy) with scope validation, recorded with the candidate identity |
-| Irreversible or wide-reaching | External publish, direct write to a system of record, fleet-wide action | Not admitted by this architecture. Route instead: a named human authorization before a protected effect belongs to the [human-approved operation](single-agent-human-approval.md); fleet-wide or fan-out effects need a composition that is not yet documented. Additional evidence does not admit this class |
-
-The table is an admission decision rather than a ladder. Row two is a routing decision, consistent with the checklist above, where a person deciding acceptability sends the flow to the [human-approved operation](single-agent-human-approval.md). It is consistent too with the Variants section, which lists the fleet-wide flow as deliberately not a variant of this architecture.
-
-The evidence bar for recording a verdict does not weaken as the gate scales. Three properties hold for every acceptance record, independent of gate strength:
+Three properties hold for every acceptance record, independent of gate strength:
 
 1. **Determinism of the verdict.** The same candidate, gate version, and inputs produce the same result. The gate must be independently re-runnable so the verdict can be reproduced rather than taken on trust.
 2. **Binding of verdict to candidate.** The acceptance record identifies the exact artifact that passed (its digest, not just its description), so a later reviewer can confirm the accepted artifact is the one that was evaluated.
 3. **Preservation as execution evidence.** The verdict and its binding survive the run and can be joined back to it later. The system-of-record role in this architecture is execution evidence, distinct from runtime observability; if the record cannot be joined to the run, the gate evidence is effectively lost.
 
-As blast radius grows and reversal cost rises, the checks must get stronger, but the acceptance record must not get weaker. This is consistent with the composition consideration above: acceptance evidence has a limited claim, and weak gates are tolerable only for narrow, reversible effects.
-
-In the worked scenario, each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version, and the run identity, so the resulting pull request can later be traced to the exact evidence that admitted it. The same recording discipline makes a later fleet-wide composition easier to audit when it is documented.
+In the worked scenario, each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version and the run identity, so the resulting pull request can later be traced to the exact evidence that admitted it. The same recording discipline makes a later fleet-wide composition easier to audit when it is documented.
 
 A second step in that scenario separates acceptance from completion. The two fail independently. Candidate A passes the gate and the acceptance record is written. The executor then dispatches the pull-request creation and the response times out, so the effect is unconfirmed rather than absent. The acceptance record stays valid, because nothing in it depended on the dispatch returning. What is missing is evidence that the effect landed. A retry at that point risks a second pull request, so reconciliation has to establish whether the first one exists before another attempt is made.
 
 > An acceptance record establishes that the identified candidate passed the declared checks. Completion requires separate effect confirmation; an ambiguous dispatch result requires reconciliation before retry.
 
-The sentence above is quoted from the comment by [@imran-siddique](https://github.com/imran-siddique) on this pull request, dated 2026-09-21, which also asked for the routing wording in the row above.
+The sentence above is quoted from the comment by [@imran-siddique](https://github.com/imran-siddique) on this pull request, dated 2026-09-21. That comment also asked for the routing above.
 
 This section resolves the third open question. It is offered for WG review like the rest of this draft and can be revised or moved back to the open questions list if the evidence bar needs refinement.
 
