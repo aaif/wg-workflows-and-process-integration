@@ -239,6 +239,30 @@ flowchart TD
 - **Fan-out is not free.** Many independent target runs may each use this architecture, but the parent fan-out, batching, aggregation, and reviewer-capacity controls are a separate composition.
 - **Untrusted input remains untrusted.** External task descriptions, diagnostics, or source material must not override the task contract, tool allowlist, or effect constraints.
 
+## Minimum evidence for a deterministic gate
+
+A deterministic gate is only as strong as the evidence it records for the effect it permits. How strong that evidence has to be depends on the use case and the business domain, which weigh factors such as blast radius (how wide a wrong acceptance can reach), reversibility (how expensive a wrong acceptance is to undo), cost and other consequences when defining the gate. This architecture does not specify gate strength or the checks a gate must perform.
+
+Effects a domain judges irreversible or wide-reaching are not admitted here by adding evidence. A named human authorization before a protected effect belongs to the [human-approved operation](single-agent-human-approval.md). Fleet-wide or fan-out effects need a composition that is not yet documented.
+
+That routing is an admission decision rather than a ladder. It is consistent with the checklist above and with the Variants section, which lists the fleet-wide flow as deliberately not a variant of this architecture. Whether a domain can define reliable deterministic checks for such an effect is a separate question from whether this architecture admits it.
+
+Three properties hold for every acceptance record, independent of gate strength:
+
+1. **Determinism of the verdict.** The same candidate, gate version, and inputs produce the same result. The gate must be independently re-runnable so the verdict can be reproduced rather than taken on trust.
+2. **Binding of verdict to candidate.** The acceptance record identifies the exact artifact that passed (its digest, not just its description), so a later reviewer can confirm the accepted artifact is the one that was evaluated.
+3. **Preservation as execution evidence.** The verdict and its binding survive the run and can be joined back to it later. The system-of-record role in this architecture is execution evidence, distinct from runtime observability; if the record cannot be joined to the run, the gate evidence is effectively lost.
+
+In the worked scenario, each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version and the run identity, so the resulting pull request can later be traced to the exact evidence that admitted it. The same recording discipline makes a later fleet-wide composition easier to audit when it is documented.
+
+A second step in that scenario separates acceptance from completion. The two fail independently. Candidate A passes the gate and the acceptance record is written. The executor then dispatches the pull-request creation and the response times out, so the effect is unconfirmed rather than absent. The acceptance record stays valid, because nothing in it depended on the dispatch returning. What is missing is evidence that the effect landed. A retry at that point risks a second pull request, so reconciliation has to establish whether the first one exists before another attempt is made.
+
+> An acceptance record establishes that the identified candidate passed the declared checks. Completion requires separate effect confirmation; an ambiguous dispatch result requires reconciliation before retry.
+
+The sentence above is quoted from the comment by [@imran-siddique](https://github.com/imran-siddique) on this pull request, dated 2026-09-21. That comment also asked for the routing above.
+
+This section resolves the third open question. It is offered for WG review like the rest of this draft and can be revised or moved back to the open questions list if the evidence bar needs refinement.
+
 ## Out of scope (handled elsewhere)
 
 - **Identity, credential issuance, and delegation enforcement** — Identity & Trust WG. This architecture requires scoped credentials and separation from stronger effect authority; it does not specify the identity mechanism.
@@ -258,7 +282,6 @@ flowchart TD
 
 - Should idempotent/reconciled external execution become a separate reusable pattern, or remain a mandatory capability/invariant of architectures with effects?
 - Does an explicit fan-out/join pattern need to be added before documenting fleet-wide remediation as a complete architecture?
-- What minimum evidence makes a deterministic gate strong enough for different classes of constrained effect?
 
 ## Appendix: validation notes
 
