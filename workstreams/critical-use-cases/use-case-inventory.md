@@ -59,7 +59,7 @@ The inventory is **not**:
 
 ## Assumptions and editorial decisions
 
-This section documents the judgment calls behind this inventory. For how dimensions are defined and classified, see the [Classification Schema](./classification-schema.md) file. Read both before adding or editing rows, and flag disagreement with existing assumptions in your contribution comment.
+This section documents the judgment calls behind this inventory. For how dimensions are defined and classified, see the [Classification Schema](./schema-agentic-use-cases.md) file. Read both before adding or editing rows, and flag disagreement with existing assumptions in your contribution comment.
 
 ### Scope
 
@@ -110,13 +110,13 @@ Copy this into the appropriate category table and fill in each field using the a
 - **Descriptions** should follow the pattern: *On [trigger], the agent [does X], [does Y], and [produces Z].*
 - **Tools** should name the system type first, with a specific example in brackets where helpful (e.g. `EHR API (Epic / Cerner)`)
 - **Failure modes** should describe a concrete harm, not just a vague error (e.g. "Drug interaction not flagged; patient safety event" not "agent makes a mistake")
-- **Classification columns** (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) follow the definitions and conventions in the [Classification Schema](./classification-schema.md) file, including how to document rationale and how to flag insufficient source detail.
+- **Classification columns** (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) follow the definitions and conventions in the [Classification Schema](./schema-agentic-use-cases.md) file, including how to document rationale and how to flag insufficient source detail.
 
 ---
 
 ## Use Case Inventory
 
-The [Classification Schema](./classification-schema.md) applied to real use cases across 15 categories. Each row is one workflow. [↑ Back to contents](#contents) links at the top of each category return you here.
+The [Classification Schema](./schema-agentic-use-cases.md) applied to real use cases across 15 categories. Each row is one workflow. [↑ Back to contents](#contents) links at the top of each category return you here.
 
 ---
 
@@ -343,4 +343,4 @@ The [Classification Schema](./classification-schema.md) applied to real use case
 
 ---
 
-*Every classification column in this table (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) is defined in the companion [Classification Schema](./classification-schema.md) file. That file also documents the conventions used for Unspecified cells above.*
+*Every classification column in this table (Trigger, HITL Pattern, Agent Count, Coordination, Workflow Pattern) is defined in the companion [Classification Schema](./schema-agentic-use-cases.md) file. That file also documents the conventions used for Unspecified cells above.*
