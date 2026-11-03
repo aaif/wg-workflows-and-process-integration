@@ -55,7 +55,9 @@ reused, and new primitives take the next free number.
 
 - Each primitive file lists the patterns that use it and maps the primitive
   to constructs in BPMN 2.0, n8n, AWS Step Functions, Temporal, and LangGraph.
-- The single-agent human-approval architecture references primitives by ID.
+- Each pattern lists the primitives it's built from in its header, and the
+  pattern template has a field for it. Architectures don't reference
+  primitives directly.
 - Adding a primitive now needs a decision record from
   [TEMPLATE.md](TEMPLATE.md) that names the pattern requiring it.
 
@@ -82,21 +84,17 @@ reused, and new primitives take the next free number.
 
 Questions this decision leaves open for the WG:
 
-1. **Should patterns list their primitives too?** Each primitive file says
-   which patterns use it, but the pattern files don't say which primitives
-   they're built from. A "Built from primitives" line in the pattern template
-   would let readers look it up from either side.
-2. **What if the approver isn't a person?** The proposal/execution split lets a
+1. **What if the approver isn't a person?** The proposal/execution split lets a
    versioned policy approve an effect instead of a human. `P5 HumanCheckpoint`
    only covers the human case, so the policy case has no primitive yet.
-3. **Does the acceptance gate need its own primitive?** Today the
+2. **Does the acceptance gate need its own primitive?** Today the
    deterministic acceptance gate runs its checks as ordinary `P2` tasks. The
    earlier draft had a separate evaluation-gate primitive, and it isn't clear
    yet whether that adds anything.
-4. **Which outcome values should be shared?** The seven values proposed in
+3. **Which outcome values should be shared?** The seven values proposed in
    `P11` have nothing for an approval that expired or a loop that gave up
    (abstained). Either the list grows, or each architecture keeps its own exit
    states.
-5. **The taxonomy's definition of Activity needs a tweak.** `terms.md` calls an
+4. **The taxonomy's definition of Activity needs a tweak.** `terms.md` calls an
    activity "a single, bounded task", but here one activity can contain
    several tasks: an agent activity is a `P3` plus its tool calls and budget.

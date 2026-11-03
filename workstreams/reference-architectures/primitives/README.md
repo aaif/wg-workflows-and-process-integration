@@ -15,9 +15,10 @@ have a construct for most of these, each under its own name.
 | [Pattern](../patterns/) | How do a few primitives combine to solve one recurring problem? | [Human approval gate](../patterns/human-approval-gate.md) |
 | [Reference architecture](../architectures/) | Which patterns and capabilities serve a practitioner job? | [Single-agent process with human approval](../architectures/single-agent-human-approval.md) |
 
-Primitives map to patterns. Each primitive file lists the patterns that use it
-and what each pattern needs from it. Architectures reach primitives through the
-patterns they compose. Invariants and failure modes stay in the patterns, so
+Primitives map to patterns, in both directions. Each primitive file lists the
+patterns that use it and what each pattern needs from it, and each pattern's
+header lists the primitives it's built from. Architectures don't reference
+primitives directly; they reach them through the patterns they compose. Invariants and failure modes stay in the patterns, so
 the primitive files link to them instead of repeating them.
 
 ## The primitive set
@@ -47,6 +48,7 @@ are recorded in [decisions/initial-primitive-set.md](decisions/initial-primitive
 2. Check that no existing primitive already covers it.
 3. Record the decision with [decisions/TEMPLATE.md](decisions/TEMPLATE.md).
 4. Write the entry with [TEMPLATE.md](TEMPLATE.md) and give it the next free ID.
+5. Add it to the *Built from primitives* line of each pattern that uses it.
 
 ## Implementation approaches across runtimes (illustrative, not requirements)
 

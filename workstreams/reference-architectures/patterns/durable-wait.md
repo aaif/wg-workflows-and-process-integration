@@ -3,6 +3,7 @@
 **Solves:** A run must wait longer than any process hosting it will live \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · any architecture whose run must outwait the processes hosting it \
 **Requires capabilities:** Execution engine · state/context store \
+**Built from primitives:** [P1 Trigger](../primitives/p01-trigger.md) · [P6 TimerDeadline](../primitives/p06-timer-deadline.md) · [P9 StateCommit](../primitives/p09-state-commit.md) \
 **Related patterns:** [Human approval gate](human-approval-gate.md) · [proposal/execution split](proposal-execution-split.md)
 
 ## Problem

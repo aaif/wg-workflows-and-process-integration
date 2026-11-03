@@ -28,7 +28,10 @@ wins and the other is dropped.
 
 A timer can also limit how long an approval stays valid before execution. That
 is one of two ways to deal with stale approvals; the other is having the
-executor re-check preconditions (`P2`). A design should pick one explicitly.
+executor re-check preconditions (`P2`). A design may use an approval validity
+window, executor-side precondition checks, or both. When both apply, both must
+pass before execution. Rechecking preconditions or resuming the run does not
+extend an expired approval.
 
 ## Implementation approaches (illustrative, not requirements)
 

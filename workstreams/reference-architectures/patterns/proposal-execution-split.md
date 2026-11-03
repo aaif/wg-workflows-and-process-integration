@@ -3,6 +3,7 @@
 **Solves:** Enforcing authorization and attribution at the protected-effect boundary when intent comes from a probabilistic agent \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Agent · authorization gate · workflow-controlled executor · audit log \
+**Built from primitives:** [P1 Trigger](../primitives/p01-trigger.md) · [P2 DeterministicTask](../primitives/p02-deterministic-task.md) · [P3 AgentTask](../primitives/p03-agent-task.md) · [P4 ToolCall](../primitives/p04-tool-call.md) · [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Human approval gate](human-approval-gate.md) · [durable wait](durable-wait.md)
 
 ## Problem

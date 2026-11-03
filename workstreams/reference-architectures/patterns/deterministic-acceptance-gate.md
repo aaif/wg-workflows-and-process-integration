@@ -3,6 +3,7 @@
 **Solves:** Deciding whether a candidate result may advance using explicit, repeatable checks rather than model self-assessment \
 **Used in:** [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Deterministic evaluator · policy/scope validator · evidence store \
+**Built from primitives:** [P2 DeterministicTask](../primitives/p02-deterministic-task.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Bounded convergence loop](bounded-convergence-loop.md) · [Proposal/execution split](proposal-execution-split.md)
 
 ## Problem

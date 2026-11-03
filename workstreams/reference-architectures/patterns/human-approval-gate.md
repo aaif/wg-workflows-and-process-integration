@@ -3,6 +3,7 @@
 **Solves:** A named human must decide whether an exact proposal may cause a protected effect \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) \
 **Requires capabilities:** Execution engine · human interaction surface · state/context store · audit log \
+**Built from primitives:** [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) · [P6 TimerDeadline](../primitives/p06-timer-deadline.md) · [P8 Escalation](../primitives/p08-escalation.md) · [P9 StateCommit](../primitives/p09-state-commit.md) · [P11 OutcomeContract](../primitives/p11-outcome-contract.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Proposal/execution split](proposal-execution-split.md) · [durable wait](durable-wait.md)
 
 ## Problem
