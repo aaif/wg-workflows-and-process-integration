@@ -3,7 +3,7 @@
 **Solves:** Enforcing authorization and attribution at the protected-effect boundary when intent comes from a probabilistic agent \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Agent · authorization gate · workflow-controlled executor · audit log \
-**Related patterns:** [Human approval gate](human-approval-gate.md) · [durable wait](durable-wait.md)
+**Related patterns:** [Human approval gate](human-approval-gate.md) · [durable wait](durable-wait.md) · [Branch isolation](branch-isolation.md)
 
 ## Problem
 

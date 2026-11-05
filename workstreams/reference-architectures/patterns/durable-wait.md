@@ -1,9 +1,9 @@
 # Durable Wait
 
 **Solves:** A run must wait longer than any process hosting it will live \
-**Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · any architecture whose run must outwait the processes hosting it \
+**Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · [Parallel research and merge](../architectures/parallel-research-and-merge.md) · any architecture whose run must outwait the processes hosting it \
 **Requires capabilities:** Execution engine · state/context store \
-**Related patterns:** [Human approval gate](human-approval-gate.md) · [proposal/execution split](proposal-execution-split.md)
+**Related patterns:** [Human approval gate](human-approval-gate.md) · [proposal/execution split](proposal-execution-split.md) · [Parallel fan-out and join](parallel-fan-out-and-join.md)
 
 ## Problem
 

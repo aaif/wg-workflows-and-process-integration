@@ -30,10 +30,13 @@ for working group review.
   its behavior concrete. A scenario is validation material, not a separate
   architecture.
 
-The first worked architectures cover two deliberately contrasting jobs:
+The worked architectures cover three deliberately contrasting jobs:
 
-- [Single-agent process with human approval](architectures/single-agent-human-approval.md): an agent proposes, a person approves, and a workflow-controlled executor performs the protected effect. It composes [proposal/execution split](patterns/proposal-execution-split.md), [human approval gate](patterns/human-approval-gate.md), and [durable wait](patterns/durable-wait.md).
-- [Bounded autonomous remediation](architectures/bounded-autonomous-remediation.md): an agent iterates on one fenced problem, an independent deterministic gate decides whether it has converged, and only a constrained effect may follow. It composes [bounded convergence loop](patterns/bounded-convergence-loop.md), [deterministic acceptance gate](patterns/deterministic-acceptance-gate.md), and [proposal/execution split](patterns/proposal-execution-split.md).
+| Architecture | The job it serves | Composes |
+|---|---|---|
+| [Single-agent process with human approval](architectures/single-agent-human-approval.md) | An agent proposes, a person approves, and a workflow-controlled executor performs the protected effect | [Proposal/execution split](patterns/proposal-execution-split.md) · [human approval gate](patterns/human-approval-gate.md) · [durable wait](patterns/durable-wait.md) |
+| [Bounded autonomous remediation](architectures/bounded-autonomous-remediation.md) | An agent iterates on one fenced problem, an independent deterministic gate decides whether it has converged, and only a constrained effect may follow | [Bounded convergence loop](patterns/bounded-convergence-loop.md) · [deterministic acceptance gate](patterns/deterministic-acceptance-gate.md) · [proposal/execution split](patterns/proposal-execution-split.md) |
+| [Parallel research and merge](architectures/parallel-research-and-merge.md) | Several agents research independent sources at the same time, and the workflow merges their findings into one traceable result | [Parallel fan-out and join](patterns/parallel-fan-out-and-join.md) · [branch isolation](patterns/branch-isolation.md) · [durable wait](patterns/durable-wait.md) · [human approval gate](patterns/human-approval-gate.md) *(if a person reviews)* · [proposal/execution split](patterns/proposal-execution-split.md) *(if an action follows)* |
 
 ## Guidelines
 
@@ -62,14 +65,17 @@ workstreams/reference-architectures/
 ├── architectures/           # complete architectures: what you'd say you're building
 │   ├── TEMPLATE.md
 │   ├── single-agent-human-approval.md
-│   └── bounded-autonomous-remediation.md
+│   ├── bounded-autonomous-remediation.md
+│   └── parallel-research-and-merge.md
 ├── patterns/                # independently adoptable pattern entries
 │   ├── TEMPLATE.md
 │   ├── proposal-execution-split.md
 │   ├── human-approval-gate.md
 │   ├── durable-wait.md
 │   ├── bounded-convergence-loop.md
-│   └── deterministic-acceptance-gate.md
+│   ├── deterministic-acceptance-gate.md
+│   ├── parallel-fan-out-and-join.md
+│   └── branch-isolation.md
 ├── decisions/
 │   ├── TEMPLATE.md
 │   └── job-oriented-architecture-model.md
