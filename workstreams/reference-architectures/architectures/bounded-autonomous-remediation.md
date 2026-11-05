@@ -243,6 +243,27 @@ flowchart TD
 - **Fan-out is not free.** Many independent target runs may each use this architecture, but the parent fan-out, batching, aggregation, and reviewer-capacity controls are a separate composition.
 - **Untrusted input remains untrusted.** External business task descriptions, diagnostics, or source material must not override the business task contract, tool allowlist, or effect constraints.
 
+## Minimum evidence for a deterministic gate
+
+A deterministic gate produces the verdict that admits a candidate. Its acceptance criteria and required evidence depend on the use case and the business domain. The business domain considers factors such as blast radius, reversibility, cost and other consequences when defining the gate. This architecture does not specify gate strength or the checks a gate performs.
+
+Effects a domain judges irreversible or wide-reaching are not admitted here by adding evidence. A named human authorization before a protected effect belongs to the [human-approved operation](single-agent-human-approval.md). Fleet-wide or fan-out effects need a composition that is not yet documented.
+
+An acceptance record is a structured entry capturing a deterministic gate's verdict for a specific candidate. It identifies the candidate, the gate version, the evidence considered and the run.
+
+Four properties hold for every acceptance record, independent of gate strength:
+
+1. **Deterministic verdict.** The same candidate, gate version and inputs produce the same result, so the verdict is reproducible rather than taken on trust.
+2. **Binding to the candidate.** The record identifies the exact artifact evaluated, by digest rather than by description, so a later reviewer can confirm the accepted artifact is the one that was evaluated.
+3. **Preservation as execution evidence.** The verdict and its binding survive the run and can be joined back to it. If they cannot, the gate evidence is lost. This is execution evidence, distinct from runtime observability.
+4. **Independent verifiability.** Determinism lets the operating party reproduce the verdict by re-running the gate. It does not let a party outside that system establish that the record is the record that was produced. Without this property the other three hold only for the producer. The record is then a log rather than evidence for anyone else.
+
+In the worked scenario each candidate's gate verdict (CI plus contract checks) is recorded with the candidate digest, the gate version and the run identity, so the opened pull request can be traced to the evidence that admitted it.
+
+A second step in that scenario separates acceptance from completion. Candidate A passes the gate and the acceptance record is written. The pull-request creation is then dispatched and the response times out, so the effect is unconfirmed rather than absent. The acceptance record stays valid, because nothing in it depended on the dispatch returning. What is missing is evidence that the effect landed, so reconciliation must establish whether the pull request already exists before another attempt.
+
+> An acceptance record establishes that the identified candidate passed the declared checks. Completion requires separate effect confirmation; an ambiguous dispatch result requires reconciliation before retry.
+
 ## Out of scope (handled elsewhere)
 
 - **Identity, credential issuance, and delegation enforcement** — Identity & Trust WG. This architecture requires scoped credentials and separation from stronger effect authority; it does not specify the identity mechanism.
@@ -262,7 +283,6 @@ flowchart TD
 
 - Should idempotent/reconciled external execution become a separate reusable pattern, or remain a mandatory capability/invariant of architectures with effects?
 - Does an explicit fan-out/join pattern need to be added before documenting fleet-wide remediation as a complete architecture?
-- What minimum evidence makes a deterministic gate strong enough for different classes of constrained effect?
 
 ## Appendix: validation notes
 
