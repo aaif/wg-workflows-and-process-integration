@@ -7,7 +7,7 @@
 
 ## Problem
 
-A workflow needs a trustworthy answer to: “Is this result acceptable enough to continue?” For a bounded task, letting the same model that produced a result answer that question makes the workflow vulnerable to confident but wrong self-assessment.
+A workflow needs a trustworthy answer to: “Is this result acceptable enough to continue?” For a bounded business task, letting the same model that produced a result answer that question makes the workflow vulnerable to confident but wrong self-assessment.
 
 The workflow needs a gate based on explicit criteria: tests, contracts, schema checks, policy rules, or other repeatable evidence. A passed gate is evidence for the declared acceptance condition, not a general claim that the result is correct in every respect.
 
@@ -28,7 +28,7 @@ flowchart TD
     G -->|"not accepted or insufficient evidence"| W["Return gate result to workflow control"]
 ```
 
-Evaluate the exact candidate result against declared, deterministic acceptance criteria and scope rules. Scope may limit the target (the system, record, repository, or resource affected), permitted change class (the kind of modification allowed), data accessed, allowed tools or actions, and permitted effect (the external outcome that may be applied). Record the evidence with the candidate identity. Only a result that both passes the checks and remains within the task's allowed scope may advance to the next workflow activity.
+Evaluate the exact candidate result against declared, deterministic acceptance criteria and scope rules. Scope may limit the target (the system, record, repository, or resource affected), permitted change class (the kind of modification allowed), data accessed, allowed tools or actions, and permitted effect (the external outcome that may be applied). Record the evidence with the candidate identity. Only a result that both passes the checks and remains within the business task's allowed scope may advance to the next workflow activity.
 
 The enclosing workflow decides how to handle a non-accepted result—for example, retrying within configured criteria, stopping, escalating, or recording failure. The gate does not make that control-flow decision.
 
@@ -52,11 +52,11 @@ The enclosing workflow decides how to handle a non-accepted result—for example
 
 ## Implementation approaches (illustrative, not requirements)
 
-The concrete gate varies by task, but its result must remain explicit, reproducible, and bound to the evaluated candidate.
+The concrete gate varies by business task, but its result must remain explicit, reproducible, and bound to the evaluated candidate.
 
 | Gate type | Documented mechanism | What it provides | What the implementation must add |
 |---|---|---|---|
-| Software verification | [GitHub required status checks](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-status-checks-before-merging) | Configured checks must pass before protected branch updates | A task-scope rule, evidence retention, and controls for actions outside the protected branch |
+| Software verification | [GitHub required status checks](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-status-checks-before-merging) | Configured checks must pass before protected branch updates | A business task-scope rule, evidence retention, and controls for actions outside the protected branch |
 | Structured-data validation | [JSON Schema validation](https://json-schema.org/understanding-json-schema/) | Repeatable validation of an artifact against declared structure | Semantic/business-rule checks and policy determining what may happen after validation |
 | Policy evaluation | [Open Policy Agent policy language](https://www.openpolicyagent.org/docs/latest/policy-language/) | Declarative rules evaluated against supplied input | Trusted input collection, policy versioning, and evidence that links the decision to the candidate result |
 
