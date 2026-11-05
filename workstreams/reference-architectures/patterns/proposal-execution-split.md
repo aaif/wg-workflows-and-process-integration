@@ -8,8 +8,8 @@
 ## Problem
 
 An agent activity is probabilistic; the enterprise needs enforceable controls at
-the point of effect. That need arrives in several forms, any one of which is
-sufficient:
+the point of effect. That need arrives in several common forms (any one is
+sufficient, and the list below is illustrative, not exhaustive):
 
 - **Risk exposure** — the effect is costly, dangerous, or hard to reverse
   (a refund, a configuration change, an outbound message).
@@ -106,6 +106,7 @@ contributing control, not a complete implementation of the pattern.
 | Orchestration layer | [LangGraph interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | Checkpoints state and pauses before a separately modeled continuation | A durable checkpointer, immutable proposal binding, authenticated authorization evidence, and an executor identity unavailable to agent nodes |
 | Identity layer | [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) | Gives separately assumable identities distinct permission sets and temporary credentials | A trust policy that prevents the agent from assuming the executor role; workflow binding between authorization and role assumption; audit correlation |
 | Protected target | [GitHub protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#about-branch-protection-settings) | Can require approving reviews, dismiss stale approvals after changes, restrict pushes, and disallow bypass | Correct branch-rule configuration, authenticated reviewers, and correlation between the reviewed revision and downstream effects beyond the repository |
+| Orchestration / harness layer | [Claude Agent SDK `canUseTool` permission callback](https://platform.claude.com/docs/en/agent-sdk/user-input) | Same-process confirm-then-act: the harness holds the tool call and, once its callback approves, runs it itself — the agent never regains control over whether it executes | The decision must come from the harness's permission system, not the agent's own discretion; a binding between the exact input shown to the approver and the input that executes; audit correlation within the single session |
 
 ## Known uses outside agents
 

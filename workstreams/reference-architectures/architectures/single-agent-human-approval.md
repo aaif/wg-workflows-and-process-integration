@@ -16,15 +16,21 @@ an action, a human approves it, the system executes it.**
 
 Use when an agent's output can change real systems — a refund, a
 configuration change, an outbound message — and the enterprise needs
-enforceable behavior at the point of effect: because the effect is costly or
-hard to reverse, because audit obligations require proving exactly what a
-person authorized, or because a named person must own the decision.
+enforceable behavior at the point of effect, for reasons such as: the effect
+is costly or hard to reverse, audit obligations require proving exactly what
+a person authorized, or a named person must own the decision. These are
+common triggers, not an exhaustive list — other reasons can require the same
+enforceable behavior.
 
 This architecture puts a human-mediated structural break between the agent's
 proposal and the protected effect. The agent may investigate, calculate, and
 construct a proposal, but it cannot invoke the capability that causes that
-effect. A human reviews the exact proposal, and a separate,
-workflow-controlled executor acts only after recording explicit approval.
+effect. A human reviews the exact proposal, and a workflow-controlled
+executor — one the agent cannot invoke — acts only after recording explicit
+approval. The separation that matters is of authority, not process: the
+executor may run in its own process or share the agent's, so long as the
+capability and credentials that cause the effect are never available to the
+agent.
 
 > **Terminology:** A **business task** is the request or problem this workflow
 > handles. The workflow handles that business task through
@@ -48,15 +54,16 @@ or reviewing this architecture for themselves.
 
 Bring a use case, walk the questions:
 
-1. **Does the reasoning work require more than one independent agent?** Agent
-   count is a design outcome, not a use-case property —
-   default to one agent and let the workflow provide the structure. Route
-   to a future job-oriented multi-agent architecture only on concrete signals:
-   independent reasoning activities that must run in parallel, duties that policy requires
-   be split across separate identities, or coordination across workflows owned
-   by different teams. No multi-agent architecture is currently defined.
-   "The business task is big" is not a signal — capacity is an implementation concern,
-   and it shifts with every model generation.
+1. **Is a single agent producing the proposal a human approves?** What
+   defines this architecture isn't that only one agent exists anywhere; it's
+   that one agent is accountable for the proposal at the gate. Tools, helper
+   activities, even a critic in its own session can feed that agent, and
+   it's still one agent at the gate. You need a different, multi-agent
+   architecture only when several *independent* agents must each be
+   approved: running in parallel, under separate policy identities, or owned
+   by different teams. (That architecture isn't defined yet.) "The business
+   task is big" is not a reason to split — capacity is an implementation
+   concern that shifts with every model generation.
 2. **Can any activity cause a protected effect that needs human sign-off?** If yes,
    and approve/reject (with optional feedback) is the interaction you need —
    this is your architecture; keep going. If the human's role is richer than
@@ -102,7 +109,11 @@ composition, not a variant of this architecture.
 
 ## Structure
 
-Component-and-relationship level only. The agent's internal reasoning loop is
+Component-and-relationship level only. The components below are capability
+roles, not a deployment topology. "Separate" executor means separate
+*authority* over the protected-effect capability — an implementation may
+place it in its own process or in the same process as the agent, provided
+the agent cannot invoke it. The agent's internal reasoning loop is
 deliberately unspecified — deterministic and ReAct-style internals are equal
 implementation choices inside the boundary.
 
