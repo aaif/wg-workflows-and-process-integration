@@ -26,6 +26,10 @@ for working group review.
 - A **pattern** solves one recurring sub-problem and can be adopted
   independently or composed into multiple architectures. It owns its own
   invariants and failure modes.
+- A **primitive** is a named workflow building block such as `trigger`,
+  `deterministic task`, `bounded agent task`, or `human checkpoint`.
+  Patterns are built from primitives. See
+  [primitives/](primitives/README.md).
 - A **scenario** tests whether an architecture fits a real use case and makes
   its behavior concrete. A scenario is validation material, not a separate
   architecture.
@@ -63,6 +67,11 @@ workstreams/reference-architectures/
 │   ├── TEMPLATE.md
 │   ├── single-agent-human-approval.md
 │   └── bounded-autonomous-remediation.md
+├── primitives/              # workflow building blocks the patterns are built from
+│   ├── README.md
+│   ├── TEMPLATE.md
+│   ├── decisions/
+│   └── p01-…p12-*.md
 ├── patterns/                # independently adoptable pattern entries
 │   ├── TEMPLATE.md
 │   ├── proposal-execution-split.md

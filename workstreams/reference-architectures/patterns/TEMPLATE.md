@@ -3,6 +3,7 @@
 **Solves:** One-line problem statement \
 **Used in:** Links to the architectures that compose this pattern \
 **Requires capabilities:** Capability roles needed to implement the pattern \
+**Built from primitives:** Links to the entries in `primitives/` this pattern uses \
 **Related patterns:** Links to other entries in `patterns/`
 
 *(Header convention: every field line ends with a trailing backslash except

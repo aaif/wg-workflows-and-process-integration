@@ -3,6 +3,7 @@
 **Solves:** Safely iterating an agent-assisted business task until a deterministic acceptance condition passes, or ending in a defined non-success outcome \
 **Used in:** [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Workflow engine · bounded agent/tool environment · deterministic gate · state/context store · audit log \
+**Built from primitives:** [P3 AgentTask](../primitives/p03-agent-task.md) · [P4 ToolCall](../primitives/p04-tool-call.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P8 Escalation](../primitives/p08-escalation.md) · [P9 StateCommit](../primitives/p09-state-commit.md) · [P10 Budget](../primitives/p10-budget.md) · [P11 OutcomeContract](../primitives/p11-outcome-contract.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Deterministic acceptance gate](deterministic-acceptance-gate.md) · [Proposal/execution split](proposal-execution-split.md) · [Durable wait](durable-wait.md)
 
 ## Problem
