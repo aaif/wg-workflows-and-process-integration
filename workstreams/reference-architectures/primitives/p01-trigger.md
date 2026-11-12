@@ -41,7 +41,7 @@ enforces uniqueness once it has one.
 
 ## Relationship to other primitives
 
-- [P2 DeterministicTask](p02-deterministic-task.md): input validation usually
+- [P2 DeterministicFunction](p02-deterministic-function.md): input validation usually
   runs right after the trigger.
 - [P9 StateCommit](p09-state-commit.md): the run's state is keyed on the
   identity the trigger sets.

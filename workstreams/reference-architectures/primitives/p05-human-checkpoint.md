@@ -50,7 +50,7 @@ pattern lists what you add for each.
 
 ## Relationship to other primitives
 
-- [P3 AgentTask](p03-agent-task.md): produces the proposal and gets the
+- [P3 AgentFunction](p03-agent-function.md): produces the proposal and gets the
   feedback on re-entry.
 - [P6 TimerDeadline](p06-timer-deadline.md): sets the decision deadline.
 - [P8 Escalation](p08-escalation.md): handles escalation and expired deadlines.

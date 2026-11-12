@@ -52,6 +52,36 @@ Resume must restore three things, not just liveness:
 - **Identity** — which real-world request this is: the correlation that
   routes the wake-up event to the right run
 
+## Primitive composition
+
+Each primitive's definition and implementation approaches live in its own
+entry. This table records where each one sits in *this* pattern and why the
+pattern needs it:
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| [P1 Trigger](../primitives/p01-trigger.md) | Run start | Sets the identity that routes the wake-up event to the right run |
+| [P9 StateCommit](../primitives/p09-state-commit.md) | Before parking, and on resume | While parked, the stored record is the run: position, context, and identity |
+| [P6 TimerDeadline](../primitives/p06-timer-deadline.md) | On every parked run | A wait without a time limit is a stuck run; the timer leads to escalation or expiry |
+
+```mermaid
+flowchart LR
+    T["P1 Trigger"] --> W["Run"]
+    W --> C["P9 StateCommit<br/>record + park"]
+    C --> Q{"Wake-up event<br/>or P6 TimerDeadline"}
+    Q -->|"event"| L["Load P9 record<br/>resume"]
+    Q -->|"timeout"| X["Escalation or expiry"]
+
+    class T,W,C,Q,L,X workflow
+    classDef workflow fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef agent fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+```
+
+> **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
+
+The wake-up event isn't a primitive of this pattern. It comes from whatever the
+run is waiting on, such as a `P5` decision or an external callback.
+
 ## Invariants (must hold in any implementation)
 
 - A parked run survives process death, restarts, and deploys.

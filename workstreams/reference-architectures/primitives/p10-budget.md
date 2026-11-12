@@ -10,8 +10,8 @@ tool calls, tokens or cost, and wall-clock time.
 
 ## Why it exists
 
-You can tell what a deterministic task will cost from its design. You only
-find out what an agent task costs by running it, because the number of tool
+You can tell what a deterministic function will cost from its design. You only
+find out what an agent function costs by running it, because the number of tool
 calls and reasoning turns is decided at run time. So the workflow has to
 declare the limit and the orchestrator has to enforce it. A budget written in
 the prompt is a suggestion the model can talk itself past. A budget the engine
@@ -52,12 +52,12 @@ enforced.
 
 The closest built-in guard we found is a configurable limit on model calls in
 Camunda's AI Agent connector, which covers one of the four dimensions. In
-practice the implementation keeps counters in the agent task and stops when a
+practice the implementation keeps counters in the agent function and stops when a
 limit is hit.
 
 ## Relationship to other primitives
 
-- [P3 AgentTask](p03-agent-task.md): the budget is contract element 5.
+- [P3 AgentFunction](p03-agent-function.md): the budget is contract element 5.
 - [P7 ErrorBoundary](p07-error-boundary.md): retries and re-runs draw from
   these limits.
 - [P6 TimerDeadline](p06-timer-deadline.md): limits time spent waiting on a

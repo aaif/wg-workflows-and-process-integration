@@ -5,7 +5,7 @@
 
 ## Definition
 
-A declared place around a task where the workflow catches typed failures and
+A declared place around a function where the workflow catches typed failures and
 routes them to a handler.
 
 ## Why it exists
@@ -46,7 +46,7 @@ target system is always the implementation's job.
 
 ## Relationship to other primitives
 
-- [P2 DeterministicTask](p02-deterministic-task.md): retries and idempotency
+- [P2 DeterministicFunction](p02-deterministic-function.md): retries and idempotency
   are orchestrator work.
 - [P10 Budget](p10-budget.md): caps how many retries and re-runs a boundary
   can spend.

@@ -24,6 +24,18 @@ The shape, in 2–4 boxes. Context-free: no deployment story, no product
 names, no use-case specifics. If the diagram needs more than 4 boxes, it is
 probably a reference architecture, not a pattern.
 
+## Primitive composition
+
+Where each primitive from the header sits in the solution and why the pattern
+needs it. Link to the primitive's entry instead of restating its definition.
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| … | … | … |
+
+Optionally, redraw the solution with primitive IDs in the box labels. Keep it as
+small as the Solution diagram, and say which pieces aren't primitives.
+
 ## Invariants (must hold in any implementation)
 
 Properties any implementation must guarantee. Written so the sentence still

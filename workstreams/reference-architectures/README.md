@@ -27,7 +27,7 @@ for working group review.
   independently or composed into multiple architectures. It owns its own
   invariants and failure modes.
 - A **primitive** is a named workflow building block such as `trigger`,
-  `deterministic task`, `bounded agent task`, or `human checkpoint`.
+  `deterministic function`, `agent function`, or `human checkpoint`.
   Patterns are built from primitives. See
   [primitives/](primitives/README.md).
 - A **scenario** tests whether an architecture fits a real use case and makes

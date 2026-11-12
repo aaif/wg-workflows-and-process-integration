@@ -9,6 +9,7 @@ Read these in order:
 1. [README.md](README.md) — the workstream model and current content.
 2. [Job-oriented architecture decision](decisions/job-oriented-architecture-model.md) — the relationship between patterns, architectures, and scenarios.
 3. The applicable template:
+   - [Primitive template](primitives/TEMPLATE.md)
    - [Pattern template](patterns/TEMPLATE.md)
    - [Architecture template](architectures/TEMPLATE.md)
 
@@ -22,6 +23,7 @@ To validate an existing or proposed RA against one real use case, see the [RA us
 
 | If you have… | Add or update… | It is for… |
 |---|---|---|
+| A building block that one or more patterns need and that has no name yet | A **primitive** in `primitives/`, with a decision record in `primitives/decisions/` | Naming the block once and mapping it to runtimes, so patterns can reference it. |
 | One recurring workflow problem with an independently reusable solution | A **pattern** in `patterns/` | Explaining how to solve that one problem reliably. |
 | A recognizable practitioner job requiring several patterns and capability roles together | A **reference architecture** in `architectures/` | Defining the complete composition, boundaries, guarantees, and exit states for that job. |
 | A real or illustrative workflow example | A **scenario** in an architecture’s `Worked scenario` and `Validation record` sections | Testing whether an architecture fits; it is not an architecture by itself. |
@@ -58,6 +60,14 @@ Do not use a domain example as an architecture name unless the job itself is inh
 - State invariants as guarantees that every implementation must preserve.
 - Give concrete failure modes for violated invariants.
 - Distinguish what a runtime mechanism provides from what an implementation must still add.
+- List the primitives it is built from in the header, and show where each one sits in *Primitive composition*.
+
+### For a primitive
+
+- Use [`primitives/TEMPLATE.md`](primitives/TEMPLATE.md) in its stated order.
+- Add a primitive only when an existing pattern needs it. Record why with [`primitives/decisions/TEMPLATE.md`](primitives/decisions/TEMPLATE.md).
+- Name the role, not an implementation. Keep invariants and failure modes in the patterns.
+- Add it to the *Built from primitives* line and the *Primitive composition* table of every pattern that uses it.
 
 ### For a reference architecture
 
@@ -99,7 +109,8 @@ Before opening a PR, confirm:
 - [ ] I chose the correct contribution type.
 - [ ] I read the relevant template and retained its core section order.
 - [ ] The name describes a reusable problem or practitioner job, not merely one scenario.
-- [ ] Existing patterns were reused where they fit.
+- [ ] Existing primitives and patterns were reused where they fit.
+- [ ] A new or changed primitive has a decision record and appears in every pattern that uses it.
 - [ ] Capability roles are logical and vendor-neutral.
 - [ ] Authority boundaries, external effects, and failure/recovery behaviour are explicit where relevant.
 - [ ] The contribution distinguishes evidence from WG interpretation.

@@ -5,7 +5,7 @@
 
 ## Definition
 
-A wall-clock limit on a task, a wait, or the whole workflow.
+A wall-clock limit on a function, a wait, or the whole workflow.
 
 ## Why it exists
 

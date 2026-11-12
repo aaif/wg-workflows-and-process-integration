@@ -26,7 +26,7 @@ from other pieces.
 - **Bounded convergence loop.** When the retry criteria no longer allow
   another attempt, escalation is one of the permitted exits.
 
-An agent task can also ask for escalation directly through its termination
+An agent function can also ask for escalation directly through its termination
 conditions (`P3`).
 
 Escalating is not approving. A run that stays in the workflow after escalation
@@ -47,7 +47,7 @@ still needs an explicit decision before any protected effect.
 - [P5 HumanCheckpoint](p05-human-checkpoint.md): can raise an escalation, and
   with a new assignee is also where one can land.
 - [P6 TimerDeadline](p06-timer-deadline.md): the most common cause.
-- [P3 AgentTask](p03-agent-task.md): escalation is one of its declared
+- [P3 AgentFunction](p03-agent-function.md): escalation is one of its declared
   termination conditions.
 - [P11 OutcomeContract](p11-outcome-contract.md): escalated and expired are
   separate outcomes.

@@ -8,10 +8,10 @@
 An agent-initiated call to a capability outside the agent, such as an API
 call, a query, a file write, a command, or an MCP invocation. Every
 `ToolCall` declares two things: the tool, which must be on the
-`P3 AgentTask`'s allowlist, and the tool's effect class (`read_only`,
+`P3 AgentFunction`'s allowlist, and the tool's effect class (`read_only`,
 `reversible_write`, or `irreversible`).
 
-A `ToolCall` always returns control to the `AgentTask` that made it.
+A `ToolCall` always returns control to the `AgentFunction` that made it.
 
 ## Why it exists
 
@@ -59,9 +59,9 @@ registry. That is always the implementation's job.
 
 ## Relationship to other primitives
 
-- [P3 AgentTask](p03-agent-task.md): its tool-scope allowlist (contract
+- [P3 AgentFunction](p03-agent-function.md): its tool-scope allowlist (contract
   element 4) decides which calls the agent may make.
-- [P2 DeterministicTask](p02-deterministic-task.md): performs protected effects
+- [P2 DeterministicFunction](p02-deterministic-function.md): performs protected effects
   instead.
 - [P7 ErrorBoundary](p07-error-boundary.md): owns retries.
 - [P12 AuditRecord](p12-audit-record.md): each call is recorded with its

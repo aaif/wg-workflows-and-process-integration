@@ -1,12 +1,12 @@
-# P3 AgentTask
+# P3 AgentFunction
 
 **Obligation:** MUST \
 **Used in patterns:** [Proposal/execution split](../patterns/proposal-execution-split.md) · [Bounded convergence loop](../patterns/bounded-convergence-loop.md)
 
 ## Definition
 
-The bounded, non-deterministic task. The workflow owns the process; the
-`AgentTask` is a contracted, bounded piece of it.
+The bounded, non-deterministic function. The workflow owns the process; the
+`AgentFunction` is a contracted, bounded piece of it.
 Its internal reasoning loop is unspecified: deterministic and ReAct-style
 internals are equal implementation choices inside the boundary.
 
@@ -15,7 +15,7 @@ internals are equal implementation choices inside the boundary.
 Without a container that has its own contract, one of two things happens.
 Either the agent ends up as the top-level orchestrator, and the workflow can
 no longer enforce budgets, gates, or audit from outside the model, or agent
-behavior spreads across several tasks and there is no one place to enforce
+behavior spreads across several functions and there is no one place to enforce
 tool scope, budget, or termination.
 
 This is a structural problem, and a better model doesn't fix it. An agent with
@@ -25,12 +25,12 @@ budget nobody declared or stop a loop nobody is watching.
 
 ### The contract
 
-Every `AgentTask` declares eight elements before it runs in production:
+Every `AgentFunction` declares eight elements before it runs in production:
 
 | # | Element | What it means |
 | --- | --- | --- |
 | 1 | Goal | What done looks like, in a form the workflow can check rather than the model's claim that it's finished |
-| 2 | Input contract | A schema for what the task receives |
+| 2 | Input contract | A schema for what the function receives |
 | 3 | Output contract | A schema for what it returns. Add a confidence signal only if something downstream routes on it automatically |
 | 4 | Tool scope | An allowlist of tools, each with an effect class (see `P4`) |
 | 5 | Budget | The `P10` limits, enforced by the engine |
@@ -40,13 +40,13 @@ Every `AgentTask` declares eight elements before it runs in production:
 
 ## How the patterns use it
 
-- **Proposal/execution split.** The agent task is the proposer. Its output is
+- **Proposal/execution split.** The agent function is the proposer. Its output is
   a proposal (immutable, versioned data) and never an action. Its tool scope
   excludes the protected-effect capability, and its identity can't obtain the
   executor's credentials. If a reviewer sends the proposal back with feedback,
-  the task runs again and produces a new version, and any approval on the old
+  the function runs again and produces a new version, and any approval on the old
   version no longer counts.
-- **Bounded convergence loop.** Each attempt is one run of the agent task. The
+- **Bounded convergence loop.** Each attempt is one run of the agent function. The
   agent can't declare convergence: its success condition is the gate's result,
   not its own judgment. Its budget covers each attempt, the loop's budget
   covers all of them, and a restart must not reset either.
@@ -85,7 +85,7 @@ termination (element 6) are always the implementation's job.
 - [P4 ToolCall](p04-tool-call.md): what the tool-scope allowlist governs.
 - [P10 Budget](p10-budget.md): contract element 5.
 - [P7 ErrorBoundary](p07-error-boundary.md): typed failure capture around the
-  task, outside the model.
+  function, outside the model.
 - [P8 Escalation](p08-escalation.md): where the escalation condition leads.
 - [P12 AuditRecord](p12-audit-record.md): contract element 8.
 

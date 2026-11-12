@@ -3,7 +3,7 @@
 **Solves:** Enforcing authorization and attribution at the protected-effect boundary when intent comes from a probabilistic agent \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) · [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Agent · authorization gate · workflow-controlled executor · audit log \
-**Built from primitives:** [P1 Trigger](../primitives/p01-trigger.md) · [P2 DeterministicTask](../primitives/p02-deterministic-task.md) · [P3 AgentTask](../primitives/p03-agent-task.md) · [P4 ToolCall](../primitives/p04-tool-call.md) · [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
+**Built from primitives:** [P1 Trigger](../primitives/p01-trigger.md) · [P2 DeterministicFunction](../primitives/p02-deterministic-function.md) · [P3 AgentFunction](../primitives/p03-agent-function.md) · [P4 ToolCall](../primitives/p04-tool-call.md) · [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Human approval gate](human-approval-gate.md) · [durable wait](durable-wait.md)
 
 ## Problem
@@ -62,6 +62,44 @@ may proceed. A workflow-controlled executor, which the agent cannot invoke,
 performs it. The system of record ties the proposal, authorization evidence,
 and effect to one run. Patterns layered on this one define the authority's
 specific decision and attribution model.
+
+## Primitive composition
+
+Each primitive's definition and implementation approaches live in its own
+entry. This table records where each one sits in *this* pattern and why the
+pattern needs it:
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| [P1 Trigger](../primitives/p01-trigger.md) | Run start | Gives intent, decision, and effect one run identity |
+| [P3 AgentFunction](../primitives/p03-agent-function.md) | Proposer | Keeps the probabilistic work in one bounded function whose output is a proposal, never an action |
+| [P4 ToolCall](../primitives/p04-tool-call.md) | The proposer's tool scope | The protected-effect capability must not be reachable from the agent, whatever its effect class |
+| [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) | Authorization, when the authority is a person | Binds an explicit decision to the exact proposal version |
+| [P2 DeterministicFunction](../primitives/p02-deterministic-function.md) | Executor | Performs exactly the authorized proposal, using capabilities the agent doesn't have |
+| [P7 ErrorBoundary](../primitives/p07-error-boundary.md) | Around the executor | Retries reuse the idempotency key, and unknown outcomes are reconciled before the run moves on |
+| [P12 AuditRecord](../primitives/p12-audit-record.md) | System of record | Joins the proposal, the authorization evidence, and the effect under one run identity |
+
+```mermaid
+flowchart LR
+    T["P1 Trigger"] --> A["P3 AgentFunction<br/>proposer"]
+    A -.-> TC["P4 ToolCall<br/>read · draft · stage"]
+    A -->|"proposal"| G{"P5 HumanCheckpoint<br/>or policy authority"}
+    G -->|"authorized"| X["P2 DeterministicFunction<br/>executor"]
+    G -->|"no / invalid"| N["Terminal or recovery path"]
+    X --> E["Protected effect"]
+    X -.-> B["P7 ErrorBoundary<br/>idempotent retry"]
+    A & G & X -.-> R[("P12 AuditRecord")]
+
+    class A,TC agent
+    class T,G,X,N,E,B,R workflow
+    classDef workflow fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef agent fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+```
+
+> **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
+
+A versioned policy can also act as the authority. No primitive covers that case
+yet, so the diagram shows it next to `P5` without an ID.
 
 ## Invariants (must hold in any implementation)
 

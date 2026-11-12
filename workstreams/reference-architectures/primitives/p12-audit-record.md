@@ -55,7 +55,7 @@ record, so most implementations write domain events to their own store.
 - [P1 Trigger](p01-trigger.md): sets the run identity every event carries.
 - [P11 OutcomeContract](p11-outcome-contract.md): the last event.
 - Observability & Traceability WG: this primitive marks where traces can hook
-  in (task entry and exit, each tool call). It doesn't produce telemetry.
+  in (function entry and exit, each tool call). It doesn't produce telemetry.
 
 ## Open questions
 

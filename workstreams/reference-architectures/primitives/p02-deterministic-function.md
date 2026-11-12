@@ -1,16 +1,16 @@
-# P2 DeterministicTask
+# P2 DeterministicFunction
 
 **Obligation:** MUST \
 **Used in patterns:** [Proposal/execution split](../patterns/proposal-execution-split.md) · [Deterministic acceptance gate](../patterns/deterministic-acceptance-gate.md)
 
 ## Definition
 
-A fixed-function task. Given the same input, it always takes the same path.
+A function with fixed logic. Given the same input, it always takes the same path.
 
 ## Why it exists
 
 If plain deterministic work has no name of its own, it tends to get folded into
-an agent task because that's convenient. Arithmetic, eligibility checks,
+an agent function because that's convenient. Arithmetic, eligibility checks,
 thresholds, entitlements, lookups, transforms, and any validation with a rule
 you can write down belong here. So do retries and idempotency, which the
 orchestrator owns.
@@ -23,7 +23,7 @@ orchestrator owns.
   effect. It can also re-check preconditions before acting, which is one way
   to deal with an approval that has gone stale.
 - **Deterministic acceptance gate.** The checks the gate runs (tests, schema
-  validation, policy rules) are `P2` tasks. They have to be independent of the
+  validation, policy rules) are `P2` functions. They have to be independent of the
   agent that produced the candidate, and they evaluate the exact candidate
   version they were given.
 
@@ -37,12 +37,12 @@ orchestrator owns.
 | Temporal | Activity | Retry policy and timeouts are declared per activity |
 | LangGraph | Node | Retry and idempotency are up to the node's code |
 
-Every runtime runs a deterministic task. Idempotency keys for side effects are
+Every runtime runs a deterministic function. Idempotency keys for side effects are
 always the implementation's job.
 
 ## Relationship to other primitives
 
-- [P3 AgentTask](p03-agent-task.md): the non-deterministic counterpart.
+- [P3 AgentFunction](p03-agent-function.md): the non-deterministic counterpart.
 - [P4 ToolCall](p04-tool-call.md): agent-initiated, so it can't stand in for
   the executor.
 - [P7 ErrorBoundary](p07-error-boundary.md): owns retries and idempotency.
