@@ -1,14 +1,10 @@
-*DRAFT STATUS: THIS HAS NOT YET BEEN ALIGNED WITH REF ARCH WORKSTREAM*
-
 # Agentic Use Cases Landscape: Proposed Classification Schema
 
 **Agentic AI Foundation · Workflows & Process Integration Working Group · Critical Use Cases Workstream**
 
-This documents a proposed way to describe agentic workflows consistently, so use cases across industries can be compared and built against. Applied to the workflows in the companion [Use Case Inventory](./use-case-inventory.md) file, which links back here for every definition it uses.
+This documents a way to describe agentic workflows consistently, so use cases across industries can be compared and built against. Applied to the workflows in the companion [Use Case Inventory](./use-case-inventory.md) file, which links back here for every definition it uses.
 
 This is a starting point, not a closed spec. If a real workflow doesn't fit (a missing dimension, a missing value, a different way to draw a line), propose the change. See [Open questions](#open-questions) for what's already on the table. 
-
-**This work needs to be aligned with the Working Group output from the Reference Architecture Workstream.**
 
 ---
 
@@ -34,9 +30,9 @@ This is a starting point, not a closed spec. If a real workflow doesn't fit (a m
 
 ## Classification
 
-**Twelve columns total. Five are proposed as classification dimensions; the rest describe or support a row.**
+**Twelve columns total. Five are classification dimensions; the rest describe or support a row.**
 
-A classification dimension marks a structural choice: something a workflow's design settles one way or another, not just a fact true of one implementation. Proposed dimensions:
+A classification dimension marks a structural choice: something a workflow's design settles one way or another, not just a fact true of one implementation. Dimensions:
 
 - **Trigger.** What starts execution: something happening in an external system, a recurring schedule, or a person directly asking.
 - **HITL Pattern.** Where, if anywhere, a person has to act before the workflow can proceed.
@@ -174,7 +170,7 @@ maintenance risk, not an edge case.
 **Related:** the same staleness risk applies to version-specific product claims in Notes
 cells (feature names, capability descriptions, and pricing tiers change). A citation that
 was accurate at time of writing may silently become inaccurate without any link breaking.
-This is harder to catch than link rot and is not addressed by any of the options above.
+This is harder to catch than link rot and is not addressed by the options above.
 
 ### Should `Tools & Systems` be a dimension?
 
