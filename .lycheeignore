@@ -1,0 +1,7 @@
+# URL patterns (regular expressions, one per line) that the link checker skips.
+# Add a pattern only for sites that can never be checked automatically
+# (e.g. always require login), with a comment saying why.
+
+# Require sign-in, so they always fail for an anonymous checker.
+^https://discord\.com/channels/
+^https://docs\.google\.com/

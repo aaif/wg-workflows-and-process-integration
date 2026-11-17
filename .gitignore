@@ -1,2 +1,5 @@
 .idea/
 .claude/
+
+# link checker output
+lychee/
