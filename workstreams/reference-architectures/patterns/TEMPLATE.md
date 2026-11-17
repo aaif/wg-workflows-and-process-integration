@@ -3,6 +3,7 @@
 **Solves:** One-line problem statement \
 **Used in:** Links to the architectures that compose this pattern \
 **Requires capabilities:** Capability roles needed to implement the pattern \
+**Built from primitives:** Links to the entries in `primitives/` this pattern uses \
 **Related patterns:** Links to other entries in `patterns/`
 
 *(Header convention: every field line ends with a trailing backslash except
@@ -22,6 +23,18 @@ The pulls in different directions that rule out the naive solution. Bullets.
 The shape, in 2–4 boxes. Context-free: no deployment story, no product
 names, no use-case specifics. If the diagram needs more than 4 boxes, it is
 probably a reference architecture, not a pattern.
+
+## Primitive composition
+
+Where each primitive from the header sits in the solution and why the pattern
+needs it. Link to the primitive's entry instead of restating its definition.
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| … | … | … |
+
+Optionally, redraw the solution with primitive IDs in the box labels. Keep it as
+small as the Solution diagram, and say which pieces aren't primitives.
 
 ## Invariants (must hold in any implementation)
 

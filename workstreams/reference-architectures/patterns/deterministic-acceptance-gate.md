@@ -3,6 +3,7 @@
 **Solves:** Deciding whether a candidate result may advance using explicit, repeatable checks rather than model self-assessment \
 **Used in:** [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Deterministic evaluator · policy/scope validator · evidence store \
+**Built from primitives:** [P2 DeterministicFunction](../primitives/p02-deterministic-function.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Bounded convergence loop](bounded-convergence-loop.md) · [Proposal/execution split](proposal-execution-split.md)
 
 ## Problem
@@ -31,6 +32,32 @@ flowchart TD
 Evaluate the exact candidate result against declared, deterministic acceptance criteria and scope rules. Scope may limit the target (the system, record, repository, or resource affected), permitted change class (the kind of modification allowed), data accessed, allowed tools or actions, and permitted effect (the external outcome that may be applied). Record the evidence with the candidate identity. Only a result that both passes the checks and remains within the business task's allowed scope may advance to the next workflow activity.
 
 The enclosing workflow decides how to handle a non-accepted result—for example, retrying within configured criteria, stopping, escalating, or recording failure. The gate does not make that control-flow decision.
+
+## Primitive composition
+
+Each primitive's definition and implementation approaches live in its own
+entry. This table records where each one sits in *this* pattern and why the
+pattern needs it:
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| [P2 DeterministicFunction](../primitives/p02-deterministic-function.md) | The checks | Tests, schema checks, and policy rules run as deterministic functions, independent of the agent |
+| [P7 ErrorBoundary](../primitives/p07-error-boundary.md) | Around the checks | A failed, unavailable, or ambiguous check is a typed failure and never counts as acceptance |
+| [P12 AuditRecord](../primitives/p12-audit-record.md) | Acceptance evidence | Records the check inputs and outcome against the exact candidate version |
+
+```mermaid
+flowchart LR
+    I["Candidate + declared scope"] --> G["P2 DeterministicFunction<br/>checks + scope validation"]
+    G -->|"accepted and in scope"| E[("P12 AuditRecord<br/>evidence")]
+    G -->|"not accepted / unavailable"| F["P7 ErrorBoundary"]
+    F --> W["Return gate result<br/>to workflow control"]
+
+    class I,G,E,F,W workflow
+    classDef workflow fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef agent fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+```
+
+> **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
 
 ## Invariants (must hold in any implementation)
 

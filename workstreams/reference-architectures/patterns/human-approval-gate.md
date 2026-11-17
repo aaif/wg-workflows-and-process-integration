@@ -3,6 +3,7 @@
 **Solves:** A named human must decide whether an exact proposal may cause a protected effect \
 **Used in:** [Single-agent process with human approval](../architectures/single-agent-human-approval.md) \
 **Requires capabilities:** Execution engine · human interaction surface · state/context store · audit log \
+**Built from primitives:** [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) · [P6 TimerDeadline](../primitives/p06-timer-deadline.md) · [P8 Escalation](../primitives/p08-escalation.md) · [P9 StateCommit](../primitives/p09-state-commit.md) · [P11 OutcomeContract](../primitives/p11-outcome-contract.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Proposal/execution split](proposal-execution-split.md) · [durable wait](durable-wait.md)
 
 ## Problem
@@ -39,6 +40,42 @@ Record an explicit approve or reject decision bound to that proposal version.
 Until approval exists, the workflow remains parked and cannot reach the
 protected effect. Timeout and escalation are explicit outcomes, never forms
 of implicit approval.
+
+## Primitive composition
+
+Each primitive's definition and implementation approaches live in its own
+entry. This table records where each one sits in *this* pattern and why the
+pattern needs it:
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| [P9 StateCommit](../primitives/p09-state-commit.md) | When the proposal arrives, and again when the decision arrives | The run parks durably while it waits, and the decision is committed before the run resumes |
+| [P5 HumanCheckpoint](../primitives/p05-human-checkpoint.md) | The gate | Shows the exact proposal version and accepts only an explicit decision from a named, authorized person |
+| [P6 TimerDeadline](../primitives/p06-timer-deadline.md) | On every pending approval | Waiting has a time limit, and a timeout is never approval |
+| [P8 Escalation](../primitives/p08-escalation.md) | After *escalate* or an expired deadline | Gives the run a defined path to another approver or a human-owned process |
+| [P11 OutcomeContract](../primitives/p11-outcome-contract.md) | Where the gate ends | Approved, rejected, escalated, and expired are separate recorded outcomes |
+| [P12 AuditRecord](../primitives/p12-audit-record.md) | Decision record | Records who decided, on which version, and when |
+
+```mermaid
+flowchart LR
+    P["Immutable proposal"] --> C["P9 StateCommit<br/>park"]
+    C --> H{"P5 HumanCheckpoint<br/>with P6 TimerDeadline"}
+    H -->|"approve"| Y["Continue to execution"]
+    H -->|"reject"| O["P11 OutcomeContract"]
+    H -->|"escalate / deadline"| E["P8 Escalation"]
+    E -->|"new approver"| H
+    E -->|"handed off / exhausted"| O
+    H -.->|"decision"| R[("P12 AuditRecord")]
+
+    class P,C,H,Y,O,E,R workflow
+    classDef workflow fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef agent fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+```
+
+> **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
+
+The proposal comes from whatever this gate is composed with, usually the
+[proposal/execution split](proposal-execution-split.md).
 
 ## Invariants (must hold in any implementation)
 

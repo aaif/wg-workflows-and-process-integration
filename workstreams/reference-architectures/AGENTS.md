@@ -1,20 +1,22 @@
 # Instructions for AI Contributors
 
-Before adding or changing a pattern, reference architecture, scenario, decision, or supporting document in this workstream:
+Before adding or changing a primitive, pattern, reference architecture, scenario, decision, or supporting document in this workstream:
 
 1. Read [README.md](README.md).
 2. Read [CONTRIBUTING.md](CONTRIBUTING.md) completely.
 3. Read the applicable template before drafting:
+   - [primitives/TEMPLATE.md](primitives/TEMPLATE.md) and, for a new or changed primitive, [primitives/decisions/TEMPLATE.md](primitives/decisions/TEMPLATE.md)
    - [patterns/TEMPLATE.md](patterns/TEMPLATE.md)
    - [architectures/TEMPLATE.md](architectures/TEMPLATE.md)
 
 ## Required rules
 
+- A **primitive** is a named building block that patterns are built from. Add one only when an existing pattern needs it, and record why under `primitives/decisions/`.
 - A **pattern** solves one independently reusable workflow problem.
 - A **reference architecture** serves a recognizable practitioner job and composes patterns, capability roles, boundaries, guarantees, and exit states.
 - A **scenario** validates an architecture; do not mistake a domain example for the generic architecture name.
 - For RA use-case validation, follow the guide linked from `CONTRIBUTING.md`, use only supplied evidence, and do not create a GitHub Issue or PR unless the user explicitly asks.
-- Reuse existing patterns before proposing a new one.
+- Reuse existing primitives and patterns before proposing a new one.
 - Keep capability descriptions vendor-neutral and at the logical role level.
 - Make the boundary between agent and workflow-controlled work explicit.
 - Do not invent unagreed terminology, standards, or cross-WG controls. Record genuine gaps as open questions.

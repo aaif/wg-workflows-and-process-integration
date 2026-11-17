@@ -3,6 +3,7 @@
 **Solves:** Safely iterating an agent-assisted business task until a deterministic acceptance condition passes, or ending in a defined non-success outcome \
 **Used in:** [Bounded autonomous remediation](../architectures/bounded-autonomous-remediation.md) \
 **Requires capabilities:** Workflow engine · bounded agent/tool environment · deterministic gate · state/context store · audit log \
+**Built from primitives:** [P3 AgentFunction](../primitives/p03-agent-function.md) · [P4 ToolCall](../primitives/p04-tool-call.md) · [P7 ErrorBoundary](../primitives/p07-error-boundary.md) · [P8 Escalation](../primitives/p08-escalation.md) · [P9 StateCommit](../primitives/p09-state-commit.md) · [P10 Budget](../primitives/p10-budget.md) · [P11 OutcomeContract](../primitives/p11-outcome-contract.md) · [P12 AuditRecord](../primitives/p12-audit-record.md) \
 **Related patterns:** [Deterministic acceptance gate](deterministic-acceptance-gate.md) · [Proposal/execution split](proposal-execution-split.md) · [Durable wait](durable-wait.md)
 
 ## Problem
@@ -39,6 +40,45 @@ flowchart TD
 > **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
 
 The workflow admits one explicitly bounded business task, gives the agent only the tools and scope needed for that business task, and evaluates every attempt against a deterministic gate. The gate—not the agent—decides whether the loop has converged. A retry is allowed only while configured retry criteria permit, including scope and declared iteration, time, and cost limits.
+
+## Primitive composition
+
+Each primitive's definition and implementation approaches live in its own
+entry. This table records where each one sits in *this* pattern and why the
+pattern needs it:
+
+| Primitive | Where it sits | Why it is required here |
+|---|---|---|
+| [P3 AgentFunction](../primitives/p03-agent-function.md) | Each attempt | The agent does the permitted work but can't declare that it has converged |
+| [P4 ToolCall](../primitives/p04-tool-call.md) | Inside each attempt | The agent gets only the tools its bounded task needs |
+| [P10 Budget](../primitives/p10-budget.md) | Around each attempt and the whole loop | Every retry has an iteration limit plus a time or cost limit |
+| [P7 ErrorBoundary](../primitives/p07-error-boundary.md) | After a failed or rejected attempt | Routes the result to a bounded retry, escalation, abstention, or recorded failure |
+| [P9 StateCommit](../primitives/p09-state-commit.md) | After each attempt | Attempt count, gate results, and budget spent survive a restart |
+| [P8 Escalation](../primitives/p08-escalation.md) | When the retry criteria are exhausted | One of the permitted exits |
+| [P11 OutcomeContract](../primitives/p11-outcome-contract.md) | Where the loop ends | Gives the loop a defined non-success outcome |
+| [P12 AuditRecord](../primitives/p12-audit-record.md) | Every attempt | Records attempt number, gate result, and the reason for each retry or terminal outcome |
+
+```mermaid
+flowchart TD
+    A["Admit bounded task"] --> B["P3 AgentFunction attempt<br/>with P4 ToolCall"]
+    B --> G["Deterministic acceptance gate"]
+    G -->|"accepted"| E["Exit to controlled effect"]
+    G -->|"not accepted"| F["P7 ErrorBoundary"]
+    F --> C{"P10 Budget<br/>permits a retry?"}
+    C -->|"yes"| B
+    C -->|"no"| S["P8 Escalation or<br/>P11 OutcomeContract"]
+    B -.-> R[("P9 StateCommit<br/>P12 AuditRecord")]
+
+    class B agent
+    class A,G,E,F,C,S,R workflow
+    classDef workflow fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef agent fill:#ffedd5,stroke:#ea580c,color:#7c2d12
+```
+
+> **Diagram legend:** Orange = agent-driven or probabilistic work. Blue = workflow-controlled capabilities and decisions.
+
+The gate is the [deterministic acceptance gate](deterministic-acceptance-gate.md)
+pattern, which has its own primitive composition.
 
 ## Invariants (must hold in any implementation)
 
