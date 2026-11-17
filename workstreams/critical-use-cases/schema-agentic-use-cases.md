@@ -14,7 +14,7 @@ This is a starting point, not a closed spec. If a real workflow doesn't fit (a m
 
 ## Contents
 
-- [How to Use This Document](#how-to-use-this-file)
+- [How to Use This Document](#how-to-use-this-document)
 - [Classification](#classification): the dimensions and how they relate
 - [Schema summary](#schema-summary): all fields and allowed values, one table each
 - [Open questions](#open-questions)

@@ -45,6 +45,15 @@ workstreams/critical-use-cases/
 
 Fork the repo, make your changes, and open a PR against the upstream WG repo.
 
+### Link checks
+
+Links in this folder are checked automatically ([workflow](../../.github/workflows/use-cases-link-check.yml)):
+
+- **On every PR** that touches this folder: links between files and section anchors are checked, plus any external links the PR adds or changes. The check fails only on links that are clearly dead (404/410, a missing file or anchor, or a domain that no longer exists). Sites that block automated requests are listed in the job summary as "could not verify" but never fail the check.
+- **Weekly**: every link is checked and the results are posted to a single open issue labelled `link-health`.
+
+To run the same check locally, install [lychee](https://lychee.cli.rs/) and run `lychee 'workstreams/critical-use-cases/**/*.md'` from the repo root. It picks up `lychee.toml` and `.lycheeignore` automatically.
+
 ## Links
 Upcoming workstream meetings: 
 Meeting notes: https://docs.google.com/document/d/1g8637JPZZ4Y-V-KXTcGU0de1HmTEc2iI6-PCTHv7zuI/edit?usp=sharing 

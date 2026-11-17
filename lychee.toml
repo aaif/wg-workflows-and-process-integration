@@ -1,0 +1,26 @@
+# Link-checker settings for the Critical Use Cases workstream.
+# Used by .github/workflows/use-cases-link-check.yml. Docs: https://lychee.cli.rs/config/
+
+# Many vendor sites block unknown clients outright, so present as a normal browser.
+user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+
+# Be patient and polite: retry flaky hosts, keep concurrency low.
+max_retries = 3
+retry_wait_time = 5
+timeout = 30
+max_concurrency = 8
+max_redirects = 10
+
+# Only 2xx counts as success. Everything else lands in the JSON report, and
+# .github/scripts/link_report.py decides whether it is "broken" (404/410,
+# missing file or anchor, dead domain) or merely "could not verify" (403, 429,
+# timeouts, other network errors), so bot-blocking never fails a check.
+accept = ["200..=299"]
+
+# Check in-page and cross-file anchors such as (#sales) or (./schema.md#trigger).
+include_fragments = "anchor-only"
+
+# Ignore mailto: links.
+include_mail = false
+
+# URL patterns to skip entirely live in .lycheeignore.

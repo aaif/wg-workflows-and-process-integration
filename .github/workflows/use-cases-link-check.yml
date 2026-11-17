@@ -1,0 +1,143 @@
+# Checks links in the Critical Use Cases workstream.
+#
+# On pull requests: checks every link inside the repo (files and anchors) and
+# only the external links the PR adds or changes. Fails only on links that are
+# clearly dead, so existing rot or bot-blocking sites never block a contributor.
+#
+# Weekly (and on demand): checks every link and updates one open issue
+# labelled "link-health" with broken, unverifiable and redirected links.
+# Never fails. See https://github.com/aaif/wg-workflows-and-process-integration/issues/59
+
+name: Use cases link check
+
+on:
+  pull_request:
+    paths:
+      - "workstreams/critical-use-cases/**"
+      - "lychee.toml"
+      - ".lycheeignore"
+      - ".github/workflows/use-cases-link-check.yml"
+      - ".github/scripts/link_report.py"
+  schedule:
+    - cron: "17 13 * * 1" # Mondays 13:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOCS_GLOB: "workstreams/critical-use-cases/**/*.md"
+
+jobs:
+  pr-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Check links inside the repo (files and anchors)
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --offline
+            --root-dir ${{ github.workspace }}
+            '${{ env.DOCS_GLOB }}'
+          format: json
+          output: lychee/internal.json
+          fail: false
+          jobSummary: false
+
+      - name: Collect external links added or changed by this PR
+        id: added
+        run: |
+          mkdir -p lychee
+          git diff --unified=0 "${{ github.event.pull_request.base.sha }}" HEAD \
+            -- 'workstreams/critical-use-cases/' \
+            | grep -E '^\+[^+]' | sed 's/^+//' > lychee/added-lines.md || true
+          if grep -qE 'https?://' lychee/added-lines.md; then
+            echo "any=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No new external links in this PR."
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check new external links
+        if: steps.added.outputs.any == 'true'
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --verbose
+            --scheme https --scheme http
+            lychee/added-lines.md
+          format: json
+          output: lychee/external.json
+          fail: false
+          jobSummary: false
+
+      - name: Report (fails only on broken links)
+        run: |
+          status=0
+          python3 .github/scripts/link_report.py lychee/internal.json \
+            --title "Links inside the repo" --output lychee/internal.md \
+            --fail-on-broken || status=1
+          cat lychee/internal.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -f lychee/external.json ]; then
+            python3 .github/scripts/link_report.py lychee/external.json \
+              --title "External links added in this PR" --output lychee/external.md \
+              --docs-dir workstreams/critical-use-cases \
+              --fail-on-broken || status=1
+            cat lychee/external.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::error::Broken links found. See the job summary for the list."
+          fi
+          exit "$status"
+
+  weekly-report:
+    # Scheduled runs only on the upstream repo; manual runs work anywhere,
+    # so the job can be tried out on a fork first.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'schedule' && github.repository == 'aaif/wg-workflows-and-process-integration')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check all links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --verbose
+            --root-dir ${{ github.workspace }}
+            '${{ env.DOCS_GLOB }}'
+          format: json
+          output: lychee/all.json
+          fail: false
+          jobSummary: false
+
+      - name: Build report
+        run: |
+          python3 .github/scripts/link_report.py lychee/all.json \
+            --title "Critical Use Cases: link health" --output lychee/report.md
+          cat lychee/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Update the link-health issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create link-health --color FBCA04 \
+            --description "Automated link check report" 2>/dev/null || true
+          number=$(gh issue list --label link-health --state open \
+            --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file lychee/report.md
+            echo "Updated issue #$number"
+          else
+            gh issue create --title "Use-case inventory: link health" \
+              --label link-health --body-file lychee/report.md
+          fi
